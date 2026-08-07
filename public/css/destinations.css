@@ -1,0 +1,130 @@
+/* ================================
+   DESTINATIONS PAGE STYLES
+   ================================ */
+
+/* Intro Section */
+.destinations-intro {
+    padding: 80px 0 60px 0;
+    text-align: center;
+    background-color: #fff;
+}
+
+.destinations-intro .section-title {
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: #222;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.destinations-intro .destinations-p {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #777;
+    line-height: 2.2;
+    max-width: 900px;
+    margin: 0 auto 15px auto;
+}
+
+/* Destinations Grid Section */
+.destinations-grid-section {
+    padding: 0 0 100px 0;
+    background-color: #fff;
+}
+
+.destinations-grid-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.destinations-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.destination-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.destination-card-img-wrapper {
+    width: 100%;
+    height: 350px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.destination-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.destination-card:hover .destination-card-img {
+    transform: scale(1.05);
+}
+
+.destination-card-title {
+    font-family: var(--font-primary);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 15px;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+}
+
+.destination-card-text {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    max-width: 90%;
+}
+
+.destination-card-link {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #c29958;
+    text-transform: capitalize;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+}
+
+.destination-card-link:hover {
+    color: #a47e45;
+}
+
+@media (max-width: 991.98px) {
+    .destinations-row {
+        gap: 30px;
+    }
+    .destination-card-img-wrapper {
+        height: 280px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .destinations-row {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .destinations-intro {
+        padding: 60px 15px 40px;
+    }
+}

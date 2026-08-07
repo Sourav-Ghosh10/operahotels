@@ -1,0 +1,5 @@
+<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+  <text x="10" y="55" font-family="Georgia, serif" font-size="52" font-weight="700" fill="#FFFFFF" letter-spacing="4">BAHI</text>
+  <text x="12" y="78" font-family="Arial, sans-serif" font-size="13" font-weight="300" fill="#FFFFFF" letter-spacing="2.5">HOTELS &amp; RESORTS</text>
+  <path d="M235 8 H258 C272 8 281 14 281 25 C281 32 275 37 265 39 C278 41 288 48 288 60 C288 73 277 79 262 79 H235 V8 Z M248 19 V40 H260 C267 40 273 36 273 30 C273 24 267 19 260 19 H248 Z M248 51 V68 H261 C268 68 274 64 274 60 C274 55 268 51 261 51 H248 Z" fill="#FFFFFF"/>
+</svg>

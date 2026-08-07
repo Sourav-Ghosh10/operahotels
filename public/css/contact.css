@@ -1,0 +1,166 @@
+/* ================================
+   CONTACT US PAGE STYLES
+   ================================ */
+
+.contact-intro {
+    padding: 100px 0 60px 0;
+}
+
+.contact-intro .section-title {
+    font-family: var(--font-primary);
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: #111;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.reservation-info p a {
+    color: #b77918;
+    font-size: 16px;
+    font-weight: 500;
+    /* text-decoration: underline; */
+}
+
+.contact-intro .contact-p {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #777;
+    line-height: 2.4;
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+}
+
+/* Contact Form */
+.contact-form-wrapper {
+    background-color: #fdfaf4;
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.contact-form .form-label {
+    font-family: var(--font-primary);
+    font-size: 0.85rem;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.contact-form .form-control,
+.contact-form .form-select {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #e0d0b8;
+    border-radius: 0;
+    padding: 12px 5px;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 15px;
+    box-shadow: none;
+}
+
+.contact-form .form-control:focus,
+.contact-form .form-select:focus {
+    border-bottom-color: #c29958;
+    background-color: transparent;
+}
+
+.contact-form .form-control::placeholder {
+    color: #999;
+}
+
+.contact-form .form-select {
+    color: #999;
+}
+
+.contact-form .form-select option {
+    color: #333;
+}
+
+.contact-form .form-check {
+    margin-top: 15px;
+}
+
+.contact-form .form-check-label {
+    font-family: var(--font-primary);
+    font-size: 0.8rem;
+    color: #777;
+    line-height: 1.5;
+}
+
+.contact-form .btn-submit {
+    background-color: #132a39;
+    color: #fff;
+    border: none;
+    padding: 12px 40px;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 4px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.contact-form .btn-submit:hover {
+    background-color: #1c3d53;
+}
+
+/* Reservations Section */
+.reservations-section {
+    padding: 60px 0;
+}
+
+.reservations-heading {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #c29958;
+    margin-bottom: 30px;
+}
+
+.reservation-item {
+    margin-bottom: 20px;
+}
+
+.reservation-item h5 {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 5px;
+}
+
+.reservation-item p,
+.reservation-item a {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+    text-decoration: none;
+}
+
+.reservation-info p {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.reservation-info strong {
+    font-weight: 600;
+    color: #111;
+}
+
+@media (max-width: 767.98px) {
+    .contact-form-wrapper {
+        padding: 25px;
+    }
+
+    .contact-intro {
+        padding: 60px 0 40px 0;
+    }
+}
