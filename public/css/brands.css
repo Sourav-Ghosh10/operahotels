@@ -1,0 +1,184 @@
+/* ================================
+   BRANDS & HOTELS PAGE STYLES
+   ================================ */
+
+/* Intro Section */
+.brands-intro {
+    padding: 80px 0 60px 0;
+    text-align: center;
+    background-color: #fff;
+}
+
+.brands-intro .section-title {
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: #222;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.brands-intro .brands-p {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #777;
+    line-height: 2.2;
+    max-width: 900px;
+    margin: 0 auto 15px auto;
+}
+
+/* Our Brands Section */
+.our-brands-section {
+    padding: 60px 0 100px 0;
+    background-color: #fdfaf4;
+}
+
+.our-brands-section .section-title {
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    font-weight: 400;
+    color: #111;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.brands-grid-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.brands-row-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.brands-row-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+}
+
+.brand-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 30px;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.brand-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.brand-card-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    transition: transform 0.6s ease;
+}
+
+.brand-card:hover .brand-card-bg {
+    transform: scale(1.08);
+}
+
+.brand-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+    transition: background 0.3s ease;
+}
+
+.brand-card:hover .brand-card-overlay {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.brand-card-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.brand-card-logo-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.brand-card-logo {
+    max-width: 180px;
+    max-height: 120px;
+    width: auto;
+}
+
+.brand-card-logo.corp-logo {
+    max-width: 120px;
+}
+
+.brand-card-tagline {
+    font-family: var(--font-primary);
+    font-size: 1.15rem;
+    color: #fff;
+    margin-bottom: 0;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    text-align: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.brand-card:hover .brand-card-tagline {
+    transform: translateY(-5px);
+}
+
+@media (max-width: 991.98px) {
+    .brands-row-top,
+    .brands-row-bottom {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .brand-card {
+        height: 280px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .brands-row-top,
+    .brands-row-bottom {
+        grid-template-columns: 1fr;
+    }
+    
+    .brand-card {
+        height: 250px;
+    }
+    
+    .brands-intro {
+        padding: 60px 15px 40px;
+    }
+}
