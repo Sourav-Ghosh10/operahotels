@@ -1,6 +1,6 @@
-"use client";
+
 import React from 'react';
-import Header from '@/components/Header';
+import Header from '@/components/ServerHeader';
 import Head from 'next/head';
 
 export default function Page() {
@@ -15,7 +15,7 @@ export default function Page() {
                         {/* Slide 1 */}
                         <div className="carousel-item active h-100" data-bs-interval="5000">
                             <div className="slider-image w-100 h-100"
-                                style={{ backgroundImage: "url('./img/slider-1.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
+                                style={{ backgroundImage: "url('/img/slider-1.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
                             </div>
                         </div>
                         {/* Slide 2 */}
@@ -94,7 +94,7 @@ export default function Page() {
                         {/* Card 1: Summer Escape */}
                         <div className="offer-card-item">
                             <div className="offer-card">
-                                <div className="offer-img-box" style={{ backgroundImage: "url('img/summer_escape.png')" }}>
+                                <div className="offer-img-box" style={{ backgroundImage: "url('/img/summer_escape.png')" }}>
                                     <span className="offer-badge">SUMMER ESCAPE</span>
                                     <div className="offer-hover-overlay">
                                         <span className="offer-hover-badge">REGISTAR NOW</span>
@@ -114,7 +114,7 @@ export default function Page() {
                         {/* Card 2: Exclusive Member Rates */}
                         <div className="offer-card-item">
                             <div className="offer-card">
-                                <div className="offer-img-box" style={{ backgroundImage: "url('img/exclusive_member_rates.png')" }}>
+                                <div className="offer-img-box" style={{ backgroundImage: "url('/img/exclusive_member_rates.png')" }}>
                                     <span className="offer-badge">MEMBER RATES</span>
                                     <div className="offer-hover-overlay">
                                         <span className="offer-hover-badge">REGISTAR NOW</span>
@@ -134,7 +134,7 @@ export default function Page() {
                         {/* Card 3: ESAAD Exclusive Offer */}
                         <div className="offer-card-item">
                             <div className="offer-card">
-                                <div className="offer-img-box" style={{ backgroundImage: "url('img/esaad_exclusive_offer.png')" }}>
+                                <div className="offer-img-box" style={{ backgroundImage: "url('/img/esaad_exclusive_offer.png')" }}>
                                     <span className="offer-badge">ESAAD OFFER</span>
                                     <div className="offer-hover-overlay">
                                         <span className="offer-hover-badge">REGISTAR NOW</span>
@@ -190,7 +190,7 @@ export default function Page() {
                 <div className="owl-carousel explore-carousel">
                     {/* Slide 1: Dubai Museum */}
                     <div className="explore-card">
-                        <div className="explore-img-box" style={{ backgroundImage: "url('img/explore_museum.png')" }}>
+                        <div className="explore-img-box" style={{ backgroundImage: "url('/img/explore_museum.png')" }}>
                             <div className="explore-img-overlay">
                                 <h3 className="explore-card-title">DUBAI MUSEUM</h3>
                             </div>
@@ -204,7 +204,7 @@ export default function Page() {
 
                     {/* Slide 2: Dubai Mall */}
                     <div className="explore-card">
-                        <div className="explore-img-box" style={{ backgroundImage: "url('img/explore_mall.png')" }}>
+                        <div className="explore-img-box" style={{ backgroundImage: "url('/img/explore_mall.png')" }}>
                             <div className="explore-img-overlay">
                                 <h3 className="explore-card-title">DUBAI MALL</h3>
                             </div>
@@ -218,7 +218,7 @@ export default function Page() {
 
                     {/* Slide 3: Dubai Frame */}
                     <div className="explore-card">
-                        <div className="explore-img-box" style={{ backgroundImage: "url('img/explore_frame.png')" }}>
+                        <div className="explore-img-box" style={{ backgroundImage: "url('/img/explore_frame.png')" }}>
                             <div className="explore-img-overlay">
                                 <h3 className="explore-card-title">DUBAI FRAME</h3>
                             </div>
@@ -232,7 +232,7 @@ export default function Page() {
 
                     {/* Slide 4: Deira Clocktower */}
                     <div className="explore-card">
-                        <div className="explore-img-box" style={{ backgroundImage: "url('img/explore_clocktower.png')" }}>
+                        <div className="explore-img-box" style={{ backgroundImage: "url('/img/explore_clocktower.png')" }}>
                             <div className="explore-img-overlay">
                                 <h3 className="explore-card-title">DEIRA CLOCKTOWER</h3>
                             </div>
@@ -290,9 +290,9 @@ export default function Page() {
                         {/* Right Column: Slider */}
                         <div className="col-lg-6 position-relative px-0">
                             <div className="owl-carousel amenities-carousel">
-                                <div className="amenities-slide-item" style={{ backgroundImage: "url('img/amenity_pool.png')" }}></div>
-                                <div className="amenities-slide-item" style={{ backgroundImage: "url('img/amenity_gym.png')" }}></div>
-                                <div className="amenities-slide-item" style={{ backgroundImage: "url('img/amenity_spa.png')" }}></div>
+                                <div className="amenities-slide-item" style={{ backgroundImage: "url('/img/amenity_pool.png')" }}></div>
+                                <div className="amenities-slide-item" style={{ backgroundImage: "url('/img/amenity_gym.png')" }}></div>
+                                <div className="amenities-slide-item" style={{ backgroundImage: "url('/img/amenity_spa.png')" }}></div>
                             </div>
 
                             {/* Overlay Navigation Arrows */}

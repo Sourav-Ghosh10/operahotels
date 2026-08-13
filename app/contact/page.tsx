@@ -1,6 +1,6 @@
-"use client";
+
 import React from 'react';
-import Header from '@/components/Header';
+import Header from '@/components/ServerHeader';
 import Head from 'next/head';
 
 export default function Page() {
@@ -16,13 +16,13 @@ export default function Page() {
                 {/* Slide 2 */}
                 <div className="carousel-item h-100 active" data-bs-interval="5000">
                     <div className="slider-image w-100 h-100"
-                        style={{ backgroundImage: "url('./img/contact-banner.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
+                        style={{ backgroundImage: "url('/img/contact-banner.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
                     </div>
                 </div>
                 {/* Slide 3 */}
                 <div className="carousel-item h-100" data-bs-interval="5000">
                     <div className="slider-image w-100 h-100"
-                        style={{ backgroundImage: "url('./img/204821.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
+                        style={{ backgroundImage: "url('/img/204821.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
                     </div>
                 </div>
             </div>
