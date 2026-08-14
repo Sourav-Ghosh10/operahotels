@@ -136,7 +136,7 @@ export default function Navigation() {
             </div>
             <div className="overlay-menu-col">
               <Link href="/contact" className="overlay-menu-link">CONTACT US</Link>
-              <Link href="/" className="overlay-menu-link">GALLERY</Link>
+              <Link href="/gallery" className="overlay-menu-link">GALLERY</Link>
               <Link href="/" className="overlay-menu-link">NEWSLETTER</Link>
               <Link href="/" className="overlay-menu-link">FUTURE DEVELOPMENTS</Link>
               <Link href="/" className="overlay-menu-link">CAREERS</Link>

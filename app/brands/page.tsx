@@ -1,11 +1,11 @@
 "use client";
 import React from 'react';
 import Header from '@/components/Header';
-import Head from 'next/head';
 
 export default function Page() {
     return (
         <main>
+            <link rel="stylesheet" href="/css/brands.css" />
             <header className="hero-section">
 
         {/* Background Slider */}
@@ -16,7 +16,7 @@ export default function Page() {
                 {/* Slide 2 */}
                 <div className="carousel-item h-100 active" data-bs-interval="5000">
                     <div className="slider-image w-100 h-100"
-                        style={{ backgroundImage: "url('./img/luxury-hotel-reception-hall-lounge-restaurant-with-high-ceiling/ 1.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
+                        style={{ backgroundImage: "url('/img/luxury-hotel-reception-hall-lounge-restaurant-with-high-ceiling 1.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
                     </div>
                 </div>
                 {/* Slide 3 */}
@@ -88,7 +88,7 @@ export default function Page() {
                 <div className="brands-row-top">
                     {/* BAHI Hotels & Resorts */}
                     <a href="#" className="brand-card">
-                        <div className="brand-card-bg" style={{ backgroundImage: "url('./img/bahi_bg.png')" }}></div>
+                        <div className="brand-card-bg" style={{ backgroundImage: "url('/img/bahi_bg.png')" }}></div>
                         <div className="brand-card-overlay"></div>
                         <div className="brand-card-content">
                             <div className="brand-card-logo-container">
@@ -108,7 +108,7 @@ export default function Page() {
 
                     {/* Opera Grand Hotel */}
                     <a href="#" className="brand-card">
-                        <div className="brand-card-bg" style={{ backgroundImage: "url('./img/opera_bg.png')" }}></div>
+                        <div className="brand-card-bg" style={{ backgroundImage: "url('/img/opera_bg.png')" }}></div>
                         <div className="brand-card-overlay"></div>
                         <div className="brand-card-content">
                             <div className="brand-card-logo-container">
@@ -124,7 +124,7 @@ export default function Page() {
                 <div className="brands-row-bottom">
                     {/* CORP Hotels */}
                     <a href="#" className="brand-card">
-                        <div className="brand-card-bg" style={{ backgroundImage: "url('./img/corp_bg.png')" }}></div>
+                        <div className="brand-card-bg" style={{ backgroundImage: "url('/img/corp_bg.png')" }}></div>
                         <div className="brand-card-overlay"></div>
                         <div className="brand-card-content">
                             <div className="brand-card-logo-container">
@@ -146,7 +146,7 @@ export default function Page() {
 
                     {/* EWA Hotel Apartments */}
                     <a href="#" className="brand-card">
-                        <div className="brand-card-bg" style={{ backgroundImage: "url('./img/ewa_bg.png')" }}></div>
+                        <div className="brand-card-bg" style={{ backgroundImage: "url('/img/ewa_bg.png')" }}></div>
                         <div className="brand-card-overlay"></div>
                         <div className="brand-card-content">
                             <div className="brand-card-logo-container">
@@ -173,7 +173,7 @@ export default function Page() {
 
                     {/* ECOS Hotels */}
                     <a href="#" className="brand-card">
-                        <div className="brand-card-bg" style={{ backgroundImage: "url('./img/ecos_bg.png')" }}></div>
+                        <div className="brand-card-bg" style={{ backgroundImage: "url('/img/ecos_bg.png')" }}></div>
                         <div className="brand-card-overlay"></div>
                         <div className="brand-card-content">
                             <div className="brand-card-logo-container">
@@ -217,7 +217,7 @@ export default function Page() {
                 <p className="location-address-text">
                     Suites 106/107, Madina Tower, Cluster O<br />
                     Jumeirah Lake Towers , PO Box 66232,<br />
-                    Dubai Ã¢â‚¬â€œ UAE
+                    Dubai – UAE
                 </p>
             </div>
         </div>
