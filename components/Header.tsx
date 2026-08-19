@@ -1,10 +1,35 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useUI } from "@/app/UIContext";
 
-export default function Header() {
+type DestinationMenuItem = {
+  id: number;
+  slug: string;
+  name: string;
+  name_en?: string;
+};
+
+type Locale = "en" | "ar";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const fallbackDestinations: DestinationMenuItem[] = [
+  { id: 1, slug: "dubai", name: "Dubai" },
+  { id: 2, slug: "amman", name: "Amman" },
+  { id: 3, slug: "sharjah", name: "Sharjah" },
+];
+
+export default function Header({ initialDestinations = fallbackDestinations }: { initialDestinations?: DestinationMenuItem[] }) {
   const { setIsNavOpen, setIsBookingOpen } = useUI();
+  const [destinations, setDestinations] = useState<DestinationMenuItem[]>(initialDestinations);
+  const [locale, setLocale] = useState<Locale>("en");
+
+  function selectLocale(nextLocale: Locale) {
+    setLocale(nextLocale);
+    window.dispatchEvent(new CustomEvent("destination-locale-change", { detail: nextLocale }));
+  }
+
+
 
   return (
     <nav className="navbar navbar-expand-lg transparent-nav position-relative" style={{ zIndex: 10 }}>
@@ -256,21 +281,13 @@ export default function Header() {
                 </svg>
               </Link>
               <ul className="dropdown-menu custom-dropdown-menu" aria-labelledby="destinationsDropdown">
-                <li>
-                  <Link className="dropdown-item" href="/dubai">
-                    Dubai
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" href="/destinations">
-                    Amman
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" href="/destinations">
-                    Sharjah
-                  </Link>
-                </li>
+                {destinations.map((destination) => (
+                  <li key={destination.id}>
+                    <Link className="dropdown-item" href={`/destinations/${destination.slug}`}>
+                      {destination.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </li>
             <li className="nav-item">
@@ -282,6 +299,52 @@ export default function Header() {
               <Link className="nav-link" href="/contact">
                 CONTACT
               </Link>
+            </li>
+
+            <li className="nav-item dropdown language-selector-item">
+              <button
+                className="nav-link destination-language-toggle"
+                type="button"
+                id="languageDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {locale === "en" ? "ENGLISH" : "العربية"}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="ms-2 destination-language-chevron"
+                >
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <ul className="dropdown-menu destination-language-menu" aria-labelledby="languageDropdown">
+                <li>
+                  <button
+                    className={`dropdown-item ${locale === "en" ? "active" : ""}`}
+                    type="button"
+                    onClick={() => selectLocale("en")}
+                  >
+                    ENGLISH
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className={`dropdown-item ${locale === "ar" ? "active" : ""}`}
+                    type="button"
+                    onClick={() => selectLocale("ar")}
+                  >
+                    العربية
+                  </button>
+                </li>
+              </ul>
             </li>
 
             {/* Mobile Book Now Button */}

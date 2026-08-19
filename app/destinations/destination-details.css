@@ -1,0 +1,213 @@
+/* ================================
+   UAE / DUBAI DESTINATION STYLES
+   ================================ */
+
+/* Intro Section */
+.uae-intro {
+    padding: 80px 0 40px 0;
+    text-align: center;
+    background-color: #fff;
+}
+
+.uae-intro .section-title {
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: #222;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.uae-intro .uae-p {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #777;
+    line-height: 2.2;
+    max-width: 900px;
+    margin: 0 auto 15px auto;
+}
+
+/* Sub Navigation */
+.uae-subnav {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    padding: 25px 0;
+}
+
+.uae-subnav-link {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+.uae-subnav-link:hover {
+    color: var(--primary-gold);
+}
+
+/* Alternate Sections */
+.city-section {
+    padding: 0;
+    background-color: #fff;
+}
+
+.city-section.bg-light-grey {
+    background-color: #f9f9f9;
+}
+
+.city-row {
+    align-items: center;
+}
+
+.city-img-wrapper {
+    width: 100%;
+    height: 650px;
+    overflow: hidden;
+}
+
+.city-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.city-content {
+    padding: 80px 60px;
+    max-width: 800px;
+}
+
+.city-title {
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.city-text {
+    font-family: var(--font-primary);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.city-btn {
+    display: inline-block;
+    background-color: var(--primary-gold);
+    color: #fff;
+    padding: 12px 30px;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 1px solid var(--primary-gold);
+}
+
+.city-btn:hover {
+    background-color: transparent;
+    color: var(--primary-gold);
+}
+
+.city-btn-secondary {
+    background-color: #1a2b3c;
+    border-color: #1a2b3c;
+    margin-left: 15px;
+}
+
+.city-btn-secondary:hover {
+    background-color: transparent;
+    color: #1a2b3c;
+}
+
+@media (max-width: 991.98px) {
+    .city-img-wrapper {
+        min-height: 350px;
+    }
+
+    .city-content {
+        padding: 40px 20px;
+    }
+
+    .uae-subnav {
+        gap: 20px;
+    }
+
+    .city-btn-secondary {
+        margin-left: 0;
+        margin-top: 15px;
+    }
+}
+
+/* ================================
+   GOOGLE MAP EMBED SECTION
+   ================================ */
+
+.destination-map-section {
+    padding: 70px 0 80px;
+    background-color: #fff;
+}
+
+.destination-map-title {
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #111;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+
+.destination-map-divider {
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary-gold, #b8902a);
+    margin-bottom: 40px;
+}
+
+.destination-map-embeds {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.destination-map-embed-wrapper {
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.destination-map-embed-wrapper iframe {
+    width: 100% !important;
+    height: 500px !important;
+    border: 0 !important;
+    display: block;
+}
+
+@media (max-width: 767.98px) {
+    .destination-map-embed-wrapper iframe {
+        height: 320px !important;
+    }
+
+    .destination-map-title {
+        font-size: 1.25rem;
+    }
+}
