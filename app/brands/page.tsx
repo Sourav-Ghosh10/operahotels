@@ -1,11 +1,11 @@
 
 import React from 'react';
-import Header from '@/components/ServerHeader';
-import Head from 'next/head';
+import Header from '@/components/Header';
 
 export default function Page() {
     return (
         <main>
+            <link rel="stylesheet" href="/css/brands.css" />
             <header className="hero-section">
 
         {/* Background Slider */}
@@ -16,7 +16,7 @@ export default function Page() {
                 {/* Slide 2 */}
                 <div className="carousel-item h-100 active" data-bs-interval="5000">
                     <div className="slider-image w-100 h-100"
-                        style={{ backgroundImage: "url('/img/luxury-hotel-reception-hall-lounge-restaurant-with-high-ceiling/ 1.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
+                        style={{ backgroundImage: "url('/img/luxury-hotel-reception-hall-lounge-restaurant-with-high-ceiling 1.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
                     </div>
                 </div>
                 {/* Slide 3 */}
@@ -217,7 +217,7 @@ export default function Page() {
                 <p className="location-address-text">
                     Suites 106/107, Madina Tower, Cluster O<br />
                     Jumeirah Lake Towers , PO Box 66232,<br />
-                    Dubai Ã¢â‚¬â€œ UAE
+                    Dubai – UAE
                 </p>
             </div>
         </div>

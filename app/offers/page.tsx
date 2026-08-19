@@ -1,12 +1,11 @@
 
 import React from 'react';
-import Header from '@/components/ServerHeader';
-import Head from 'next/head';
-import "./offers.css";
+import Header from '@/components/Header';
 
 export default function Page() {
     return (
         <main>
+            <link rel="stylesheet" href="/css/offers.css" />
             <header className="hero-section">
 
                 {/* Background Slider */}
@@ -14,18 +13,10 @@ export default function Page() {
                     data-bs-ride="carousel" data-bs-pause="false" style={{ zIndex: "0" }}>
                     <div className="carousel-inner h-100">
 
-                        {/* Slide 2 */}
-                        <div className="carousel-item h-100 active" data-bs-interval="5000">
-                            <div className="slider-image w-100 h-100"
-                                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1597659840241-37e2b9c2f55f?q=80&w=2070&auto=format&fit=crop')", backgroundSize: "cover", backgroundPosition: "center" }}>
-                            </div>
-                        </div>
-                        {/* Slide 3 */}
-                        <div className="carousel-item h-100" data-bs-interval="5000">
-                            <div className="slider-image w-100 h-100"
-                                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop')", backgroundSize: "cover", backgroundPosition: "center" }}>
-                            </div>
-                        </div>
+                {/* Slide 2 */}
+                <div className="carousel-item h-100 active" data-bs-interval="5000">
+                    <div className="slider-image w-100 h-100"
+                        style={{ backgroundImage: "url('/img/uae_wide 1.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
                     </div>
                 </div>
 
@@ -153,29 +144,17 @@ export default function Page() {
                         loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Opera Hotel Dubai Location">
                     </iframe>
                 </div>
-                <div className="location-info-wrapper">
-                    <h2 className="location-heading">OUR LOCATION</h2>
-                    <div className="location-address-block">
-                        <div className="location-city">
-                            <svg className="location-pin-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                                strokeLinejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            <strong>Dubai</strong>
-                        </div>
-                        <p className="location-address-text">
-                            Suites 106/107, Madina Tower, Cluster O<br />
-                            Jumeirah Lake Towers , PO Box 66232,<br />
-                            Dubai â€“ UAE
-                        </p>
-                    </div>
-                </div>
-            </section>
+                <p className="location-address-text">
+                    Suites 106/107, Madina Tower, Cluster O<br />
+                    Jumeirah Lake Towers , PO Box 66232,<br />
+                    Dubai – UAE
+                </p>
+            </div>
+        </div>
+    </section>
 
-            {/* ===== FOOTER ===== */}
-
+    {/* ===== FOOTER ===== */}
+    
         </main>
     );
 }
