@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         {/* Bootstrap 5 CSS */}
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -33,7 +33,7 @@ export default function RootLayout({
         {/* Custom CSS */}
         <link rel="stylesheet" href="/css/style.css" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <UIProvider>
           <Navigation />
           <BookingSidebar />
