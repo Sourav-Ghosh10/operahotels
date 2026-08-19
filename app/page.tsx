@@ -1,9 +1,28 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Head from 'next/head';
+import { getPageData } from '@/services/api';
 
 export default function Page() {
+    const [pageData, setPageData] = useState<any>(null);
+
+    useEffect(() => {
+        const loadPageData = async () => {
+            const data = await getPageData('home');
+            if (data) {
+                setPageData(data);
+            }
+        };
+
+        loadPageData();
+    }, []);
+
+    const bannerSubtitle = pageData?.banner_subtitle || pageData?.subtitle || "YOU ARE UNIQUE FOR US";
+    const bannerTitle = pageData?.banner_title || pageData?.title || "WELCOME TO OPERA GRAND HOTEL";
+    const content = pageData?.content;
+    const exploreButtonText = pageData?.explore_button || "EXPLORE MORE";
+
     return (
         <main>
             {/* Hero Section with Header */}
@@ -39,11 +58,13 @@ export default function Page() {
                 {/* Navigation */}
                 <Header />
 
-                {/* Banner Content */}
+                {/* Banner Content (Hidden as per new design matching screenshot) */}
+                {/* 
                 <div className="hero-content position-relative" style={{ zIndex: 10 }}>
-                    <h2 className="welcome-text">Welcome To</h2>
-                    <h1 className="main-title">OPERA GRAND HOTEL</h1>
-                </div>
+                    <h2 className="welcome-text">{bannerSubtitle}</h2>
+                    <h1 className="main-title">{bannerTitle}</h1>
+                </div> 
+                */}
 
                 {/* Carousel Controls */}
                 <button className="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#heroCarousel"
@@ -68,14 +89,24 @@ export default function Page() {
             </header>
 
             {/* Welcome Section */}
-            <section className="welcome-section">
-                <div className="container text-center">
-                    <h2 className="section-title">5 Distinct Brands, For An Unforgettable Experience</h2>
+            <section className="welcome-section pt-5 pb-5">
+                <div className="container text-center mt-4">
+                    <h4 className="welcome-subtitle mb-3" style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '14px', color: '#555' }}>{bannerSubtitle}</h4>
+                    <h2 className="section-title mb-4" style={{ fontSize: '32px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>{bannerTitle}</h2>
                     <div className="welcome-content mx-auto" style={{ maxWidth: "900px" }}>
-                        <p className="welcome-p mb-3">Discover unique personalities blending international standards with local
-                            heritage.
-                            Exclusive offers await for your perfect stay - book direct for exceptional savings.</p>
-                        <a href="#" className="btn btn-gold-large">EXPLORE MORE</a>
+                        {content ? (
+                            <div className="welcome-p mb-4 text-muted" style={{ lineHeight: '1.8' }} dangerouslySetInnerHTML={{ __html: content }} />
+                        ) : (
+                            <div className="welcome-p mb-4 text-muted" style={{ lineHeight: '1.8' }}>
+                                <p className="mb-4">Get Great 4 Star Hotel Deals at Opera Grand Hotel.</p>
+                                <p className="mb-4">Looking for a stylish and comfortable shopping getaway or corporate venue strategically located in the heart of Dubai?</p>
+                                <p className="mb-4">Our thoughtfully designed <strong>suites and rooms</strong> offer ample space for work or relaxation, while modern amenities provide all the comforts of home. The Coral Dubai Deira Hotel is an ideal city centre location, located just 5 kilometres from Dubai International Airport.</p>
+                                <p className="mb-4">Book your online hotel reservation at the Coral Dubai Deira directly with us today, or call us on +971 4 224 8587 or feel free to write us on reservations@opera.com</p>
+                            </div>
+                        )}
+                        <div className="mt-4">
+                            <a href="#" className="btn btn-gold-large">{exploreButtonText}</a>
+                        </div>
                     </div>
                 </div>
             </section>
