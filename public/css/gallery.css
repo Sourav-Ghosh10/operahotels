@@ -1,0 +1,211 @@
+/* Gallery Hero Section - reusing some global styles but specific for gallery if needed */
+.gallery-hero {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    background-color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery-hero .slider-image {
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.gallery-hero .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.gallery-hero .hero-content {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    text-align: left;
+    z-index: 10;
+    width: 100%;
+}
+
+.gallery-hero .main-title {
+    color: #fff;
+    font-family: "Georgia", serif;
+    font-size: 3.5rem;
+    letter-spacing: 4px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+/* Gallery Filter Tabs */
+.gallery-filters-container {
+    padding: 40px 0 20px;
+    text-align: center;
+    background: #fff;
+}
+
+.gallery-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0 15px 15px;
+    margin: 0 auto;
+    max-width: 1200px;
+    justify-content: center;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.gallery-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.gallery-tab-btn {
+    background-color: #f5f5f5;
+    border: none;
+    outline: none;
+    padding: 14px 24px;
+    margin: 0 4px 10px;
+    font-family: "Arial", sans-serif; /* Fallback for global sans */
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #777;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.gallery-tab-btn:hover {
+    color: #fff;
+    background-color: #f89828;
+}
+
+.gallery-tab-btn.active {
+    color: #fff;
+    background-color: #f89828;
+    font-weight: 600;
+}
+
+/* Masonry Grid */
+.gallery-grid-section {
+    padding: 20px 0 60px;
+    background: #fff;
+}
+
+.masonry-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    column-count: 3;
+    column-gap: 20px;
+}
+
+.masonry-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    break-inside: avoid;
+}
+
+.masonry-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 0;
+    transition: transform 0.5s ease;
+}
+
+/* Hover Effect Overlay */
+.masonry-item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.masonry-item-title {
+    color: #fff;
+    font-family: "Georgia", serif;
+    font-size: 1.1rem;
+    margin: 0;
+    transform: translateY(20px);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+}
+
+.masonry-item:hover img {
+    transform: scale(1.05);
+}
+
+.masonry-item:hover .masonry-item-overlay {
+    opacity: 1;
+}
+
+.masonry-item:hover .masonry-item-title {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .masonry-container {
+        column-count: 2;
+    }
+    
+    .gallery-hero .main-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-tabs {
+        justify-content: flex-start;
+    }
+    
+    .gallery-hero {
+        height: 50vh;
+    }
+}
+
+@media (max-width: 576px) {
+    /* The reference kept 2 columns on mobile. Let's match it. */
+    .masonry-container {
+        column-count: 2;
+        column-gap: 10px;
+        padding: 0 10px;
+    }
+    .masonry-item {
+        margin-bottom: 10px;
+    }
+    .masonry-item-title {
+        font-size: 0.9rem;
+    }
+    .gallery-hero .main-title {
+        font-size: 2rem;
+    }
+}

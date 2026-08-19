@@ -1,11 +1,11 @@
 
 import React from 'react';
 import Header from '@/components/ServerHeader';
-import Head from 'next/head';
 
 export default function Page() {
     return (
         <main>
+            <link rel="stylesheet" href="/css/contact.css" />
             <header className="hero-section">
 
         {/* Background Slider */}
@@ -76,16 +76,16 @@ export default function Page() {
                 <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
                     <div className="row g-4">
                         <div className="col-md-6">
-                            <select className="form-select" aria-label="Subject">
-                                <option selected disabled>Subject</option>
+                            <select className="form-select" aria-label="Subject" defaultValue="">
+                                <option disabled value="">Subject</option>
                                 <option value="1">General Inquiry</option>
                                 <option value="2">Booking</option>
                                 <option value="3">Feedback</option>
                             </select>
                         </div>
                         <div className="col-md-6">
-                            <select className="form-select" aria-label="Hotel Name">
-                                <option selected disabled>Hotel Name</option>
+                            <select className="form-select" aria-label="Hotel Name" defaultValue="">
+                                <option disabled value="">Hotel Name</option>
                                 <option value="1">Bahi Ajman Palace Hotel</option>
                                 <option value="2">Coral Dubai Deira Hotel</option>
                                 <option value="3">Coral Beach Resort Sharjah</option>
@@ -194,7 +194,7 @@ export default function Page() {
                 <p className="location-address-text">
                     Suites 106/107, Madina Tower, Cluster O<br />
                     Jumeirah Lake Towers , PO Box 66232,<br />
-                    Dubai â€“ UAE
+                    Dubai – UAE
                 </p>
             </div>
         </div>

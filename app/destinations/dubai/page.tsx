@@ -1,10 +1,7 @@
-
 import React from 'react';
 import Header from '@/components/ServerHeader';
 import Head from 'next/head';
 import '../destination-details.css';
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 export default function Page() {
     return (

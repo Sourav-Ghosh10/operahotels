@@ -31,7 +31,7 @@ export default function Footer() {
               <ul className="footer-links">
                 <li><a href="#">Facilities</a></li>
                 <li><Link href="/destinations">Destinations</Link></li>
-                <li><a href="#">Gallery</a></li>
+                <li><Link href="/gallery">Gallery</Link></li>
                 <li><Link href="/contact">Location &amp; Contact</Link></li>
                 <li><a href="#">FAQ</a></li>
               </ul>
@@ -43,7 +43,7 @@ export default function Footer() {
               <ul className="footer-links">
                 <li><Link href="/about">About Us</Link></li>
                 <li><Link href="/contact">Contact Us</Link></li>
-                <li><a href="#">Press Release</a></li>
+                <li><Link href="/news-media?category=Press Release">Press Release</Link></li>
                 <li><a href="#">Terms And Conditions</a></li>
                 <li><a href="#">Privacy Policy</a></li>
               </ul>
