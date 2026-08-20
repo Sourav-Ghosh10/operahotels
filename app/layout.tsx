@@ -3,7 +3,7 @@ import Script from "next/script";
 import { UIProvider } from "./UIContext";
 import Navigation from "@/components/Navigation";
 import BookingSidebar from "@/components/BookingSidebar";
-import Footer from "@/components/Footer";
+import ConditionalFooter from "@/components/ConditionalFooter";
 import ClientScripts from "@/components/ClientScripts";
 import "./globals.css";
 
@@ -38,7 +38,7 @@ export default function RootLayout({
           <Navigation />
           <BookingSidebar />
           {children}
-          <Footer />
+          <ConditionalFooter />
         </UIProvider>
 
         {/* Scripts */}
@@ -50,3 +50,4 @@ export default function RootLayout({
     </html>
   );
 }
+
