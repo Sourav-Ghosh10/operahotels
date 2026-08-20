@@ -4,6 +4,8 @@ import Header from '@/components/ServerHeader';
 
 export default function Page() {
     return (
+        <>
+        <link rel="stylesheet" href="/css/brands.css" />
         <main>
             <link rel="stylesheet" href="/css/brands.css" />
             <header className="hero-section">
@@ -226,5 +228,6 @@ export default function Page() {
     {/* ===== FOOTER ===== */}
     
         </main>
+        </>  
     );
 }

@@ -13,3 +13,31 @@ export const getPageData = async (slug: string) => {
         return null;
     }
 };
+
+export const getOffersData = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/offers`);
+        if (!response.ok) {
+            throw new Error(`Error fetching offers data: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.data || data;
+    } catch (error) {
+        console.error("API Fetch Error:", error);
+        return [];
+    }
+};
+
+export const getLocationsData = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/our-locations`);
+        if (!response.ok) {
+            throw new Error(`Error fetching locations data: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.data || data;
+    } catch (error) {
+        console.error("API Fetch Error:", error);
+        return [];
+    }
+};

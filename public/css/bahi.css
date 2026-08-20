@@ -1,0 +1,653 @@
+/* ==============================================
+   BAHI HOTELS & RESORTS — page.css
+   Matches hmhhotelgroup.com/bahi-hotels-resorts
+   Opera Hotels color palette: --primary-gold #c29958, --dark-blue #0b1a26
+   ============================================== */
+
+/* ─── 1. HERO ─────────────────────────────── */
+.bahi-hero {
+    position: relative;
+    height: 100vh;
+    min-height: 680px;
+    background: var(--dark-blue);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.bahi-hero-content {
+    position: absolute;
+    bottom: 64px;
+    left: 0;
+    z-index: 10;
+    padding: 0 56px;
+}
+
+.bahi-hero-title {
+    font-family: var(--font-primary);
+    font-size: clamp(1.5rem, 3.2vw, 2.8rem);
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.55);
+    line-height: 1.2;
+}
+
+/* ─── 2. SHARED LAYOUT WRAPPER ─────────────── */
+/* Matches reference: ~90px padding each side on large screens */
+.bahi-experience-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 56px;
+}
+
+/* ─── 3. INTRO / WELCOME ────────────────────── */
+.bahi-intro {
+    background: #f0efed;
+    padding: 80px 24px 64px;
+    text-align: center;
+}
+
+.bahi-gold-label {
+    display: block;
+    font-family: var(--font-primary);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: #8a7045;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.bahi-intro-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: 0.3px;
+    margin-bottom: 24px;
+    line-height: 1.25;
+}
+
+.bahi-intro-body {
+    font-family: var(--font-primary);
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: #555;
+    line-height: 1.9;
+    max-width: 680px;
+    margin: 0 auto 48px;
+}
+
+.bahi-gold-divider {
+    width: 130px;
+    height: 3px;
+    background: #8a7045;
+    margin: 0 auto;
+}
+
+/* ─── 4. SECTION SHARED ─────────────────────── */
+.bahi-section-heading {
+    font-family: var(--font-primary);
+    font-size: clamp(0.9rem, 1.6vw, 1.25rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+}
+
+.bahi-section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.bahi-underline-link {
+    font-family: var(--font-primary);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+
+.bahi-underline-link:hover { color: #8a7045; }
+
+.bahi-gold-rule {
+    width: 130px;
+    height: 3px;
+    background: #8a7045;
+    margin: 48px auto 0;
+}
+
+/* ─── 5. EXPERIENCE / CARDS ─────────────────── */
+.bahi-experience {
+    background: #f0efed;
+    padding: 64px 0 48px;
+}
+
+/* 3-col equal grid, no gap */
+.bahi-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    align-items: stretch;
+}
+
+/* ── Card base ── */
+.bahi-card {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    position: relative;
+    transition: box-shadow 0.3s ease;
+}
+
+/* Featured middle card — elevated (box shadow + slight overlap top/bottom) */
+.bahi-card--featured {
+    z-index: 2;
+    box-shadow: 0 4px 28px rgba(0,0,0,0.14);
+    margin: -16px 0;
+    border-color: transparent;
+}
+
+/* ── Card image wrapper ── */
+.bahi-card-img-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    aspect-ratio: 3 / 2.8;
+}
+
+.bahi-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.55s ease;
+}
+
+.bahi-card:hover .bahi-card-img-wrap img {
+    transform: scale(1.04);
+}
+
+/* Card 1 — bottom gradient + white bold text overlay */
+.bahi-card-bottom-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 56px 24px 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+}
+
+.bahi-card-overlay-title {
+    font-family: var(--font-primary);
+    font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+}
+
+/* Card 2 — "AVAILABLE ON 6 HOTELS" badge top-right */
+.bahi-card-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #1a1a1a;
+    color: #fff;
+    font-family: var(--font-primary);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    z-index: 3;
+}
+
+/* Card 2 — full dark overlay with centred promo text */
+.bahi-card-promo-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.38);
+    pointer-events: none;
+}
+
+.bahi-card-promo-text {
+    font-family: var(--font-primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 1px;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 1.7;
+    padding: 0 24px;
+    margin: 0;
+}
+
+/* ── Card body (below image) ── */
+.bahi-card-body {
+    padding: 20px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #fff;
+    flex-grow: 1;
+}
+
+.bahi-card-title {
+    font-family: var(--font-primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.bahi-read-more-link {
+    font-family: var(--font-primary);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+}
+
+.bahi-read-more-link:hover { color: #8a7045; }
+
+.bahi-book-now-btn {
+    display: inline-block;
+    background: #8a7045;
+    color: #fff;
+    font-family: var(--font-primary);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 13px 24px;
+    text-decoration: none;
+    transition: background 0.25s;
+    align-self: flex-start;
+}
+
+.bahi-book-now-btn:hover { background: #6e5934; color: #fff; }
+
+/* Slider nav */
+.bahi-slider-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 36px 0 0;
+}
+
+.bahi-slider-arrow {
+    background: none;
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.bahi-slider-arrow:hover { border-color: #8a7045; color: #8a7045; }
+
+.bahi-slider-pause-btn {
+    background: none;
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.bahi-slider-pause-btn:hover { border-color: #8a7045; }
+
+/* ─── 6. OUR HOTELS ──────────────────────────── */
+.bahi-our-hotels {
+    background: #f0efed;
+    padding: 64px 0 48px;
+}
+
+/* Hotel image + info panel side by side */
+.bahi-hotel-row {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+}
+
+.bahi-hotel-img-wrap {
+    width: 80%;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.bahi-hotel-img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Dark info panel — positioned to overlap the image right edge */
+.bahi-hotel-info {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 36%;
+    background: #1e1e1e;
+    padding: 36px 32px 32px;
+    color: #fff;
+    z-index: 2;
+}
+
+.bahi-hotel-name {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+}
+
+.bahi-hotel-address,
+.bahi-hotel-phone {
+    font-family: var(--font-primary);
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.78);
+    line-height: 1.7;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.bahi-hotel-phone a {
+    color: #c2a055;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.bahi-hotel-phone a:hover { opacity: 0.8; }
+
+.bahi-hotel-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.bahi-hotel-btn-outline {
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.55);
+    color: #fff;
+    font-family: var(--font-primary);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    text-decoration: none;
+    transition: border-color 0.25s, color 0.25s;
+}
+
+.bahi-hotel-btn-outline:hover { border-color: #c2a055; color: #c2a055; }
+
+.bahi-hotel-btn-gold {
+    display: inline-block;
+    background: #8a7045;
+    color: #fff;
+    font-family: var(--font-primary);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    text-decoration: none;
+    transition: background 0.25s;
+}
+
+.bahi-hotel-btn-gold:hover { background: #6e5934; color: #fff; }
+
+/* ─── 7. BAHI HOTELS LOCATIONS ─────────────── */
+.bahi-locations {
+    background: #f0efed;
+    padding-top: 64px;
+    padding-bottom: 0;
+}
+
+/* Full-bleed destination image */
+.bahi-location-hero {
+    position: relative;
+    margin-top: 24px;
+    overflow: hidden;
+}
+
+.bahi-location-hero-img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    display: block;
+}
+
+.bahi-location-uae-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: #fff;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.35);
+    padding: 6px 18px;
+}
+
+/* WHERE WE ARE bar */
+.bahi-where-bar {
+    background: #f0efed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 40px 56px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.bahi-where-title {
+    font-family: var(--font-primary);
+    font-size: clamp(0.9rem, 1.6vw, 1.25rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* Google Map + hotel photo card */
+.bahi-map-row {
+    position: relative;
+    width: 100%;
+}
+
+.bahi-map-wrap {
+    width: 100%;
+    height: 520px;
+    background: #e0e0e0;
+}
+
+.bahi-map-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    filter: grayscale(15%);
+}
+
+/* Hotel card overlaid top-right of the map */
+.bahi-map-hotel-card {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 360px;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    overflow: hidden;
+}
+
+.bahi-map-hotel-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.bahi-map-hotel-info {
+    background: #1e1e1e;
+    padding: 24px 24px 28px;
+}
+
+.bahi-map-hotel-name {
+    font-family: var(--font-primary);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+}
+
+.bahi-map-hotel-address,
+.bahi-map-hotel-phone {
+    font-family: var(--font-primary);
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+}
+
+.bahi-map-hotel-phone a {
+    color: #c2a055;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.bahi-map-hotel-phone a:hover { opacity: 0.8; }
+
+/* ─── 8. OUR BRANDS ──────────────────────────── */
+.bahi-brands {
+    background: #f0efed;
+    padding: 64px 24px 80px;
+    border-top: 1px solid #ddd;
+}
+
+.bahi-brands-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.bahi-brand-logo {
+    text-decoration: none;
+    opacity: 0.45;
+    transition: opacity 0.3s, transform 0.3s;
+    padding: 12px 20px;
+    border: 1px solid transparent;
+}
+
+.bahi-brand-logo:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.bahi-brand-active {
+    opacity: 1;
+    border-color: #8a7045;
+}
+
+.bahi-brand-text {
+    font-family: var(--font-primary);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 1199px) {
+    .bahi-experience-inner { padding: 0 32px; }
+    .bahi-where-bar { padding: 32px 32px 20px; }
+    .bahi-hero-content { padding: 0 32px; }
+}
+
+@media (max-width: 991px) {
+    .bahi-cards-grid { grid-template-columns: 1fr 1fr; }
+    .bahi-card:last-child { grid-column: 1 / -1; }
+    .bahi-card--featured { margin: -8px 0; }
+    .bahi-hotel-img-wrap { width: 100%; }
+    .bahi-hotel-info { position: static; width: 100%; }
+    .bahi-hotel-row { flex-direction: column; }
+    .bahi-map-hotel-card { width: 280px; }
+    .bahi-location-hero-img { height: 360px; }
+}
+
+@media (max-width: 767px) {
+    .bahi-cards-grid { grid-template-columns: 1fr; }
+    .bahi-card:last-child { grid-column: unset; }
+    .bahi-card--featured { margin: 0; }
+    .bahi-experience-inner { padding: 0 20px; }
+    .bahi-where-bar { padding: 24px 20px 16px; }
+    .bahi-hero-content { padding: 0 24px; bottom: 48px; }
+    .bahi-hotel-img { height: 260px; }
+    .bahi-map-wrap { height: 360px; }
+    .bahi-map-hotel-card { position: static; width: 100%; }
+    .bahi-location-hero-img { height: 240px; }
+    .bahi-brands-row { gap: 20px; }
+}
