@@ -78,35 +78,41 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
               </Link>
             </li>
             <li className="nav-item dropdown custom-dropdown">
-              <Link
-                className="nav-link dropdown-toggle d-flex align-items-center"
-                href="/brands"
-                id="brandsDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                BRANDS & HOTELS
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="ms-1 nav-chevron-icon"
+              <div className="d-flex align-items-center">
+                <Link
+                  className="nav-link pe-0"
+                  href="/brands"
                 >
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </Link>
+                  BRANDS &amp; HOTELS
+                </Link>
+                <button
+                  className="btn p-0 nav-link dropdown-toggle dropdown-toggle-split"
+                  id="brandsDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  style={{ background: "none", border: "none", color: "inherit", paddingLeft: "0" }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="nav-chevron-icon"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+              </div>
               <ul className="dropdown-menu custom-dropdown-menu" aria-labelledby="brandsDropdown">
                 <li className="dropdown-submenu">
                   <Link
                     className="dropdown-item d-flex align-items-center justify-content-between active"
-                    href="/brands"
+                    href="/bahi-hotels-resorts"
                   >
                     Bahi Hotels & Resorts
                     <svg
@@ -126,7 +132,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                   </Link>
                   <ul className="submenu-menu">
                     <li>
-                      <Link className="submenu-item" href="/brands">
+                      <Link className="submenu-item" href="/bahi-hotels-resorts">
                         Bahi Ajman Palace Hotel
                       </Link>
                     </li>
@@ -135,7 +141,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                 <li className="dropdown-submenu">
                   <Link
                     className="dropdown-item d-flex align-items-center justify-content-between"
-                    href="/brands"
+                    href="#"
                   >
                     Coral Hotels & Resorts
                     <svg
@@ -155,12 +161,12 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                   </Link>
                   <ul className="submenu-menu">
                     <li>
-                      <Link className="submenu-item" href="/brands">
+                      <Link className="submenu-item" href="#">
                         Coral Beach Resort Sharjah
                       </Link>
                     </li>
                     <li>
-                      <Link className="submenu-item" href="/brands">
+                      <Link className="submenu-item" href="#">
                         Coral Deira Dubai
                       </Link>
                     </li>
@@ -169,7 +175,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                 <li className="dropdown-submenu">
                   <Link
                     className="dropdown-item d-flex align-items-center justify-content-between"
-                    href="/brands"
+                    href="#"
                   >
                     Corp Hotels
                     <svg
@@ -189,7 +195,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                   </Link>
                   <ul className="submenu-menu">
                     <li>
-                      <Link className="submenu-item" href="/brands">
+                      <Link className="submenu-item" href="#">
                         Corp Amman Hotel
                       </Link>
                     </li>
@@ -198,7 +204,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                 <li className="dropdown-submenu">
                   <Link
                     className="dropdown-item d-flex align-items-center justify-content-between"
-                    href="/brands"
+                    href="#"
                   >
                     Ewa Hotels
                     <svg
@@ -218,7 +224,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                   </Link>
                   <ul className="submenu-menu">
                     <li>
-                      <Link className="submenu-item" href="/brands">
+                      <Link className="submenu-item" href="#">
                         Ewa Amman Hotel
                       </Link>
                     </li>
@@ -227,7 +233,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                 <li className="dropdown-submenu">
                   <Link
                     className="dropdown-item d-flex align-items-center justify-content-between"
-                    href="/brands"
+                    href="#"
                   >
                     Ecos Hotels
                     <svg
@@ -247,7 +253,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                   </Link>
                   <ul className="submenu-menu">
                     <li>
-                      <Link className="submenu-item" href="/brands">
+                      <Link className="submenu-item" href="#">
                         Ecos Coral Deira
                       </Link>
                     </li>
