@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Head from 'next/head';
-import { getPageData } from '@/services/api';
+import { getPageData, getOffersData, getLocationsData } from '@/services/api';
 
 export default function Page() {
     const [pageData, setPageData] = useState<any>(null);
+    const [offersData, setOffersData] = useState<any[]>([]);
+    const [locationsData, setLocationsData] = useState<any[]>([]);
 
     useEffect(() => {
         const loadPageData = async () => {
@@ -14,14 +16,143 @@ export default function Page() {
                 setPageData(data);
             }
         };
+        const loadLocationsData = async () => {
+            const locations = await getLocationsData();
+            if (locations) {
+                setLocationsData(locations);
+            }
+        };
+        const loadOffersData = async () => {
+            const offers = await getOffersData();
+            if (offers) {
+                setOffersData(offers);
+            }
+        };
 
         loadPageData();
+        loadOffersData();
+        loadLocationsData();
     }, []);
 
-    const bannerSubtitle = pageData?.banner_subtitle || pageData?.subtitle || "YOU ARE UNIQUE FOR US";
-    const bannerTitle = pageData?.banner_title || pageData?.title || "WELCOME TO OPERA GRAND HOTEL";
-    const content = pageData?.content;
-    const exploreButtonText = pageData?.explore_button || "EXPLORE MORE";
+    useEffect(() => {
+        if (offersData && offersData.length > 0 && typeof window !== "undefined" && window.$) {
+            const timer = setTimeout(() => {
+                const $ = window.$;
+                if ($('.offers-carousel').length && !$('.offers-carousel').hasClass('owl-loaded')) {
+                    var owl = $('.offers-carousel').owlCarousel({
+                        loop: true,
+                        margin: 30,
+                        nav: false,
+                        dots: false,
+                        autoplay: true,
+                        autoplayTimeout: 4000,
+                        autoplayHoverPause: true,
+                        responsive: {
+                            0: { items: 1, margin: 15 },
+                            768: { items: 2, margin: 20 },
+                            992: { items: 3, margin: 30 }
+                        }
+                    });
+                    $('.offers-carousel-nav .next-btn').off('click').on('click', function () {
+                        owl.trigger('next.owl.carousel');
+                    });
+                    $('.offers-carousel-nav .prev-btn').off('click').on('click', function () {
+                        owl.trigger('prev.owl.carousel');
+                    });
+                } else if ($('.offers-carousel').hasClass('owl-loaded')) {
+                    // If it was already loaded empty, we need to destroy and re-init or trigger refresh
+                    $('.offers-carousel').trigger('destroy.owl.carousel');
+                    $('.offers-carousel').find('.owl-stage-outer').children().unwrap();
+                    $('.offers-carousel').removeClass("owl-center owl-loaded owl-text-select-on");
+                    
+                    var owl = $('.offers-carousel').owlCarousel({
+                        loop: true,
+                        margin: 30,
+                        nav: false,
+                        dots: false,
+                        autoplay: true,
+                        autoplayTimeout: 4000,
+                        autoplayHoverPause: true,
+                        responsive: {
+                            0: { items: 1, margin: 15 },
+                            768: { items: 2, margin: 20 },
+                            992: { items: 3, margin: 30 }
+                        }
+                    });
+                    $('.offers-carousel-nav .next-btn').off('click').on('click', function () {
+                        owl.trigger('next.owl.carousel');
+                    });
+                    $('.offers-carousel-nav .prev-btn').off('click').on('click', function () {
+                        owl.trigger('prev.owl.carousel');
+                    });
+                }
+            }, 200);
+            return () => clearTimeout(timer);
+        }
+    }, [offersData]);
+
+    useEffect(() => {
+        if (locationsData && locationsData.length > 0 && typeof window !== "undefined" && window.$) {
+            const timer = setTimeout(() => {
+                const $ = window.$;
+                if ($('.explore-carousel').length && !$('.explore-carousel').hasClass('owl-loaded')) {
+                    var owl = $('.explore-carousel').owlCarousel({
+                        loop: true,
+                        margin: 30,
+                        nav: false,
+                        dots: false,
+                        autoplay: true,
+                        autoplayTimeout: 4000,
+                        autoplayHoverPause: true,
+                        responsive: {
+                            0: { items: 1, margin: 15 },
+                            768: { items: 2, margin: 20 },
+                            992: { items: 3, margin: 30 },
+                            1200: { items: 4, margin: 30 }
+                        }
+                    });
+                    $('.explore-carousel-nav .next-btn').off('click').on('click', function () {
+                        owl.trigger('next.owl.carousel');
+                    });
+                    $('.explore-carousel-nav .prev-btn').off('click').on('click', function () {
+                        owl.trigger('prev.owl.carousel');
+                    });
+                } else if ($('.explore-carousel').hasClass('owl-loaded')) {
+                    $('.explore-carousel').trigger('destroy.owl.carousel');
+                    $('.explore-carousel').find('.owl-stage-outer').children().unwrap();
+                    $('.explore-carousel').removeClass("owl-center owl-loaded owl-text-select-on");
+                    
+                    var owl = $('.explore-carousel').owlCarousel({
+                        loop: true,
+                        margin: 30,
+                        nav: false,
+                        dots: false,
+                        autoplay: true,
+                        autoplayTimeout: 4000,
+                        autoplayHoverPause: true,
+                        responsive: {
+                            0: { items: 1, margin: 15 },
+                            768: { items: 2, margin: 20 },
+                            992: { items: 3, margin: 30 },
+                            1200: { items: 4, margin: 30 }
+                        }
+                    });
+                    $('.explore-carousel-nav .next-btn').off('click').on('click', function () {
+                        owl.trigger('next.owl.carousel');
+                    });
+                    $('.explore-carousel-nav .prev-btn').off('click').on('click', function () {
+                        owl.trigger('prev.owl.carousel');
+                    });
+                }
+            }, 200);
+            return () => clearTimeout(timer);
+        }
+    }, [locationsData]);
+
+    const bannerSubtitle = pageData?.body?.intro_subtitle || "YOU ARE UNIQUE FOR US";
+    const bannerTitle = pageData?.body?.intro_title || "WELCOME TO OPERA GRAND HOTEL";
+    const content = pageData?.body?.content;
+    const exploreButtonText = pageData?.body?.cta_text || "EXPLORE MORE";
 
     return (
         <main>
@@ -31,24 +162,25 @@ export default function Page() {
                 <div id="heroCarousel" className="carousel slide carousel-fade position-absolute w-100 h-100 top-0 start-0"
                     data-bs-ride="carousel" data-bs-pause="false" style={{ zIndex: 0 }}>
                     <div className="carousel-inner h-100">
-                        {/* Slide 1 */}
-                        <div className="carousel-item active h-100" data-bs-interval="5000">
-                            <div className="slider-image w-100 h-100"
-                                style={{ backgroundImage: "url('/img/slider-1.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
-                            </div>
-                        </div>
-                        {/* Slide 2 */}
-                        <div className="carousel-item h-100" data-bs-interval="5000">
-                            <div className="slider-image w-100 h-100"
-                                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2070&auto=format&fit=crop')", backgroundSize: "cover", backgroundPosition: "center" }}>
-                            </div>
-                        </div>
-                        {/* Slide 3 */}
-                        <div className="carousel-item h-100" data-bs-interval="5000">
-                            <div className="slider-image w-100 h-100"
-                                style={{ backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop')", backgroundSize: "cover", backgroundPosition: "center" }}>
-                            </div>
-                        </div>
+                        {pageData?.body?.banner_slides && pageData.body.banner_slides.length > 0 &&
+                            pageData.body.banner_slides.map((slide: any, index: number) => {
+                                const imageUrl = slide.image.startsWith('http') 
+                                    ? slide.image 
+                                    : `${process.env.NEXT_PUBLIC_API_BASE_URL ? process.env.NEXT_PUBLIC_API_BASE_URL.replace('/api', '') : 'http://127.0.0.1:8000'}/uploads/${slide.image}`;
+                                
+                                return (
+                                    <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''} h-100`} data-bs-interval="5000">
+                                        <div className="slider-image w-100 h-100"
+                                            style={{ backgroundImage: `url('${imageUrl}')`, backgroundSize: "cover", backgroundPosition: "center" }}>
+                                        </div>
+                                        <div className="hero-content position-absolute top-50 start-50 translate-middle text-center w-100" style={{ zIndex: 10 }}>
+                                            {slide.subtitle && <h2 className="welcome-text">{slide.subtitle}</h2>}
+                                            {slide.title && <h1 className="main-title">{slide.title}</h1>}
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        }
                     </div>
                 </div>
 
@@ -94,15 +226,8 @@ export default function Page() {
                     <h4 className="welcome-subtitle mb-3" style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '14px', color: '#555' }}>{bannerSubtitle}</h4>
                     <h2 className="section-title mb-4" style={{ fontSize: '32px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>{bannerTitle}</h2>
                     <div className="welcome-content mx-auto" style={{ maxWidth: "900px" }}>
-                        {content ? (
+                        {content && (
                             <div className="welcome-p mb-4 text-muted" style={{ lineHeight: '1.8' }} dangerouslySetInnerHTML={{ __html: content }} />
-                        ) : (
-                            <div className="welcome-p mb-4 text-muted" style={{ lineHeight: '1.8' }}>
-                                <p className="mb-4">Get Great 4 Star Hotel Deals at Opera Grand Hotel.</p>
-                                <p className="mb-4">Looking for a stylish and comfortable shopping getaway or corporate venue strategically located in the heart of Dubai?</p>
-                                <p className="mb-4">Our thoughtfully designed <strong>suites and rooms</strong> offer ample space for work or relaxation, while modern amenities provide all the comforts of home. The Coral Dubai Deira Hotel is an ideal city centre location, located just 5 kilometres from Dubai International Airport.</p>
-                                <p className="mb-4">Book your online hotel reservation at the Coral Dubai Deira directly with us today, or call us on +971 4 224 8587 or feel free to write us on reservations@opera.com</p>
-                            </div>
                         )}
                         <div className="mt-4">
                             <a href="#" className="btn btn-gold-large">{exploreButtonText}</a>
@@ -122,65 +247,34 @@ export default function Page() {
                     <p>Good things come to those who book direct.</p>
                     {/* Owl Carousel */}
                     <div className="owl-carousel offers-carousel">
-                        {/* Card 1: Summer Escape */}
-                        <div className="offer-card-item">
-                            <div className="offer-card">
-                                <div className="offer-img-box" style={{ backgroundImage: "url('/img/summer_escape.png')" }}>
-                                    <span className="offer-badge">SUMMER ESCAPE</span>
-                                    <div className="offer-hover-overlay">
-                                        <span className="offer-hover-badge">REGISTAR NOW</span>
-                                        <span className="offer-hover-discount">25%OFF ON YOUR BOOKINGS</span>
+                        {offersData && offersData.length > 0 ? (
+                            offersData.map((offer: any, index: number) => {
+                                const offerName = offer.name?.en || offer.name || 'Exclusive Offer';
+                                const offerDesc = offer.description?.en || offer.description || '25% OFF ON YOUR BOOKINGS';
+                                const bannerImg = offer.banner_image || '/img/summer_escape.png';
+                                const offerType = offer.offer_type || 'OFFER';
+                                
+                                return (
+                                    <div key={offer.id || index} className="offer-card-item">
+                                        <div className="offer-card">
+                                            <div className="offer-img-box" style={{ backgroundImage: `url('${bannerImg}')` }}>
+                                                <div className="offer-hover-overlay">
+                                                    <span className="offer-hover-badge">REGISTER NOW</span>
+                                                    <span className="offer-hover-discount">{offerDesc}</span>
+                                                </div>
+                                            </div>
+                                            <div className="offer-content">
+                                                <h3 className="offer-title">{offerName}</h3>
+                                                <div className="offer-hover-details">
+                                                    <a href={`/${offer.hotel_slug || 'offers'}/special-offers/${offer.slug}`} className="offer-readmore">READ MORE</a>
+                                                    <a href="#" className="btn btn-offer-book">BOOK NOW</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="offer-content">
-                                    <h3 className="offer-title">Exclusive Summer Offer</h3>
-                                    <div className="offer-hover-details">
-                                        <a href="#" className="offer-readmore">READ MORE</a>
-                                        <a href="#" className="btn btn-offer-book">BOOK NOW</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Card 2: Exclusive Member Rates */}
-                        <div className="offer-card-item">
-                            <div className="offer-card">
-                                <div className="offer-img-box" style={{ backgroundImage: "url('/img/exclusive_member_rates.png')" }}>
-                                    <span className="offer-badge">MEMBER RATES</span>
-                                    <div className="offer-hover-overlay">
-                                        <span className="offer-hover-badge">REGISTAR NOW</span>
-                                        <span className="offer-hover-discount">25%OFF ON YOUR BOOKINGS</span>
-                                    </div>
-                                </div>
-                                <div className="offer-content">
-                                    <h3 className="offer-title">Exclusive Member Rates</h3>
-                                    <div className="offer-hover-details">
-                                        <a href="#" className="offer-readmore">READ MORE</a>
-                                        <a href="#" className="btn btn-offer-book">BOOK NOW</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Card 3: ESAAD Exclusive Offer */}
-                        <div className="offer-card-item">
-                            <div className="offer-card">
-                                <div className="offer-img-box" style={{ backgroundImage: "url('/img/esaad_exclusive_offer.png')" }}>
-                                    <span className="offer-badge">ESAAD OFFER</span>
-                                    <div className="offer-hover-overlay">
-                                        <span className="offer-hover-badge">REGISTAR NOW</span>
-                                        <span className="offer-hover-discount">25%OFF ON YOUR BOOKINGS</span>
-                                    </div>
-                                </div>
-                                <div className="offer-content">
-                                    <h3 className="offer-title">ESAAD Exclusive Offer</h3>
-                                    <div className="offer-hover-details">
-                                        <a href="#" className="offer-readmore">READ MORE</a>
-                                        <a href="#" className="btn btn-offer-book">BOOK NOW</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                );
+                            })
+                        ) : null}
                     </div>
 
                     {/* Custom Carousel Navigation Controls */}
@@ -350,3 +444,7 @@ export default function Page() {
         </main>
     );
 }
+
+
+
+
