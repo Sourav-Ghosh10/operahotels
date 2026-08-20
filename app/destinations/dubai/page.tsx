@@ -106,7 +106,7 @@ export default function Page() {
                                     commitment to preserving its cultural roots, Sharjah provides a deeply authentic and
                                     enriching Emirati experience.
                                 </p>
-                                <a href="#" className="city-btn">Explore Sharjah</a>
+                                <a href="/destinations/sharjah" className="city-btn">Explore Sharjah</a>
                             </div>
                         </div>
                     </div>
@@ -136,7 +136,7 @@ export default function Page() {
                                     into the region's fascinating past. Experience genuine hospitality and tranquility in this
                                     charming, laid-back emirate.
                                 </p>
-                                <a href="#" className="city-btn">Explore Ajman</a>
+                                <a href="/destinations/ajman" className="city-btn">Explore Ajman</a>
                             </div>
                         </div>
                     </div>
@@ -167,8 +167,8 @@ export default function Page() {
                                     Whether you're seeking high-octane adventure, serene beaches, or cosmopolitan dining, Dubai
                                     promises an unforgettable journey.
                                 </p>
-                                <a href="#" className="city-btn">Explore Dubai</a>
-                                <a href="#" className="city-btn city-btn-secondary">Our Hotels In Dubai</a>
+                                <a href="/destinations/dubai" className="city-btn">Explore Dubai</a>
+                                <a href="/destinations/dubai/hotels" className="city-btn city-btn-secondary">Our Hotels In Dubai</a>
                             </div>
                         </div>
                     </div>
