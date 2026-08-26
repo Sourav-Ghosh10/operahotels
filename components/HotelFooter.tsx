@@ -14,11 +14,11 @@ export default function HotelFooter({ logoUrl }: { logoUrl?: string }) {
               {logoUrl && (
                 <>
                   <div className="border-start border-dark mx-2" style={{ height: "40px" }}></div>
-                  <img src={logoUrl} alt="Brand Logo" style={{ maxHeight: "60px", objectFit: "contain" }} />
+                  <img src={logoUrl} alt="Brand Logo" style={{ height: "100px", objectFit: "contain" }} />
                 </>
               )}
             </div>
-            
+
             <div className="d-flex align-items-center mt-auto">
               <div className="me-4 pe-4 border-end border-dark">
                 <h4 className="mb-0 fw-bold" style={{ fontSize: "20px", textTransform: "uppercase", letterSpacing: "1px" }}>
@@ -61,16 +61,16 @@ export default function HotelFooter({ logoUrl }: { logoUrl?: string }) {
             <h6 className="fw-bold mb-4" style={{ fontSize: "14px", letterSpacing: "1px", textTransform: "uppercase" }}>Stay In Touch</h6>
             <form className="mb-5">
               <div className="mb-3">
-                <input 
-                  type="email" 
-                  className="form-control border-0 border-bottom border-dark rounded-0 px-0 shadow-none bg-transparent" 
-                  placeholder="Your email" 
+                <input
+                  type="email"
+                  className="form-control border-0 border-bottom border-dark rounded-0 px-0 shadow-none bg-transparent"
+                  placeholder="Your email"
                   style={{ fontSize: "13px" }}
                 />
               </div>
-              <button 
-                type="submit" 
-                className="btn btn-outline-dark rounded-0 px-4 py-2" 
+              <button
+                type="submit"
+                className="btn btn-outline-dark rounded-0 px-4 py-2"
                 style={{ fontSize: "12px", letterSpacing: "1px", fontWeight: "bold" }}
               >
                 SIGN UP

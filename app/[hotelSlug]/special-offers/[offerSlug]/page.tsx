@@ -55,9 +55,9 @@ export default function OfferDetailsPage() {
         );
     }
 
-    const title = offer.name?.en || offer.name || 'Special Offer';
+    const title = offer.name?.en || offer.name || '';
     const description = offer.details_content?.en || offer.details_content || offer.description?.en || offer.description || '';
-    const bannerImg = offer.images && offer.images.length > 0 ? offer.images[0] : (offer.banner_image || '/img/summer_escape.png');
+    const bannerImg = offer.images && offer.images.length > 0 ? offer.images[0] : (offer.banner_image || '');
 
     return (
         <main>
@@ -67,7 +67,7 @@ export default function OfferDetailsPage() {
             <div 
                 className="offer-hero d-flex align-items-center justify-content-center" 
                 style={{ 
-                    backgroundImage: `url(${bannerImg})`, 
+                    backgroundImage: bannerImg ? `url(${bannerImg})` : 'none', 
                     backgroundSize: 'cover', 
                     backgroundPosition: 'center', 
                     height: '60vh',
