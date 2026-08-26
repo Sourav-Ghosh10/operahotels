@@ -36,7 +36,10 @@ export default function DestinationDetailClient({ initialDestination, slug, head
 
       try {
         setIsLoadingLocale(true);
-        setDestination(await fetchDestinationByLocale(slug, nextLocale));
+        const data = await fetchDestinationByLocale(slug, nextLocale);
+        if (data) {
+          setDestination(data);
+        }
       } catch (error) {
         console.error("[DestinationDetail] Locale API error:", error);
       } finally {

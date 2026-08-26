@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Header from '@/components/ServerHeader';
+import OffersGrid from '@/components/OffersGrid';
 
 export default function Page() {
     return (
@@ -83,60 +84,7 @@ export default function Page() {
             </section>
 
             {/* Offers Grid */}
-            <section className="offers-grid-section">
-                <div className="container">
-                    <div className="row g-4 justify-content-center">
-                        {/* Offer 1 */}
-                        <div className="col-12 col-md-6 col-lg-3">
-                            <div className="offer-card">
-                                <div className="offer-img-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=1000&auto=format&fit=crop"
-                                        alt="Summer Escape" />
-                                    <div className="offer-tag">SUMMER ESCAPE</div>
-                                </div>
-                                <h4 className="offer-title">Exclusive Summer Offer</h4>
-                                <a href="#" className="offer-btn">BOOK NOW</a>
-                            </div>
-                        </div>
-
-                        {/* Offer 2 */}
-                        <div className="col-12 col-md-6 col-lg-3">
-                            <div className="offer-card">
-                                <div className="offer-img-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1000&auto=format&fit=crop"
-                                        alt="ESAAD Exclusive Offer" />
-                                </div>
-                                <h4 className="offer-title">ESAAD Exclusive Offer</h4>
-                                <a href="#" className="offer-btn">BOOK NOW</a>
-                            </div>
-                        </div>
-
-                        {/* Offer 3 */}
-                        <div className="col-12 col-md-6 col-lg-3">
-                            <div className="offer-card">
-                                <div className="offer-img-wrapper">
-                                    <img src="/img/nourth-square-trending-now 1.png" alt="ADCB Card Exclusive Offer" />
-                                    <div className="offer-tag">SUMMER ESCAPE</div>
-                                </div>
-                                <h4 className="offer-title">ADCB Card Exclusive Offer</h4>
-                                <a href="#" className="offer-btn">BOOK NOW</a>
-                            </div>
-                        </div>
-
-                        {/* Offer 4 */}
-                        <div className="col-12 col-md-6 col-lg-3">
-                            <div className="offer-card">
-                                <div className="offer-img-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1000&auto=format&fit=crop"
-                                        alt="Exclusive Member Rates" />
-                                </div>
-                                <h4 className="offer-title">Exclusive Member Rates</h4>
-                                <a href="#" className="offer-btn">BOOK NOW</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <OffersGrid />
 
             {/* Our Location Section */}
             <section className="location-section">

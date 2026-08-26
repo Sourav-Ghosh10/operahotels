@@ -1,15 +1,21 @@
 import React from 'react';
-import Header from '@/components/ServerHeader';
+import HotelHeader from '@/components/HotelHeader';
+import HotelFooter from '@/components/HotelFooter';
+import OurBrandsBar from '@/components/OurBrandsBar';
 import Link from 'next/link';
 import BahiHeroCarousel from './BahiHeroCarousel';
 import BahiExperienceSlider from './BahiExperienceSlider';
+import { getPropertyBySlug, getBrandsData } from '@/services/api';
 
 export const metadata = {
   title: 'Bahi Hotels & Resorts | Opera Hotels',
   description: 'Discover Bahi Hotels & Resorts – a 5-star hotel brand in Ajman designed for discerning travellers who seek a luxury experience that is "Impeccable Plush".',
 };
 
-export default function BahiHotelsPage() {
+export default async function BahiHotelsPage() {
+  const hotelData = await getPropertyBySlug('bahi-hotels-resorts');
+  const brandsData = await getBrandsData();
+
   return (
     <>
       <link rel="stylesheet" href="/css/bahi.css" />
@@ -21,7 +27,7 @@ export default function BahiHotelsPage() {
         <header className="bahi-hero">
           <BahiHeroCarousel />
           <div className="hero-overlay" />
-          <Header />
+          <HotelHeader logoUrl={hotelData?.logo} />
           {/* Bottom-left title — no other content */}
           <div className="bahi-hero-content">
             <h1 className="bahi-hero-title">STAY AT BAHI HOTELS &amp; RESORTS</h1>
@@ -174,29 +180,34 @@ export default function BahiHotelsPage() {
         {/* ══════════════════════════════════════════
             6. OUR BRANDS
         ══════════════════════════════════════════ */}
-        <section className="bahi-brands">
-          <div className="container">
-            <h2 className="bahi-section-heading text-center" style={{marginBottom:'40px'}}>OUR BRANDS</h2>
-            <div className="bahi-brands-row">
-              <Link href="/bahi-hotels-resorts" className="bahi-brand-logo bahi-brand-active">
-                <span className="bahi-brand-text">BAHI HOTELS &amp; RESORTS</span>
-              </Link>
-              <a href="#" className="bahi-brand-logo">
-                <span className="bahi-brand-text">CORAL HOTELS &amp; RESORTS</span>
-              </a>
-              <a href="#" className="bahi-brand-logo">
-                <span className="bahi-brand-text">CORP HOTELS</span>
-              </a>
-              <a href="#" className="bahi-brand-logo">
-                <span className="bahi-brand-text">EWA HOTELS</span>
-              </a>
-              <a href="#" className="bahi-brand-logo">
-                <span className="bahi-brand-text">ECOS HOTELS</span>
-              </a>
+        <section className="brands-section">
+            <div className="container">
+                <h2 className="brands-section-title">Our Brands</h2>
+                <div
+                    className="brands-grid d-flex flex-wrap justify-content-center justify-content-md-between align-items-center">
+
+                    {brandsData && brandsData.length > 0 ? (
+                        brandsData.map((brand: any) => (
+                            <div className="brand-item" key={brand.id}>
+                                <Link href={`/${brand.slug}`}>
+                                    {brand.logo ? (
+                                        <img src={brand.logo} alt={brand.name} style={{maxHeight: '100px', maxWidth: '240px', objectFit: 'contain'}} />
+                                    ) : (
+                                        <span className="text-white fs-4 fw-bold">{brand.name}</span>
+                                    )}
+                                </Link>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-white">No brands found.</p>
+                    )}
+
+                </div>
             </div>
-          </div>
         </section>
 
+        <OurBrandsBar />
+        <HotelFooter logoUrl={hotelData?.logo} />
       </main>
     </>
   );

@@ -3,11 +3,20 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useUI } from "@/app/UIContext";
 
+import { getBrandsData } from "@/services/api";
+
 type DestinationMenuItem = {
   id: number;
   slug: string;
   name: string;
   name_en?: string;
+};
+
+type BrandMenuItem = {
+  id: number;
+  slug: string;
+  name: string;
+  hotels: { id: number; slug: string; name: string }[];
 };
 
 type Locale = "en" | "ar";
@@ -22,7 +31,16 @@ const fallbackDestinations: DestinationMenuItem[] = [
 export default function Header({ initialDestinations = fallbackDestinations }: { initialDestinations?: DestinationMenuItem[] }) {
   const { setIsNavOpen, setIsBookingOpen } = useUI();
   const [destinations, setDestinations] = useState<DestinationMenuItem[]>(initialDestinations);
+  const [brands, setBrands] = useState<BrandMenuItem[]>([]);
   const [locale, setLocale] = useState<Locale>("en");
+
+  useEffect(() => {
+    getBrandsData().then(data => {
+      if (Array.isArray(data)) {
+        setBrands(data);
+      }
+    });
+  }, []);
 
   function selectLocale(nextLocale: Locale) {
     setLocale(nextLocale);
@@ -109,156 +127,49 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
                 </button>
               </div>
               <ul className="dropdown-menu custom-dropdown-menu" aria-labelledby="brandsDropdown">
-                <li className="dropdown-submenu">
-                  <Link
-                    className="dropdown-item d-flex align-items-center justify-content-between active"
-                    href="/bahi-hotels-resorts"
-                  >
-                    Bahi Hotels & Resorts
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="10"
-                      height="10"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="submenu-chevron"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </Link>
-                  <ul className="submenu-menu">
-                    <li>
-                      <Link className="submenu-item" href="/bahi-hotels-resorts">
-                        Bahi Ajman Palace Hotel
+                {brands.length > 0 ? (
+                  brands.map((brand) => (
+                    <li className="dropdown-submenu" key={brand.id}>
+                      <Link
+                        className="dropdown-item d-flex align-items-center justify-content-between"
+                        href={`/${brand.slug}`}
+                      >
+                        {brand.name}
+                        {brand.hotels && brand.hotels.length > 0 && (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="10"
+                            height="10"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="submenu-chevron"
+                          >
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                          </svg>
+                        )}
                       </Link>
+                      {brand.hotels && brand.hotels.length > 0 && (
+                        <ul className="submenu-menu">
+                          {brand.hotels.map((hotel) => (
+                            <li key={hotel.id}>
+                              <Link className="submenu-item" href={`/${hotel.slug}`}>
+                                {hotel.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </li>
-                  </ul>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link
-                    className="dropdown-item d-flex align-items-center justify-content-between"
-                    href="#"
-                  >
-                    Coral Hotels & Resorts
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="10"
-                      height="10"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="submenu-chevron"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </Link>
-                  <ul className="submenu-menu">
-                    <li>
-                      <Link className="submenu-item" href="#">
-                        Coral Beach Resort Sharjah
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="submenu-item" href="#">
-                        Coral Deira Dubai
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link
-                    className="dropdown-item d-flex align-items-center justify-content-between"
-                    href="#"
-                  >
-                    Corp Hotels
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="10"
-                      height="10"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="submenu-chevron"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </Link>
-                  <ul className="submenu-menu">
-                    <li>
-                      <Link className="submenu-item" href="#">
-                        Corp Amman Hotel
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link
-                    className="dropdown-item d-flex align-items-center justify-content-between"
-                    href="#"
-                  >
-                    Ewa Hotels
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="10"
-                      height="10"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="submenu-chevron"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </Link>
-                  <ul className="submenu-menu">
-                    <li>
-                      <Link className="submenu-item" href="#">
-                        Ewa Amman Hotel
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="dropdown-submenu">
-                  <Link
-                    className="dropdown-item d-flex align-items-center justify-content-between"
-                    href="#"
-                  >
-                    Ecos Hotels
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="10"
-                      height="10"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="submenu-chevron"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </Link>
-                  <ul className="submenu-menu">
-                    <li>
-                      <Link className="submenu-item" href="#">
-                        Ecos Coral Deira
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
+                  ))
+                ) : (
+                  <li>
+                    <span className="dropdown-item text-muted">Loading...</span>
+                  </li>
+                )}
               </ul>
             </li>
             <li className="nav-item dropdown custom-dropdown">

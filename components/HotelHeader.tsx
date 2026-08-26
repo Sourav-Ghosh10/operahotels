@@ -29,7 +29,7 @@ export default function HotelHeader({ logoUrl }: { logoUrl?: string }) {
 
           {/* Logo */}
           <Link className="navbar-brand m-0" href="/">
-            <img src={logoUrl || "/img/operalogo-white 1.png"} alt="Hotel Logo" style={{ maxHeight: "50px" }} />
+            <img src={logoUrl || "/img/operalogo-white 1.png"} alt="Hotel Logo" style={{ height: logoUrl ? "80px" : "80px", objectFit: "contain" }} />
           </Link>
         </div>
 
