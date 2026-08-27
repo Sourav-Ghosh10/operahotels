@@ -2,13 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Head from 'next/head';
+import Footer from "@/components/Footer";
+import ExclusiveOffers from "@/components/ExclusiveOffers";
+import Link from 'next/link';
+import CarouselNav from "@/components/CarouselNav";
 import { getPageData, getLocationsData, getComingSoonData } from '@/services/api';
-import ExclusiveOffers from '@/components/ExclusiveOffers';
 
 export default function Page() {
     const [pageData, setPageData] = useState<any>(null);
     const [locationsData, setLocationsData] = useState<any[]>([]);
     const [comingSoonData, setComingSoonData] = useState<any[]>([]);
+    const [destinations, setDestinations] = useState<any[]>([]);
 
     useEffect(() => {
         const loadPageData = async () => {
@@ -31,9 +35,31 @@ export default function Page() {
             }
         };
 
+        const loadDestinations = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/api/destinations`);
+                if (res.ok) {
+                    const json = await res.json();
+                    const mapped = (json.data || [])
+                        .filter((dest: any) => dest.slug && (dest.name || dest.name_en))
+                        .map((dest: any) => ({
+                            id: dest.id,
+                            slug: dest.slug,
+                            name: dest.name || dest.name_en || "",
+                        }));
+                    if (mapped.length > 0) {
+                        setDestinations(mapped);
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch destinations:", err);
+            }
+        };
+
         loadPageData();
         loadLocationsData();
         loadComingSoonData();
+        loadDestinations();
     }, []);
 
 
@@ -183,7 +209,7 @@ export default function Page() {
                 <div className="hero-overlay"></div>
 
                 {/* Navigation */}
-                <Header />
+                <Header initialDestinations={destinations.length > 0 ? destinations : undefined} />
 
                 {/* Banner Content (Hidden as per new design matching screenshot) */}
                 {/* 
@@ -225,7 +251,7 @@ export default function Page() {
                             <div className="welcome-p mb-4 text-muted" style={{ lineHeight: '1.8' }} dangerouslySetInnerHTML={{ __html: content }} />
                         )}
                         <div className="mt-4">
-                            <a href="#" className="btn btn-gold-large">{exploreButtonText}</a>
+                            <Link href="/brands" className="btn btn-gold-large">{exploreButtonText}</Link>
                         </div>
                     </div>
                 </div>
@@ -240,7 +266,7 @@ export default function Page() {
                 <div className="container">
                     <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-baseline mb-5">
                         <h2 className="explore-section-title mb-2 mb-sm-0">Our Locations</h2>
-                        <a href="#" className="learn-more-link">LEARN MORE</a>
+                        <Link href="/destinations" className="learn-more-link">LEARN MORE</Link>
                     </div>
                 </div>
             </section>
@@ -278,22 +304,10 @@ export default function Page() {
                 </div>
 
                 {/* Custom Carousel Navigation Controls */}
-                <div className="explore-carousel-nav d-flex justify-content-center align-items-center mt-5 gap-4 mb-5">
-                    <button className="explore-nav-btn prev-btn" type="button" aria-label="Previous">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="20" y1="12" x2="4" y2="12"></line>
-                            <polyline points="10 18 4 12 10 6"></polyline>
-                        </svg>
-                    </button>
-                    <button className="explore-nav-btn next-btn" type="button" aria-label="Next">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="4" y1="12" x2="20" y2="12"></line>
-                            <polyline points="14 6 20 12 14 18"></polyline>
-                        </svg>
-                    </button>
-                </div>
+                <CarouselNav className="explore-carousel-nav d-flex justify-content-center align-items-center mt-4 gap-5" />
+
+                {/* Gold line separator */}
+                <div className="gold-separator mx-auto mt-4 mb-5"></div>
             </div>
 
             {/* Amenities Section */}

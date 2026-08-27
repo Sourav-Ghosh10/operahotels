@@ -33,6 +33,7 @@ export default async function DestinationsPage() {
 
   return (
     <main>
+      <link rel="stylesheet" href="/css/destinations.css" />
       {/* ── Hero / Banner ─────────────────────────────────────────────── */}
       <header className="hero-section">
 
@@ -167,7 +168,7 @@ export default async function DestinationsPage() {
                             <h3 className="destination-card-title">{destinationName}</h3>
                             <p className="destination-card-text">{destinationDescription}</p>
                             <Link
-                              href={`/destinations/${destination.slug}`}
+                              href={`/destinations/${destination.slug.replace(/^\/?(destinations\/)?/, '')}`}
                               className="destination-card-link"
                             >
                               Read More

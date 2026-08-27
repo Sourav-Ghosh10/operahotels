@@ -1,4 +1,3 @@
-"use client";
 import React from 'react';
 import Header from '@/components/ServerHeader';
 
@@ -73,7 +72,7 @@ export default function Page() {
             </p>
 
             <div className="contact-form-wrapper">
-                <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+                <form className="contact-form">
                     <div className="row g-4">
                         <div className="col-md-6">
                             <select className="form-select" aria-label="Subject" defaultValue="">
@@ -119,7 +118,7 @@ export default function Page() {
                             </div>
                         </div>
                         <div className="col-12 text-center mt-4">
-                            <button type="submit" className="btn btn-submit">SUBMIT NOW</button>
+                            <button type="button" className="btn btn-submit">SUBMIT NOW</button>
                         </div>
                     </div>
                 </form>

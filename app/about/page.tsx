@@ -2,6 +2,7 @@
 import React from 'react';
 import Header from '@/components/ServerHeader';
 import Head from 'next/head';
+import OurBrandsBar from '@/components/OurBrandsBar';
 
 export default function Page() {
     return (
@@ -214,92 +215,7 @@ export default function Page() {
         </div>
     </section>
 
-    <section className="brands-section about-brands py-5">
-        <div className="container">
-            <h2 className="brands-section-title text-white text-center mb-5">Our Brands</h2>
-            <div
-                className="brands-grid d-flex flex-wrap justify-content-center justify-content-md-between align-items-center">
-
-                {/* BAHI Hotels & Resorts */}
-                <div className="brand-item">
-                    <svg className="brand-logo" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
-                        <text x="10" y="55" fontFamily="Georgia, serif" fontSize="52" fontWeight="700" fill="#FFFFFF"
-                            letterSpacing="4">BAHI</text>
-                        <text x="12" y="78" fontFamily="Arial, sans-serif" fontSize="13" fontWeight="300"
-                            fill="#FFFFFF" letterSpacing="2.5">HOTELS &amp; RESORTS</text>
-                        <path
-                            d="M235 8 H258 C272 8 281 14 281 25 C281 32 275 37 265 39 C278 41 288 48 288 60 C288 73 277 79 262 79 H235 V8 Z M248 19 V40 H260 C267 40 273 36 273 30 C273 24 267 19 260 19 H248 Z M248 51 V68 H261 C268 68 274 64 274 60 C274 55 268 51 261 51 H248 Z"
-                            fill="#FFFFFF" />
-                    </svg>
-                </div>
-
-                {/* CORAL Hotels & Resorts */}
-                <div className="brand-item">
-                    <svg className="brand-logo" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
-                        <text x="8" y="58" fontFamily="Georgia, serif" fontSize="52" fontWeight="600" fill="#FFFFFF"
-                            letterSpacing="5">CORAL</text>
-                        <text x="10" y="80" fontFamily="Arial, sans-serif" fontSize="13" fontWeight="300"
-                            fill="#FFFFFF" letterSpacing="2">Hotels &amp; Resorts</text>
-                        <g transform="translate(258, 18)" fill="#FFFFFF">
-                            <circle cx="12" cy="4" r="4" />
-                            <circle cx="22" cy="11" r="3" />
-                            <circle cx="2" cy="11" r="3" />
-                            <line x1="12" y1="10" x2="12" y2="38" stroke="#FFFFFF" strokeWidth="3"
-                                strokeLinecap="round" />
-                            <line x1="12" y1="18" x2="22" y2="12" stroke="#FFFFFF" strokeWidth="2.5"
-                                strokeLinecap="round" />
-                            <line x1="12" y1="24" x2="2" y2="18" stroke="#FFFFFF" strokeWidth="2.5"
-                                strokeLinecap="round" />
-                            <line x1="12" y1="30" x2="20" y2="25" stroke="#FFFFFF" strokeWidth="2"
-                                strokeLinecap="round" />
-                            <line x1="12" y1="34" x2="5" y2="28" stroke="#FFFFFF" strokeWidth="2"
-                                strokeLinecap="round" />
-                        </g>
-                    </svg>
-                </div>
-
-                {/* CORP Hotels */}
-                <div className="brand-item">
-                    <svg className="brand-logo corp-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="5" y="5" width="190" height="190" stroke="#FFFFFF" strokeWidth="3" fill="none" />
-                        <text x="100" y="108" fontFamily="Arial, sans-serif" fontSize="60" fontWeight="300"
-                            fill="#FFFFFF" textAnchor="middle" letterSpacing="1">corp</text>
-                        <text x="100" y="140" fontFamily="Arial, sans-serif" fontSize="15" fontWeight="500"
-                            fill="#FFFFFF" textAnchor="middle" letterSpacing="5">HOTELS</text>
-                    </svg>
-                </div>
-
-                {/* EWA Hotel Apartments */}
-                <div className="brand-item">
-                    <svg className="brand-logo" viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="60" y="5" width="48" height="48" rx="14" stroke="#FFFFFF" strokeWidth="5"
-                            fill="none" />
-                        <rect x="116" y="5" width="48" height="48" rx="14" stroke="#FFFFFF" strokeWidth="5"
-                            fill="none" />
-                        <rect x="60" y="61" width="48" height="48" rx="14" stroke="#FFFFFF" strokeWidth="5"
-                            fill="none" />
-                        <rect x="116" y="61" width="48" height="48" rx="14" stroke="#FFFFFF" strokeWidth="5"
-                            fill="none" />
-                        <text x="120" y="133" fontFamily="Arial, sans-serif" fontSize="36" fontWeight="700"
-                            fill="#FFFFFF" textAnchor="middle" letterSpacing="3">ewa</text>
-                        <text x="120" y="155" fontFamily="Arial, sans-serif" fontSize="13" fontWeight="300"
-                            fill="#FFFFFF" textAnchor="middle" letterSpacing="1.5">Hotel Apartments</text>
-                    </svg>
-                </div>
-
-                {/* ECOS Hotels */}
-                <div className="brand-item">
-                    <svg className="brand-logo" viewBox="0 0 240 100" xmlns="http://www.w3.org/2000/svg">
-                        <text x="120" y="60" fontFamily="Arial, sans-serif" fontSize="58" fontWeight="200"
-                            fill="#FFFFFF" textAnchor="middle" letterSpacing="3">ecos</text>
-                        <text x="120" y="86" fontFamily="Arial, sans-serif" fontSize="15" fontWeight="500"
-                            fill="#FFFFFF" textAnchor="middle" letterSpacing="5">Hotels</text>
-                    </svg>
-                </div>
-
-            </div>
-        </div>
-    </section>
+    <OurBrandsBar />
 
 
 

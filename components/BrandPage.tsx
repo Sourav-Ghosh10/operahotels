@@ -5,6 +5,7 @@ import Link from 'next/link';
 import HotelHeader from '@/components/HotelHeader';
 import HotelFooter from '@/components/HotelFooter';
 import OurBrandsBar from '@/components/OurBrandsBar';
+import CarouselNav from '@/components/CarouselNav';
 
 interface ChildHotel {
     id: number;
@@ -201,25 +202,10 @@ function BrandExperienceOffers({ offers, brandSlug }: { offers: Offer[]; brandSl
             </div>
 
             {/* ← → navigation — same as ExclusiveOffers */}
-            <div className="offers-carousel-nav d-flex justify-content-center align-items-center mt-5 gap-5">
-                <button className="offers-nav-btn prev-btn" type="button" aria-label="Previous">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="20" y1="12" x2="4" y2="12" />
-                        <polyline points="10 18 4 12 10 6" />
-                    </svg>
-                </button>
-                <button className="offers-nav-btn next-btn" type="button" aria-label="Next">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="4" y1="12" x2="20" y2="12" />
-                        <polyline points="14 6 20 12 14 18" />
-                    </svg>
-                </button>
-            </div>
+            <CarouselNav className="offers-carousel-nav d-flex justify-content-center align-items-center mt-4 gap-5" />
 
             {/* Gold line separator */}
-            <div className="gold-separator mx-auto mt-5"></div>
+            <div className="gold-separator mx-auto mt-4"></div>
         </div>
     );
 }
@@ -265,82 +251,57 @@ function HotelsSlider({ hotels }: { hotels: ChildHotel[] }) {
 
     return (
         <div className="bdp-hs-wrap">
-            {/* ← Left arrow */}
-            {total > 1 && (
-                <button className="bdp-hs-arrow bdp-hs-arrow--left" onClick={prev} aria-label="Previous hotel">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="20" y1="12" x2="4" y2="12" />
-                        <polyline points="10 18 4 12 10 6" />
-                    </svg>
-                </button>
-            )}
+            <div className="bdp-inner" style={{ position: 'relative' }}>
+                {/* Slide content */}
+                <div className={`bdp-hs-slide ${slideClass}`}>
+                    {/* Image */}
+                    <div className="bdp-hs-img-wrap">
+                        <img src={hotelImage} alt={hotel.name} className="bdp-hs-img" />
+                    </div>
 
-            {/* Slide content */}
-            <div className={`bdp-hs-slide ${slideClass}`}>
-                {/* Image */}
-                <div className="bdp-hs-img-wrap">
-                    <img src={hotelImage} alt={hotel.name} className="bdp-hs-img" />
-                </div>
-
-                {/* Info panel overlapping bottom-right of image */}
-                <div className="bdp-hs-info">
-                    <h3 className="bdp-hotel-name">{hotel.name.toUpperCase()}</h3>
-                    {fullAddress && (
-                        <p className="bdp-hotel-meta">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                            </svg>
-                            {fullAddress}
-                        </p>
-                    )}
-                    {hotel.phone && (
-                        <p className="bdp-hotel-meta">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.48 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                            </svg>
-                            <a href={`tel:${hotel.phone}`}>{hotel.phone}</a>
-                        </p>
-                    )}
-                    <div className="bdp-hotel-btns">
-                        <Link href={`/${hotel.slug}`} className="bdp-hotel-btn-outline">VISIT WEBSITE</Link>
-                        <a
-                            href={bookingUrl}
-                            target={bookingUrl !== '#' ? '_blank' : undefined}
-                            rel="noopener noreferrer"
-                            className="bdp-hotel-btn-gold"
-                        >
-                            BOOK NOW
-                        </a>
+                    {/* Info panel overlapping bottom-right of image */}
+                    <div className="bdp-hs-info">
+                        <h3 className="bdp-hotel-name">{hotel.name.toUpperCase()}</h3>
+                        {fullAddress && (
+                            <p className="bdp-hotel-meta">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                                </svg>
+                                {fullAddress}
+                            </p>
+                        )}
+                        {hotel.phone && (
+                            <p className="bdp-hotel-meta">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.48 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                </svg>
+                                <a href={`tel:${hotel.phone}`}>{hotel.phone}</a>
+                            </p>
+                        )}
+                        <div className="bdp-hotel-btns">
+                            <Link href={`/${hotel.slug}`} className="bdp-hotel-btn-outline">VISIT WEBSITE</Link>
+                            <a
+                                href={bookingUrl}
+                                target={bookingUrl !== '#' ? '_blank' : undefined}
+                                rel="noopener noreferrer"
+                                className="bdp-hotel-btn-gold"
+                            >
+                                BOOK NOW
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* → Right arrow */}
+            {/* Centered navigation arrows */}
             {total > 1 && (
-                <button className="bdp-hs-arrow bdp-hs-arrow--right" onClick={next} aria-label="Next hotel">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="4" y1="12" x2="20" y2="12" />
-                        <polyline points="14 6 20 12 14 18" />
-                    </svg>
-                </button>
-            )}
-
-            {/* Counter dots */}
-            {total > 1 && (
-                <div className="bdp-hs-dots">
-                    {hotels.map((_, i) => (
-                        <button
-                            key={i}
-                            className={`bdp-hs-dot${i === current ? ' bdp-hs-dot--active' : ''}`}
-                            onClick={() => { if (!isAnimating) { setAnimDir(i > current ? 'left' : 'right'); setIsAnimating(true); setTimeout(() => { setCurrent(i); setIsAnimating(false); setAnimDir(null); }, 400); } }}
-                            aria-label={`Hotel ${i + 1}`}
-                        />
-                    ))}
-                </div>
+                <CarouselNav 
+                    className="offers-carousel-nav d-flex justify-content-center align-items-center mt-4 gap-5" 
+                    onPrev={prev} 
+                    onNext={next} 
+                />
             )}
         </div>
     );
@@ -532,9 +493,8 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
                     </div>
                 )}
 
-                <div className="bdp-inner">
-                    <div className="bdp-gold-rule" />
-                </div>
+                {/* Gold line separator */}
+                <div className="gold-separator mx-auto mt-4"></div>
             </section>
 
 
@@ -553,61 +513,41 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
 
                     {/* Full-width map + hotel card panel */}
                     <div className="bdp-where-map-wrap">
-                        {/* Map embed — prefer Google Maps, fall back to OpenStreetMap using first hotel address */}
-                        <iframe
-                            className="bdp-where-iframe"
-                            src={
-                                mapEmbedSrc ||
-                                (childHotels[0]?.address
-                                    ? `https://maps.google.com/maps?q=${encodeURIComponent(
-                                          [childHotels[0].address, childHotels[0].city, childHotels[0].country]
-                                              .filter(Boolean).join(', ')
-                                      )}&output=embed&z=12`
-                                    : `https://maps.google.com/maps?q=${encodeURIComponent(brandData.name)}&output=embed`)
-                            }
-                            title={`${brandData.name} — where we are`}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                        />
-
-                        {/* Hotel cards panel overlapping the map on the right */}
-                        {childHotels.length > 0 && (
-                            <div className="bdp-where-cards">
-                                {childHotels.map(hotel => {
-                                    const fullAddr = [hotel.address, hotel.city, hotel.country].filter(Boolean).join(', ');
-                                    return (
-                                        <div key={hotel.id} className="bdp-where-card">
-                                            {hotel.cover_image && (
-                                                <img src={hotel.cover_image} alt={hotel.name} className="bdp-where-card-img" />
-                                            )}
-                                            <div className="bdp-where-card-body">
-                                                <h4 className="bdp-where-card-name">{hotel.name.toUpperCase()}</h4>
-                                                {fullAddr && (
-                                                    <p className="bdp-where-card-meta">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                                                        </svg>
-                                                        {fullAddr}
-                                                    </p>
-                                                )}
-                                                {hotel.phone && (
-                                                    <p className="bdp-where-card-meta">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.48 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                                                        </svg>
-                                                        <a href={`tel:${hotel.phone}`}>{hotel.phone}</a>
-                                                    </p>
-                                                )}
-                                                <div className="bdp-where-card-btns">
-                                                    <Link href={`/${hotel.slug}`} className="bdp-hotel-btn-outline">VISIT WEBSITE</Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                        <div className="bdp-where-map-col">
+                            {/* Map embed — prefer Google Maps, fall back to OpenStreetMap using first hotel address */}
+                            <iframe
+                                className="bdp-where-iframe"
+                                src={
+                                    mapEmbedSrc ||
+                                    (childHotels[0]?.address
+                                        ? `https://maps.google.com/maps?q=${encodeURIComponent(
+                                              [childHotels[0].address, childHotels[0].city, childHotels[0].country]
+                                                  .filter(Boolean).join(', ')
+                                          )}&output=embed&z=12`
+                                        : `https://maps.google.com/maps?q=${encodeURIComponent(brandData.name)}&output=embed`)
+                                }
+                                title={`${brandData.name} — where we are`}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            />
+                        </div>
+                        <div className="bdp-where-info-col">
+                            <h2 className="bdp-section-heading">OUR LOCATION</h2>
+                            <div className="bdp-where-location-item">
+                                <svg className="bdp-where-location-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                                </svg>
+                                <div>
+                                    <h4 className="bdp-where-location-city">{childHotels.length > 0 && childHotels[0].city ? childHotels[0].city : 'Dubai'}</h4>
+                                    <p className="bdp-where-location-address">
+                                        {childHotels.length > 0 && childHotels[0].address 
+                                            ? [childHotels[0].address, childHotels[0].city, childHotels[0].country].filter(Boolean).join(', ')
+                                            : 'Suites 106/107, Madina Tower, Cluster O Jumeirah Lake Towers, PO Box 66232, Dubai \u2013 UAE'}
+                                    </p>
+                                </div>
                             </div>
-                        )}
+                        </div>
                     </div>
 
                     <div className="bdp-inner">

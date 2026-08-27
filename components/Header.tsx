@@ -40,7 +40,31 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
         setBrands(data);
       }
     });
-  }, []);
+
+    if (initialDestinations === fallbackDestinations) {
+      fetch(`${API_BASE}/api/destinations`)
+        .then(res => res.json())
+        .then(json => {
+          if (json && json.data) {
+            const mapped = (json.data || [])
+              .filter((dest: any) => dest.slug && (dest.name || dest.name_en))
+              .map((dest: any) => ({
+                id: dest.id,
+                slug: dest.slug,
+                name: dest.name || dest.name_en || "",
+              }));
+            if (mapped.length > 0) {
+              setDestinations(mapped);
+            }
+          }
+        })
+        .catch(err => console.error("Failed to fetch destinations in Header:", err));
+    }
+  }, [initialDestinations]);
+
+  useEffect(() => {
+    setDestinations(initialDestinations);
+  }, [initialDestinations]);
 
   function selectLocale(nextLocale: Locale) {
     setLocale(nextLocale);
@@ -173,38 +197,48 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
               </ul>
             </li>
             <li className="nav-item dropdown custom-dropdown">
-              <Link
-                className="nav-link dropdown-toggle d-flex align-items-center"
-                href="/destinations"
-                id="destinationsDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                DESTINATIONS
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="ms-1 nav-chevron-icon"
+              <div className="d-flex align-items-center">
+                <Link
+                  className="nav-link pe-0"
+                  href="/destinations"
                 >
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </Link>
+                  DESTINATIONS
+                </Link>
+                <button
+                  className="btn p-0 nav-link dropdown-toggle dropdown-toggle-split"
+                  id="destinationsDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  style={{ background: "none", border: "none", color: "inherit", paddingLeft: "0" }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="nav-chevron-icon"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+              </div>
               <ul className="dropdown-menu custom-dropdown-menu" aria-labelledby="destinationsDropdown">
-                {destinations.map((destination) => (
-                  <li key={destination.id}>
-                    <Link className="dropdown-item" href={`/destinations/${destination.slug}`}>
-                      {destination.name}
-                    </Link>
-                  </li>
-                ))}
+                {destinations.map((destination) => {
+                  const cleanSlug = destination.slug.replace(/^\/?(destinations\/)?/, '');
+                  const href = `/destinations/${cleanSlug}`;
+                  return (
+                    <li key={destination.id}>
+                      <Link className="dropdown-item" href={href}>
+                        {destination.name}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </li>
             <li className="nav-item">
