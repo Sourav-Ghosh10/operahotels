@@ -1501,7 +1501,8 @@ body {
 .dining-section {
     background-color: #FFF8EE;
     padding: 100px 0;
-    color: #111;
+    color: #231f20;
+    overflow: hidden;
 }
 
 .dining-section-title {
@@ -1509,19 +1510,20 @@ body {
     font-size: 2.2rem;
     font-weight: 500;
     letter-spacing: 2.5px;
-    color: #111;
+    color: #231f20;
     text-transform: uppercase;
     margin-bottom: 0;
 }
 
 .discover-restaurants-link {
     font-family: var(--font-primary);
-    font-size: 0.85rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    color: #111;
+    color: #231f20;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     text-decoration: underline;
+    text-underline-offset: 4px;
     transition: color 0.3s ease;
 }
 
@@ -1529,26 +1531,32 @@ body {
     color: var(--primary-gold);
 }
 
-/* Dining Card Styling */
+/* Dining Card & Carousel Styling */
+.dining-carousel {
+    position: relative;
+    width: 100%;
+}
+
 .dining-card {
     width: 100%;
 }
 
 .dining-card-title {
     font-family: var(--font-primary);
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    color: #111;
+    color: #231f20;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     text-align: left;
 }
 
 .dining-img-wrapper {
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     width: 100%;
+    position: relative;
 }
 
 .dining-img-box {
@@ -1565,12 +1573,13 @@ body {
 
 .dining-readmore {
     font-family: var(--font-primary);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: #111 !important;
+    color: #231f20 !important;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     text-decoration: underline;
+    text-underline-offset: 4px;
     transition: color 0.3s ease;
     display: inline-block;
     text-align: left;
@@ -1580,10 +1589,98 @@ body {
     color: var(--primary-gold) !important;
 }
 
+/* Dining Slider Controls (HMH Reference Style) */
+.dining-carousel-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 360px;
+    width: 100%;
+    margin: 45px auto 0 auto;
+    padding: 0 10px;
+}
+
+.dining-nav-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #231f20;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 2;
+    padding: 0;
+}
+
+.dining-nav-btn svg {
+    transition: all 0.3s ease;
+}
+
+.dining-nav-btn.prev-btn svg {
+    transform: rotate(180deg);
+}
+
+.dining-nav-btn:hover {
+    background-color: #231f20;
+    color: #ffffff;
+}
+
+.dining-play-pause-btn {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #231f20;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    padding: 0;
+}
+
+.dining-play-pause-btn svg {
+    width: 30px;
+    height: 30px;
+    transition: all 0.3s ease;
+}
+
+.dining-play-pause-btn:hover {
+    background-color: #231f20;
+    color: #ffffff;
+}
+
+.dining-play-pause-btn.autoplay-start .icon-play {
+    display: none !important;
+}
+
+.dining-play-pause-btn.autoplay-start .icon-pause {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.dining-play-pause-btn.autoplay-stop .icon-pause {
+    display: none !important;
+}
+
+.dining-play-pause-btn.autoplay-stop .icon-play {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Responsive Overrides for Dining */
 @media (max-width: 991.98px) {
     .dining-section {
-        padding: 60px 0 0 0;
+        padding: 60px 0;
     }
 
     .dining-section-title {
@@ -1594,11 +1691,25 @@ body {
     .dining-img-box {
         height: 320px;
     }
+
+    .dining-carousel-controls {
+        margin-top: 35px;
+        max-width: 300px;
+    }
 }
 
 @media (max-width: 767.98px) {
+    .dining-section {
+        padding: 50px 0;
+    }
+
     .dining-img-box {
         height: 280px;
+    }
+
+    .dining-card-title {
+        font-size: 0.9rem;
+        margin-bottom: 14px;
     }
 }
 
@@ -1886,6 +1997,11 @@ body {
     color: #555;
     line-height: 1.6;
     margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .explore-readmore {
@@ -3005,55 +3121,140 @@ body {
    Gold bar used on all brand + hotel pages.
 --------------------------------------------------- */
 .our-brands-bar {
-    background: #b8973a;
-    padding: 60px 24px 70px;
+    position: relative;
+    background-image: url('/img/our-brands-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    padding: 70px 24px 80px;
     text-align: center;
+    overflow: hidden;
+    width: 100%;
 }
+
+.our-brands-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(35, 30, 25, 0.45) 0%, rgba(45, 38, 30, 0.52) 100%);
+    z-index: 1;
+}
+
 .our-brands-inner {
-    max-width: 1200px;
+    position: relative;
+    z-index: 2;
+    max-width: 1500px;
     margin: 0 auto;
 }
+
 .our-brands-title {
-    font-family: 'Georgia', serif;
-    font-size: clamp(1.4rem, 2vw, 1.8rem);
-    font-weight: 400;
-    color: #fff;
-    letter-spacing: 0.5px;
-    margin: 0 0 50px;
+    font-family: 'Arial', sans-serif;
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 0 0 50px 0;
 }
+
 .our-brands-grid {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 24px 60px;
+    gap: 40px 75px;
 }
+
 .our-brands-item {
-    opacity: 1;
-    transition: opacity 0.25s, transform 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.95;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
 .our-brands-item:hover {
     opacity: 1;
-    transform: translateY(-2px);
+    transform: translateY(-4px) scale(1.05);
 }
+
+.our-brands-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
 .our-brands-logo {
-    max-height: 110px;
-    max-width: 280px;
+    height: 130px;
+    max-height: 150px;
+    max-width: 320px;
     object-fit: contain;
     display: block;
-    /* keep logos visible on the gold background */
-    /* filter removed */
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
 .our-brands-name {
-    color: #fff;
+    color: #ffffff;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     letter-spacing: 2px;
     text-transform: uppercase;
 }
-@media (max-width: 600px) {
-    .our-brands-grid { gap: 10px 24px; }
-    .our-brands-logo { max-height: 72px; max-width: 180px; }
+
+@media (max-width: 1200px) {
+    .our-brands-logo {
+        height: 105px;
+        max-width: 260px;
+    }
+
+    .our-brands-grid {
+        gap: 30px 50px;
+    }
 }
 
+@media (max-width: 768px) {
+    .our-brands-bar {
+        padding: 50px 16px 60px;
+    }
 
+    .our-brands-grid {
+        gap: 20px 35px;
+    }
+
+    .our-brands-logo {
+        height: 75px;
+        max-width: 180px;
+    }
+
+    .our-brands-title {
+        margin-bottom: 35px;
+        letter-spacing: 2px;
+    }
+}
+/* ================================
+   SOLID HOTEL NAVIGATION
+   ================================ */
+.solid-hotel-nav {
+    background-color: var(--dark-blue, #0b1a26) !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+}
+
+.solid-hotel-nav .nav-link {
+    color: var(--text-light, #f8f9fa) !important;
+}
+
+.solid-hotel-nav .nav-link:hover,
+.solid-hotel-nav .nav-link.active {
+    color: #fff !important;
+}
+
+.solid-hotel-nav .custom-nav-toggler .line {
+    background-color: #fff !important;
+}

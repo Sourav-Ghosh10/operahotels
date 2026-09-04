@@ -94,7 +94,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
 
           {/* Logo */}
           <Link className="navbar-brand m-0" href="/">
-            <img src="/img/operalogo-white 1.png" alt="" />
+            <img src="/img/operalogo-white.png" alt="Opera Hotels Logo" onError={(e) => { e.currentTarget.src = "/img/operalogo-white 1.png"; }} />
           </Link>
         </div>
 

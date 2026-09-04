@@ -124,6 +124,43 @@ export default function ClientScripts() {
           });
       }
 
+      // Dining Carousel
+      if ($('.dining-carousel').length && !$('.dining-carousel').hasClass('owl-loaded')) {
+          var isDiningLoop = $('.dining-carousel .dining-card').length > 2;
+          var diningOwl = $('.dining-carousel').owlCarousel({
+              loop: isDiningLoop,
+              margin: 30,
+              nav: false,
+              dots: false,
+              autoplay: true,
+              autoplayTimeout: 5000,
+              autoplayHoverPause: true,
+              responsive: {
+                  0: { items: 1, margin: 15 },
+                  768: { items: 2, margin: 20 },
+                  992: { items: 2, margin: 30 }
+              }
+          });
+          $('.dining-carousel-controls .next-btn').off('click').on('click', function () {
+              diningOwl.trigger('next.owl.carousel');
+          });
+          $('.dining-carousel-controls .prev-btn').off('click').on('click', function () {
+              diningOwl.trigger('prev.owl.carousel');
+          });
+          var isDiningPlaying = true;
+          $('.dining-carousel-controls .play-pause-btn').off('click').on('click', function (this: any) {
+              if (isDiningPlaying) {
+                  diningOwl.trigger('stop.owl.autoplay');
+                  $(this).removeClass('autoplay-start').addClass('autoplay-stop');
+                  isDiningPlaying = false;
+              } else {
+                  diningOwl.trigger('play.owl.autoplay', [5000]);
+                  $(this).removeClass('autoplay-stop').addClass('autoplay-start');
+                  isDiningPlaying = true;
+              }
+          });
+      }
+
       // Explore Carousel
       if ($('.explore-carousel').length && !$('.explore-carousel').hasClass('owl-loaded')) {
           var exploreOwl = $('.explore-carousel').owlCarousel({

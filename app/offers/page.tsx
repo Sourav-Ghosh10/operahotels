@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Header from '@/components/ServerHeader';
-import OffersGrid from '@/components/OffersGrid';
+import OffersSection from '@/components/OffersSection';
 
 export default function Page() {
     return (
@@ -58,51 +58,16 @@ export default function Page() {
             </header>
 
 
-            {/* Offers Section */}
-            <section className="offers-intro">
-                <div className="container text-center">
-                    <h2 className="section-title">GREAT OFFERS ARE JUST A CLICK</h2>
-                    <p className="offers-p">
-                        Unbeatable pricing just for you / holidays.<br />
-                        Elevate your stay with exclusive offers designed to enhance every moment of your journey.
-                    </p>
-
-                    <div className="offers-filters">
-                        <select className="offers-filter-select">
-                            <option>All Hotels</option>
-                            <option>Bahi Hotels &amp; Resorts</option>
-                            <option>Coral Hotels &amp; Resorts</option>
-                        </select>
-                        <select className="offers-filter-select">
-                            <option>All type of offers</option>
-                            <option>Summer Escape</option>
-                            <option>Exclusive</option>
-                        </select>
-                        <button className="offers-search-btn">Search <i className="fas fa-arrow-right"></i></button>
+            {/* Offers Filter + Grid (client component with live filtering and query param support) */}
+            <Suspense fallback={
+                <div className="container text-center py-5">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
                     </div>
                 </div>
-            </section>
-
-            {/* Offers Grid */}
-            <OffersGrid />
-
-            {/* Our Location Section */}
-            <section className="location-section">
-                <div className="location-map-wrapper">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.315591956063!2d55.135694!3d25.077065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6be84e9f9c99%3A0x2e9b3e1e2e3f4a5b!2sJumeirah%20Lake%20Towers%2C%20Dubai!5e0!3m2!1sen!2sae!4v1690000000000!5m2!1sen!2sae"
-                        className="location-map-iframe" width="100%" height="100%" style={{ border: "0" }} allowFullScreen={true}
-                        loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Opera Hotel Dubai Location">
-                    </iframe>
-                </div>
-                <div className="location-info-wrapper">
-                    <p className="location-address-text">
-                        Suites 106/107, Madina Tower, Cluster O<br />
-                        Jumeirah Lake Towers, PO Box 66232,<br />
-                        Dubai – UAE
-                    </p>
-                </div>
-            </section>
+            }>
+                <OffersSection />
+            </Suspense>
 
         </main>
     );

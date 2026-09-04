@@ -99,7 +99,7 @@ export default function ExclusiveOffers({ hotelName, hotelSlug }: ExclusiveOffer
             <div className="container">
                 <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-baseline mb-3">
                     <h2 className="offers-section-title mb-2 mb-sm-0">EXCLUSIVE OFFERS</h2>
-                    <a href="/offers" className="discover-offers-link">DISCOVER OUR SPECIAL OFFERS</a>
+                    <a href={hotelSlug ? `/offers?hotel=${hotelSlug}` : '/offers'} className="discover-offers-link">DISCOVER OUR SPECIAL OFFERS</a>
                 </div>
                 {/* Only show this tagline if we aren't filtering for a specific hotel */}
                 {(!hotelName && !hotelSlug) && <p>Good things come to those who book direct.</p>}

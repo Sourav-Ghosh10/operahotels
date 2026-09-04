@@ -279,6 +279,8 @@ export default function Page() {
                             const locationName = location.city_name || 'Location';
                             const locationDesc = location.home_teaser || '';
                             const locationImg = location.home_image || '/img/explore_museum.png';
+                            const destSlug = (location.destination_slug || location.destination?.slug || '').replace(/^\/?(destinations\/)?/, '');
+                            const readMoreHref = destSlug ? `/destinations/${destSlug}` : '/destinations';
 
                             return (
                                 <div key={location.id || index} className="explore-card">
@@ -295,7 +297,7 @@ export default function Page() {
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis'
                                         }}>{locationDesc}</p>
-                                        <a href={`/locations/${location.id}`} className="explore-readmore">READ MORE</a>
+                                        <Link href={readMoreHref} className="explore-readmore">READ MORE</Link>
                                     </div>
                                 </div>
                             );

@@ -7,6 +7,10 @@ import HotelFooter from '@/components/HotelFooter';
 import OurBrandsBar from '@/components/OurBrandsBar';
 import CarouselNav from '@/components/CarouselNav';
 
+import dynamic from 'next/dynamic';
+
+const BrandHotelMap = dynamic(() => import('@/components/BrandHotelMap'), { ssr: false });
+
 interface ChildHotel {
     id: number;
     name: string;
@@ -52,8 +56,16 @@ interface BrandData {
     intro_title?: string;
     intro_text?: string;
     logo?: string;
+    cover_image?: string;
     banner_images?: string[];
     banner_title?: string;
+    latitude?: number | string | null;
+    longitude?: number | string | null;
+    address?: string;
+    city?: string;
+    country?: string;
+    phone?: string;
+    email?: string;
     google_location?: string;
     location_title?: string;
     contact_button_text?: string;
@@ -160,13 +172,14 @@ function BrandExperienceOffers({ offers, brandSlug }: { offers: Offer[]; brandSl
 
     return (
         <div className="brand-experience-wrapper exclusive-offers-wrapper">
-            {/* Owl Carousel — same markup as ExclusiveOffers */}
             <div className="owl-carousel offers-carousel">
                 {offers.map((offer, index) => {
                     const offerName = offer.name || '';
                     const rawDesc = offer.description || (offer.discount_percentage ? `${offer.discount_percentage}% OFF` : '');
                     const offerDesc = typeof rawDesc === 'string' ? rawDesc.replace(/<[^>]*>?/gm, '') : rawDesc;
-                    const bannerImg = offer.image || '';
+                    const bannerImg = offer.image || offer.banner_image || '';
+                    const offerSlug = offer.slug || (offer.name ? offer.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '');
+                    const detailUrl = offerSlug ? `/${offer.hotel_slug || 'offers'}/special-offers/${offerSlug}` : '/offers';
 
                     return (
                         <div key={offer.id || index} className="offer-card-item">
@@ -182,13 +195,13 @@ function BrandExperienceOffers({ offers, brandSlug }: { offers: Offer[]; brandSl
                                     <h3 className="offer-title">{offerName}</h3>
                                     <div className="offer-hover-details">
                                         <a
-                                            href={`/${brandSlug}/special-offers`}
+                                            href={detailUrl}
                                             className="offer-readmore"
                                         >
                                             READ MORE
                                         </a>
                                         <a
-                                            href={`/${brandSlug}/special-offers`}
+                                            href={detailUrl}
                                             className="btn btn-offer-book"
                                         >
                                             BOOK NOW
@@ -297,10 +310,10 @@ function HotelsSlider({ hotels }: { hotels: ChildHotel[] }) {
 
             {/* Centered navigation arrows */}
             {total > 1 && (
-                <CarouselNav 
-                    className="offers-carousel-nav d-flex justify-content-center align-items-center mt-4 gap-5" 
-                    onPrev={prev} 
-                    onNext={next} 
+                <CarouselNav
+                    className="offers-carousel-nav d-flex justify-content-center align-items-center mt-4 gap-5"
+                    onPrev={prev}
+                    onNext={next}
                 />
             )}
         </div>
@@ -411,7 +424,6 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
     const locationTitle = brandData.location_title || 'WHERE WE ARE';
     const contactBtnText = 'CONTACT US';
     const contactBtnUrl = brandData.contact_button_url || '/contact';
-    const googleMapSrc = brandData.google_location;
 
     const childHotels = brandData.child_hotels ?? [];
     const rawOffers = brandData.offers ?? [];
@@ -419,10 +431,28 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
     // Use real offers from the brand directly. No placeholders, to reflect actual DB state.
     const offers = rawOffers;
 
-    const mapEmbedSrc = googleMapSrc
-        ? (googleMapSrc.includes('maps/embed') ? googleMapSrc
-            : `https://maps.google.com/maps?q=${encodeURIComponent(googleMapSrc)}&output=embed`)
-        : null;
+    // Build mapHotels: prefer real child hotels; if none exist (e.g. EWA),
+    // synthesise a single pin from the brand's own coordinates so ALL brand
+    // pages show the interactive Leaflet map with the same luxury style.
+    const mapHotels: ChildHotel[] = childHotels.length > 0
+        ? childHotels
+        : (brandData.latitude && brandData.longitude)
+            ? [{
+                id: brandData.id,
+                name: brandData.name,
+                slug: brandData.slug,
+                cover_image: brandData.cover_image ?? brandData.banner_images?.[0],
+                banner_images: brandData.banner_images,
+                latitude: brandData.latitude,
+                longitude: brandData.longitude,
+                address: brandData.address,
+                city: brandData.city,
+                country: brandData.country,
+                phone: brandData.phone,
+                email: brandData.email,
+                google_location: brandData.google_location,
+            }]
+            : [];
 
     return (
         <main className="bdp-page">
@@ -462,7 +492,7 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
                     <div className="container">
                         <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-baseline mb-3">
                             <h2 className="offers-section-title mb-2 mb-sm-0">{experienceTitle}</h2>
-                            <a href={`/${brandData.slug}/special-offers`} className="discover-offers-link">
+                            <a href="/offers" className="discover-offers-link">
                                 DISCOVER OUR SPECIAL OFFERS
                             </a>
                         </div>
@@ -498,62 +528,14 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
             </section>
 
 
-            {/* ══ WHERE WE ARE ════════════════════════════ */}
-            {(mapEmbedSrc || childHotels.length > 0) && (
-                <section className="bdp-where-section">
-                    {/* Section header */}
-                    <div className="bdp-inner">
-                        <div className="bdp-section-header">
-                            <h2 className="bdp-section-heading" style={{ marginBottom: 0 }}>WHERE WE ARE</h2>
-                            {contactBtnUrl && (
-                                <a href={contactBtnUrl} className="bdp-underline-link">{contactBtnText.toUpperCase()}</a>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Full-width map + hotel card panel */}
-                    <div className="bdp-where-map-wrap">
-                        <div className="bdp-where-map-col">
-                            {/* Map embed — prefer Google Maps, fall back to OpenStreetMap using first hotel address */}
-                            <iframe
-                                className="bdp-where-iframe"
-                                src={
-                                    mapEmbedSrc ||
-                                    (childHotels[0]?.address
-                                        ? `https://maps.google.com/maps?q=${encodeURIComponent(
-                                              [childHotels[0].address, childHotels[0].city, childHotels[0].country]
-                                                  .filter(Boolean).join(', ')
-                                          )}&output=embed&z=12`
-                                        : `https://maps.google.com/maps?q=${encodeURIComponent(brandData.name)}&output=embed`)
-                                }
-                                title={`${brandData.name} — where we are`}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                            />
-                        </div>
-                        <div className="bdp-where-info-col">
-                            <h2 className="bdp-section-heading">OUR LOCATION</h2>
-                            <div className="bdp-where-location-item">
-                                <svg className="bdp-where-location-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                                </svg>
-                                <div>
-                                    <h4 className="bdp-where-location-city">{childHotels.length > 0 && childHotels[0].city ? childHotels[0].city : 'Dubai'}</h4>
-                                    <p className="bdp-where-location-address">
-                                        {childHotels.length > 0 && childHotels[0].address 
-                                            ? [childHotels[0].address, childHotels[0].city, childHotels[0].country].filter(Boolean).join(', ')
-                                            : 'Suites 106/107, Madina Tower, Cluster O Jumeirah Lake Towers, PO Box 66232, Dubai \u2013 UAE'}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bdp-inner">
-                        <div className="bdp-gold-rule" style={{ marginTop: 40 }} />
-                    </div>
-                </section>
+            {/* ══ WHERE WE ARE — Interactive Leaflet Map (all brand pages) ════════════════════ */}
+            {mapHotels.length > 0 && (
+                <BrandHotelMap
+                    hotels={mapHotels}
+                    brandName={brandData.name}
+                    contactUrl={contactBtnUrl}
+                    sectionTitle={locationTitle || 'WHERE WE ARE'}
+                />
             )}
 
 

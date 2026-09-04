@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 import React, { useEffect, useState, use } from 'react';
 import HotelHeader from '@/components/HotelHeader';
@@ -10,6 +10,27 @@ import ExclusiveOffers from '@/components/ExclusiveOffers';
 import BrandPage from '@/components/BrandPage';
 import OurBrandsBar from '@/components/OurBrandsBar';
 import CarouselNav from '@/components/CarouselNav';
+import dynamic from 'next/dynamic';
+
+const BrandHotelMap = dynamic(() => import('@/components/BrandHotelMap'), { ssr: false });
+
+function stripHtml(value: string | null | undefined): string {
+    if (!value) return '';
+    return value
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/&amp;/gi, '&')
+        .replace(/&lt;/gi, '<')
+        .replace(/&gt;/gi, '>')
+        .replace(/&quot;/gi, '"')
+        .replace(/&#39;/gi, "'")
+        .replace(/&rsquo;/gi, "’")
+        .replace(/&lsquo;/gi, "‘")
+        .replace(/&rdquo;/gi, "”")
+        .replace(/&ldquo;/gi, "“")
+        .replace(/\s+/g, ' ')
+        .trim();
+}
 
 
 export default function Page({ params }: { params: Promise<{ hotelSlug: string }> }) {
@@ -89,6 +110,41 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
                         $('.explore-carousel-nav .prev-btn').on('click', function() { $('.explore-carousel').trigger('prev.owl.carousel'); });
                         $('.explore-carousel-nav .next-btn').on('click', function() { $('.explore-carousel').trigger('next.owl.carousel'); });
                     }
+                    if ($('.dining-carousel').length) {
+                        const diningCount = $('.dining-carousel .dining-card').length;
+                        const diningOwl = $('.dining-carousel').owlCarousel({
+                            loop: diningCount > 2,
+                            margin: 30,
+                            nav: false,
+                            dots: false,
+                            autoplay: true,
+                            autoplayTimeout: 5000,
+                            autoplayHoverPause: true,
+                            responsive: {
+                                0: { items: 1, margin: 15 },
+                                768: { items: 2, margin: 20 },
+                                992: { items: 2, margin: 30 }
+                            }
+                        });
+                        $('.dining-carousel-controls .prev-btn').off('click').on('click', function() {
+                            diningOwl.trigger('prev.owl.carousel');
+                        });
+                        $('.dining-carousel-controls .next-btn').off('click').on('click', function() {
+                            diningOwl.trigger('next.owl.carousel');
+                        });
+                        let isDiningPlaying = true;
+                        $('.dining-carousel-controls .play-pause-btn').off('click').on('click', function(this: any) {
+                            if (isDiningPlaying) {
+                                diningOwl.trigger('stop.owl.autoplay');
+                                $(this).removeClass('autoplay-start').addClass('autoplay-stop');
+                                isDiningPlaying = false;
+                            } else {
+                                diningOwl.trigger('play.owl.autoplay', [5000]);
+                                $(this).removeClass('autoplay-stop').addClass('autoplay-start');
+                                isDiningPlaying = true;
+                            }
+                        });
+                    }
                 }, 500);
             }
         };
@@ -116,6 +172,26 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
     }
 
     // ── Hotel pages continue with the existing layout below ────────────
+    // Prepare interactive map data for hotel
+    const hotelMapList = (hotelData?.latitude || hotelData?.longitude || hotelData?.address)
+        ? [{
+            id: hotelData.id,
+            name: hotelData.name,
+            slug: hotelData.slug,
+            cover_image: hotelData.cover_image || (hotelData.banner_images && hotelData.banner_images[0]),
+            banner_images: hotelData.banner_images,
+            latitude: hotelData.latitude,
+            longitude: hotelData.longitude,
+            address: hotelData.address,
+            city: hotelData.city,
+            country: hotelData.country,
+            phone: hotelData.phone,
+            email: hotelData.email,
+            google_location: hotelData.google_location,
+            star_rating: hotelData.star_rating,
+        }]
+        : [];
+
     return (
         <main>
 
@@ -262,7 +338,7 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
         <div className="hero-overlay"></div>
 
         {/* Navigation */}
-        <HotelHeader logoUrl={hotelData?.logo} />
+        <HotelHeader logoUrl={hotelData?.logo} hotelSlug={hotelSlug} />
 
         {/* Banner Content */}
         <div className="hero-content position-relative" style={{zIndex: "10"}}>
@@ -308,8 +384,6 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
                         <p className="welcome-p mb-5">Book your online hotel reservation directly with us today, or call us.</p>
                     </>
                 )}
-
-                <a href="#" className="btn btn-gold-large">EXPLORE MORE</a>
             </div>
         </div>
     </section>
@@ -399,7 +473,6 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
         <div className="container">
             <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-baseline mb-5">
                 <h2 className="accommodation-section-title mb-2 mb-sm-0">ACCOMMODATION</h2>
-                <a href="#" className="discover-offers-link">DISCOVER OUR SPECIAL OFFERS</a>
             </div>
         </div>
         <div className="container-fluid padin">
@@ -431,10 +504,10 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
                                         <div className="col-md-4">
                                             <div className="accommodation-details-card">
                                                 <h3 className="room-title">{room.name}</h3>
-                                                <p className="room-desc">{room.description}</p>
+                                                <p className="room-desc">{stripHtml(room.short_description || room.description)}</p>
                                                 <div className="room-actions">
-                                                    <a href="#" className="room-readmore">READ MORE</a>
-                                                    <a href="#" className="btn btn-room-book">BOOK NOW</a>
+                                                    <Link href={room.read_more_link || `/${hotelSlug}/rooms-suites/${room.slug}`} className="room-readmore">{room.read_more_label || "READ MORE"}</Link>
+                                                    <a href={room.book_now_link || "#"} className="btn btn-room-book">{room.book_now_label || "BOOK NOW"}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -474,25 +547,60 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
         <div className="container">
             <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-baseline mb-5">
                 <h2 className="dining-section-title mb-2 mb-sm-0">DINING</h2>
-                <a href="#" className="discover-restaurants-link">DISCOVER OUR RESTAURANTS</a>
+                <a href={hotelData.slug ? `/${hotelData.slug}/dining` : '#'} className="discover-restaurants-link">DISCOVER OUR RESTAURANTS</a>
             </div>
 
-            <div className="row g-5">
+            <div className="owl-carousel dining-carousel">
                 {hotelData.dining_outlets && hotelData.dining_outlets.map((dining: any, idx: number) => (
-                    <div className="col-md-6" key={idx}>
-                        <div className="dining-card">
-                            <h3 className="dining-card-title">{dining.name?.toUpperCase()}</h3>
-                            <div className="dining-img-wrapper">
-                                <div className="dining-img-box" style={{backgroundImage: `url('${dining.image || '/img/dining_al_nafoora.png'}')`}}>
-                                </div>
+                    <div className="dining-card" key={idx}>
+                        <h3 className="dining-card-title">{dining.name?.toUpperCase()}</h3>
+                        <div className="dining-img-wrapper">
+                            <div className="dining-img-box" style={{backgroundImage: `url('${dining.image || '/img/dining_al_nafoora.png'}')`}}>
                             </div>
-                            <a href="#" className="dining-readmore">READ MORE</a>
                         </div>
+                        <a href={dining.link || (hotelData.slug ? `/${hotelData.slug}/dining` : '#')} className="dining-readmore">READ MORE</a>
                     </div>
                 ))}
             </div>
 
+            {/* Custom Carousel Navigation Controls */}
+            {hotelData.dining_outlets && hotelData.dining_outlets.length > 1 && (
+                <div className="dining-carousel-controls d-flex justify-content-between align-items-center mt-5">
+                    <button className="dining-nav-btn prev-btn" type="button" aria-label="Previous">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="13" viewBox="0 0 18.721 12.006">
+                            <g transform="translate(1 1.414)">
+                                <path d="M0,0,4.589,4.589,0,9.178" transform="translate(12.132)" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8"/>
+                                <path d="M15.746,0H0" transform="translate(0 4.589)" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8"/>
+                            </g>
+                        </svg>
+                    </button>
 
+                    <button className="dining-play-pause-btn play-pause-btn autoplay-start" type="button" aria-label="Play or Pause slider">
+                        <span className="icon icon-pause">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 29.5 29.5">
+                                <circle cx="14.75" cy="14.75" r="13.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                                <line x1="12" y1="9.5" x2="12" y2="20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                                <line x1="17.5" y1="9.5" x2="17.5" y2="20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                            </svg>
+                        </span>
+                        <span className="icon icon-play">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 29.5 29.5">
+                                <circle cx="14.75" cy="14.75" r="13.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                                <polygon points="12,9.5 20,14.75 12,20" fill="currentColor" />
+                            </svg>
+                        </span>
+                    </button>
+
+                    <button className="dining-nav-btn next-btn" type="button" aria-label="Next">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="13" viewBox="0 0 18.721 12.006">
+                            <g transform="translate(1 1.414)">
+                                <path d="M0,0,4.589,4.589,0,9.178" transform="translate(12.132)" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8"/>
+                                <path d="M15.746,0H0" transform="translate(0 4.589)" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8"/>
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+            )}
         </div>
     </section>
 
@@ -569,7 +677,7 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
                             </div>
                         </div>
                         <div className="explore-card-body">
-                            <p className="explore-card-desc">{attr.description}</p>
+                            <p className="explore-card-desc">{stripHtml(attr.description)}</p>
                             <a href="#" className="explore-readmore">READ MORE</a>
                         </div>
                     </div>
@@ -584,38 +692,25 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
         </div>
     </section>
 
-            {/* Our Location Section */}
-            <section className="location-section">
-                <div className="location-map-wrapper">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.315591956063!2d55.135694!3d25.077065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6be84e9f9c99%3A0x2e9b3e1e2e3f4a5b!2sJumeirah%20Lake%20Towers%2C%20Dubai!5e0!3m2!1sen!2sae!4v1690000000000!5m2!1sen!2sae"
-                        className="location-map-iframe" width="100%" height="100%" style={{border: "0"}} allowFullScreen
-                        loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Opera Hotel Dubai Location">
-                    </iframe>
-                </div>
-                <div className="location-info-wrapper">
-                    <h2 className="location-heading">OUR LOCATION</h2>
-                    <div className="location-address-block">
-                        <div className="location-city">
-                            <svg className="location-pin-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                                strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            <strong>Dubai</strong>
-                        </div>
-                        <p className="location-address-text">
-                            Suites 106/107, Madina Tower, Cluster O<br />
-                            Jumeirah Lake Towers , PO Box 66232,<br />
-                            Dubai â€“ UAE
-                        </p>
-                    </div>
-                </div>
-            </section>
+            {/* Our Location Section - Interactive Luxury Hotel Map */}
+            {hotelMapList.length > 0 && (
+                <BrandHotelMap
+                    hotels={hotelMapList}
+                    brandName={hotelData.name}
+                    contactUrl={`/${hotelData.slug}/contact`}
+                    sectionTitle={hotelData.location_title || "OUR LOCATION"}
+                />
+            )}
 
             <OurBrandsBar />
-            <HotelFooter logoUrl={hotelData?.logo} />
+            <HotelFooter 
+                logoUrl={hotelData?.footer_logo || hotelData?.logo}
+                hotelName={hotelData?.name}
+                hotelSlug={hotelSlug}
+                hotelPhone={hotelData?.phone}
+                hotelAddress={hotelData?.address}
+                hotelEmail={hotelData?.email}
+            />
         </main>
     );
 }
