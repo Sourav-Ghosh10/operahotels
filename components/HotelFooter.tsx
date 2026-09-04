@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -102,11 +102,6 @@ export default function HotelFooter({
               <li>
                 <Link href={currentSlug ? `/${currentSlug}#accommodation` : "/rooms-suites"} className="text-dark text-decoration-none hover-gold">
                   Rooms &amp; Suites
-                </Link>
-              </li>
-              <li>
-                <Link href={currentSlug ? `/${currentSlug}#facilities` : "#"} className="text-dark text-decoration-none hover-gold">
-                  Facilities
                 </Link>
               </li>
               <li>

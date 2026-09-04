@@ -34,7 +34,7 @@ function resolveImg(filenameOrUrl: string | undefined | null, defaultFilename: s
   return { local, cdn };
 }
 
-export default function PressReleasePage() {
+export default function PressReleasePage({ defaultCategory = "All" }: { defaultCategory?: string } = {}) {
   const [pageData, setPageData] = useState<any>(null);
 
   // Hero Slider State
@@ -42,7 +42,7 @@ export default function PressReleasePage() {
   const [heroPlaying, setHeroPlaying] = useState(true);
 
   // Filter State
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedCategory, setSelectedCategory] = useState<string>(defaultCategory);
 
   // Load More Limit State (Default 6, expands by 6)
   const [visibleCount, setVisibleCount] = useState<number>(6);

@@ -29,7 +29,6 @@ export default function Footer() {
             <div className="col-12 col-sm-6 col-md-3">
               <h4 className="footer-col-heading">Opera Grand Hotel</h4>
               <ul className="footer-links">
-                <li><a href="#">Facilities</a></li>
                 <li><Link href="/destinations">Destinations</Link></li>
                 <li><Link href="/gallery">Gallery</Link></li>
                 <li><Link href="/contact">Location &amp; Contact</Link></li>

@@ -6,6 +6,8 @@ interface UIContextType {
   setIsNavOpen: (v: boolean) => void;
   isBookingOpen: boolean;
   setIsBookingOpen: (v: boolean) => void;
+  isPageLoading: boolean;
+  setIsPageLoading: (v: boolean) => void;
   closeAll: () => void;
 }
 
@@ -14,6 +16,7 @@ const UIContext = createContext<UIContextType | undefined>(undefined);
 export function UIProvider({ children }: { children: React.ReactNode }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(false);
 
   const closeAll = () => {
     setIsNavOpen(false);
@@ -32,7 +35,15 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   }, [isNavOpen, isBookingOpen]);
 
   return (
-    <UIContext.Provider value={{ isNavOpen, setIsNavOpen, isBookingOpen, setIsBookingOpen, closeAll }}>
+    <UIContext.Provider value={{
+      isNavOpen,
+      setIsNavOpen,
+      isBookingOpen,
+      setIsBookingOpen,
+      isPageLoading,
+      setIsPageLoading,
+      closeAll
+    }}>
       {children}
     </UIContext.Provider>
   );
