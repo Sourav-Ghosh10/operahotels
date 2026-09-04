@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Head from 'next/head';
+import Link from 'next/link';
 import { getPageData } from '@/services/api';
+import CarouselNav from '@/components/CarouselNav';
 
 export default function Page() {
     const [pageData, setPageData] = useState<any>(null);
@@ -105,7 +107,7 @@ export default function Page() {
                             </div>
                         )}
                         <div className="mt-4">
-                            <a href="#" className="btn btn-gold-large">{exploreButtonText}</a>
+                            <Link href="/brands" className="btn btn-gold-large">{exploreButtonText}</Link>
                         </div>
                     </div>
                 </div>
@@ -277,22 +279,10 @@ export default function Page() {
                 </div>
 
                 {/* Custom Carousel Navigation Controls */}
-                <div className="explore-carousel-nav d-flex justify-content-center align-items-center mt-5 gap-4 mb-5">
-                    <button className="explore-nav-btn prev-btn" type="button" aria-label="Previous">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="20" y1="12" x2="4" y2="12"></line>
-                            <polyline points="10 18 4 12 10 6"></polyline>
-                        </svg>
-                    </button>
-                    <button className="explore-nav-btn next-btn" type="button" aria-label="Next">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="4" y1="12" x2="20" y2="12"></line>
-                            <polyline points="14 6 20 12 14 18"></polyline>
-                        </svg>
-                    </button>
-                </div>
+                <CarouselNav className="explore-carousel-nav d-flex justify-content-center align-items-center mt-4 gap-5" />
+
+                {/* Gold line separator */}
+                <div className="gold-separator mx-auto mt-4 mb-5"></div>
             </div>
 
             {/* Amenities Section */}

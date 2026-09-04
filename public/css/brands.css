@@ -1,184 +1,541 @@
-/* ================================
-   BRANDS & HOTELS PAGE STYLES
-   ================================ */
+/* =========================================================
+   HMH OUR BRANDS & HOTELS PAGE STYLES
+   Matches https://www.hmhhotelgroup.com/brands luxury styling
+   ========================================================= */
 
-/* Intro Section */
-.brands-intro {
-    padding: 80px 0 60px 0;
-    text-align: center;
-    background-color: #fff;
-}
-
-.brands-intro .section-title {
-    font-family: var(--font-primary);
-    font-size: 1.6rem;
-    font-weight: 500;
-    letter-spacing: 2px;
-    color: #222;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-}
-
-.brands-intro .brands-p {
-    font-family: var(--font-primary);
-    font-size: 0.95rem;
-    font-weight: 400;
-    color: #777;
-    line-height: 2.2;
-    max-width: 900px;
-    margin: 0 auto 15px auto;
-}
-
-/* Our Brands Section */
-.our-brands-section {
-    padding: 60px 0 100px 0;
-    background-color: #fdfaf4;
-}
-
-.our-brands-section .section-title {
-    font-family: var(--font-primary);
-    font-size: 2rem;
-    font-weight: 400;
-    color: #111;
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.brands-grid-custom {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.brands-row-top {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-
-.brands-row-bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 30px;
-}
-
-.brand-card {
+/* Hero Banner Slider */
+.brands-hero-section {
     position: relative;
-    border-radius: 8px;
+    width: 100%;
+    min-height: 560px;
+    background-color: #0c1b2a;
     overflow: hidden;
-    height: 320px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 30px;
-    text-decoration: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    justify-content: space-between;
 }
 
-.brand-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-}
-
-.brand-card-bg {
+.brands-hero-slider {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.brands-hero-slide {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
-    z-index: 1;
-    transition: transform 0.6s ease;
+    background-repeat: no-repeat;
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 6s ease-out;
+    opacity: 0;
+    transform: scale(1);
+    pointer-events: none;
 }
 
-.brand-card:hover .brand-card-bg {
-    transform: scale(1.08);
+.brands-hero-slide.active {
+    opacity: 1;
+    transform: scale(1.03);
+    pointer-events: auto;
 }
 
-.brand-card-overlay {
+.brands-hero-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 2;
-    transition: background 0.3s ease;
+    background: linear-gradient(180deg, rgba(12, 27, 42, 0.4) 0%, rgba(12, 27, 42, 0.65) 100%);
+    z-index: 1;
 }
 
-.brand-card:hover .brand-card-overlay {
-    background: rgba(0, 0, 0, 0.55);
-}
-
-.brand-card-content {
+.brands-hero-content {
     position: relative;
-    z-index: 3;
+    z-index: 5;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
+    text-align: center;
+    padding: 120px 20px 80px 20px;
+    margin: auto;
 }
 
-.brand-card-logo-container {
-    flex-grow: 1;
+.brands-hero-subtitle {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.brands-hero-title {
+    color: #ffffff;
+    font-size: 3.2rem;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin: 0;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Slider Controls */
+.brands-slider-arrows {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.brands-slider-arrow {
+    pointer-events: auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.brands-slider-arrow:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(1.08);
+}
+
+/* Slider Pagination Dots */
+.brands-slider-dots {
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    z-index: 10;
+}
+
+.brands-slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.brands-slider-dot.active {
+    background: #ffffff;
+    width: 28px;
+    border-radius: 6px;
+}
+
+/* Brands Intro Section */
+.brands-intro {
+    padding: 85px 20px 65px 20px;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+.brands-intro .intro-container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.brands-intro .section-title {
+    font-size: 1.8rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: #1a1a1a;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+}
+
+.brands-intro .brands-p,
+.brands-intro p {
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: #555555;
+    line-height: 2.1;
+    margin-bottom: 16px;
+}
+
+.brands-intro p:last-child {
+    margin-bottom: 0;
+}
+
+/* =========================================================
+   OUR BRANDS SECTION (5-COLUMN INTERACTIVE CARDS)
+   ========================================================= */
+.our-brands-section {
+    padding: 70px 20px 110px 20px;
+    background-color: #f7f7f7;
+    position: relative;
+}
+
+.our-brands-section .container-fluid-custom {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.our-brands-section .intro-area {
+    max-width: 650px;
+    margin-bottom: 50px;
+}
+
+.our-brands-section .h2-heading {
+    display: inline-block;
+    position: relative;
+    font-size: 2.4rem;
+    font-weight: 400;
+    color: #111111;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.our-brands-section .h2-heading::after {
+    content: "";
+    position: absolute;
+    width: 76px;
+    height: 3px;
+    background-color: #c59b4c;
+    left: 0;
+    bottom: -10px;
+    border-radius: 50px;
+}
+
+.our-brands-section .intro-subtitle-text,
+.our-brands-section .intro-area p {
+    font-size: 1.08rem;
+    color: #666666;
+    line-height: 1.8;
+    margin-top: 15px;
+}
+
+/* 5-Column Feature Block Grid */
+.feature-block-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
     width: 100%;
 }
 
-.brand-card-logo {
-    max-width: 180px;
-    max-height: 120px;
+.hmh-brand-card {
+    position: relative;
+    width: calc((100% - (16px * 4)) / 5);
+    min-height: 600px;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #231f20;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    text-decoration: none;
+    display: block;
+}
+
+.hmh-brand-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+}
+
+/* Card Top Content (Background Image + Logo + Tagline) */
+.hmh-brand-top {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hmh-brand-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hmh-brand-card:hover .hmh-brand-bg {
+    transform: scale(1.12);
+}
+
+.hmh-brand-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(20, 20, 20, 0.5) 0%, rgba(20, 20, 20, 0.3) 40%, rgba(20, 20, 20, 0.8) 100%);
+    transition: background 0.4s ease;
+}
+
+.hmh-brand-card:hover .hmh-brand-overlay {
+    background: linear-gradient(180deg, rgba(20, 20, 20, 0.7) 0%, rgba(20, 20, 20, 0.5) 40%, rgba(20, 20, 20, 0.9) 100%);
+}
+
+/* Brand Logo (Positioned at top) */
+.hmh-brand-logo-wrap {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    padding: 0 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.hmh-brand-logo-img {
+    max-height: 85px;
+    max-width: 170px;
     width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+    transition: transform 0.4s ease;
 }
 
-.brand-card-logo.corp-logo {
-    max-width: 120px;
+.hmh-brand-card:hover .hmh-brand-logo-img {
+    transform: scale(1.05);
 }
 
-.brand-card-tagline {
-    font-family: var(--font-primary);
-    font-size: 1.15rem;
-    color: #fff;
-    margin-bottom: 0;
+/* Slogan / Tagline (Positioned near bottom) */
+.hmh-brand-tagline-wrap {
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    padding: 0 24px;
+    text-align: center;
+    z-index: 3;
+    transition: bottom 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.hmh-brand-tagline-wrap::before {
+    content: "";
+    position: absolute;
+    width: 36px;
+    height: 2px;
+    background-color: #ffffff;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: -12px;
+    border-radius: 50px;
+}
+
+.hmh-brand-tagline {
+    color: #ffffff;
+    font-size: 1.05rem;
     font-weight: 500;
     letter-spacing: 0.5px;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+    line-height: 1.45;
+    margin: 0;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* Move Tagline up when hovered */
+.hmh-brand-card:hover .hmh-brand-tagline-wrap {
+    bottom: 44%;
+}
+
+/* Bottom Slide-up Panel (Description + Read More) */
+.hmh-brand-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 42%;
+    background-color: #ffffff;
+    padding: 28px 24px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     text-align: center;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 4;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.brand-card:hover .brand-card-tagline {
-    transform: translateY(-5px);
+.hmh-brand-card:hover .hmh-brand-bottom {
+    transform: translateY(0%);
 }
 
-@media (max-width: 991.98px) {
-    .brands-row-top,
-    .brands-row-bottom {
-        grid-template-columns: 1fr 1fr;
-    }
-    
-    .brand-card {
-        height: 280px;
+.hmh-brand-description {
+    color: #555555;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hmh-brand-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #0c1b2a;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-top: 12px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #c59b4c;
+    transition: color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    align-self: center;
+}
+
+.hmh-brand-btn:hover {
+    color: #c59b4c;
+    transform: translateX(4px);
+}
+
+.hmh-brand-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.hmh-brand-btn:hover svg {
+    transform: translateX(4px);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+    .hmh-brand-card {
+        width: calc((100% - (16px * 2)) / 3);
+        min-height: 520px;
     }
 }
 
-@media (max-width: 767.98px) {
-    .brands-row-top,
-    .brands-row-bottom {
-        grid-template-columns: 1fr;
+@media (max-width: 900px) {
+    .hmh-brand-card {
+        width: calc((100% - 16px) / 2);
+        min-height: 480px;
     }
-    
-    .brand-card {
-        height: 250px;
+
+    .brands-hero-title {
+        font-size: 2.5rem;
     }
-    
-    .brands-intro {
-        padding: 60px 15px 40px;
+}
+
+@media (max-width: 600px) {
+    .feature-block-grid {
+        flex-direction: column;
+    }
+
+    .hmh-brand-card {
+        width: 100%;
+        min-height: 420px;
+    }
+
+    .hmh-brand-bottom {
+        position: relative;
+        height: auto;
+        transform: translateY(0);
+        padding: 24px;
+    }
+
+    .hmh-brand-tagline-wrap {
+        display: none;
+    }
+
+    .hmh-brand-top {
+        position: relative;
+        height: 260px;
+    }
+
+    .brands-hero-title {
+        font-size: 2rem;
+    }
+}
+
+/* Location Section */
+.location-section {
+    display: flex;
+    min-height: 450px;
+    background-color: #ffffff;
+}
+
+.location-map-wrapper {
+    flex: 1;
+    min-height: 400px;
+}
+
+.location-info-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 80px;
+    background-color: #0c1b2a;
+    color: #ffffff;
+}
+
+.location-heading {
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+}
+
+.location-address-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.location-city {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.25rem;
+    color: #c59b4c;
+}
+
+.location-address-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .location-section {
+        flex-direction: column;
+    }
+
+    .location-info-wrapper {
+        padding: 40px 30px;
     }
 }

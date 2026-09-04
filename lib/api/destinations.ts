@@ -46,6 +46,23 @@ export interface SeoData {
   og_image: string | null;
 }
 
+export interface DestinationHotelData {
+  id: number;
+  name: string;
+  slug: string;
+  cover_image?: string | null;
+  banner_images?: string[];
+  latitude?: number | null;
+  longitude?: number | null;
+  address?: string | null;
+  city?: string | null;
+  country?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  google_location?: string | null;
+  star_rating?: number | null;
+}
+
 export interface DestinationData {
   id: number;
   slug: string;
@@ -61,6 +78,7 @@ export interface DestinationData {
   banner_images: string[];
   map_embeds?: string[];
   cities: CityData[];
+  hotels?: DestinationHotelData[];
   seo: SeoData | null;
 }
 

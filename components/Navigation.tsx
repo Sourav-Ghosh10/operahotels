@@ -138,7 +138,7 @@ export default function Navigation() {
               <Link href="/contact" className="overlay-menu-link">CONTACT US</Link>
               <Link href="/gallery" className="overlay-menu-link">GALLERY</Link>
               <Link href="/" className="overlay-menu-link">NEWSLETTER</Link>
-              <Link href="/" className="overlay-menu-link">FUTURE DEVELOPMENTS</Link>
+              <Link href="/future-developments" className="overlay-menu-link" onClick={() => setIsNavOpen(false)}>FUTURE DEVELOPMENTS</Link>
               <Link href="/" className="overlay-menu-link">CAREERS</Link>
             </div>
           </nav>

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import HotelHeader from '@/components/HotelHeader';
 import HotelFooter from '@/components/HotelFooter';
+import OurBrandsBar from '@/components/OurBrandsBar';
 import { useParams } from 'next/navigation';
 
 export default function OfferDetailsPage() {
@@ -103,7 +104,8 @@ export default function OfferDetailsPage() {
                     </div>
                 </div>
             </div>
-            <HotelFooter logoUrl={offer?.brand_logo} />
+            <OurBrandsBar />
+            <HotelFooter logoUrl={offer?.footer_logo || offer?.brand_logo} />
         </main>
     );
 }

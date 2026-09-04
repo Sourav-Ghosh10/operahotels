@@ -1,4 +1,21 @@
 import React from 'react';
+import DestinationMap from '@/components/DestinationMap';
+
+const sharjahHotels = [
+    {
+        id: 31,
+        name: 'Coral Beach Resort Sharjah',
+        slug: 'coral-beach-resort-sharjah',
+        cover_image: '/img/explore_museum.png',
+        latitude: 25.4095,
+        longitude: 55.4328,
+        address: 'Al Muntazah Street, Sharjah Corniche, PO Box 5525',
+        city: 'Sharjah',
+        country: 'United Arab Emirates',
+        phone: '+971 6 522 9999',
+        google_location: 'https://maps.google.com/?q=25.4095,55.4328',
+    }
+];
 import Header from '@/components/ServerHeader';
 import Head from 'next/head';
 import '../destination-details.css';
@@ -267,35 +284,13 @@ export default function Page() {
                 </div>
             </section>
 
-            {/* Our Location Section */}
-            <section className="location-section">
-                <div className="location-map-wrapper">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3606.331206121666!2d55.42199131501256!3d25.393717983805333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f59cfdf9bdc0d%3A0xc32c2ed12ffb892a!2sCoral%20Beach%20Resort%20Sharjah!5e0!3m2!1sen!2sae!4v1690000000000!5m2!1sen!2sae"
-                        className="location-map-iframe" width="100%" height="100%" style={{ border: "0" }} allowFullScreen={true}
-                        loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Coral Beach Resort Sharjah Location">
-                    </iframe>
-                </div>
-                <div className="location-info-wrapper">
-                    <h2 className="location-heading">OUR LOCATION</h2>
-                    <div className="location-address-block">
-                        <div className="location-city">
-                            <svg className="location-pin-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                                strokeLinejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            <strong>Sharjah</strong>
-                        </div>
-                        <p className="location-address-text">
-                            Al Muntazah Street, Sharjah Corniche<br />
-                            PO Box 5524, Sharjah<br />
-                            United Arab Emirates
-                        </p>
-                    </div>
-                </div>
-            </section>
+            {/* Our Location Section - Interactive Luxury Map */}
+            <DestinationMap
+                hotels={sharjahHotels as any}
+                brandName="Sharjah"
+                contactUrl="/contact"
+                sectionTitle="OUR LOCATION IN SHARJAH"
+            />
         </main>
     );
 }

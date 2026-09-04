@@ -14,21 +14,28 @@ export default function OurBrandsBar() {
     const [brands, setBrands] = useState<Brand[]>([]);
 
     useEffect(() => {
-        getBrandsData().then((data: Brand[]) => {
-            if (Array.isArray(data)) setBrands(data);
-        });
+        getBrandsData()
+            .then((data: Brand[]) => {
+                if (Array.isArray(data) && data.length > 0) {
+                    setBrands(data);
+                }
+            })
+            .catch((err) => {
+                console.error("Error fetching brands data:", err);
+            });
     }, []);
 
     if (brands.length === 0) return null;
 
     return (
         <section className="our-brands-bar">
+            <div className="our-brands-overlay"></div>
             <div className="our-brands-inner">
-                <h2 className="our-brands-title">Our Brands</h2>
+                <h2 className="our-brands-title">OUR BRANDS</h2>
                 <div className="our-brands-grid">
                     {brands.map((brand) => (
                         <div className="our-brands-item" key={brand.id}>
-                            <Link href={`/${brand.slug}`} title={brand.name}>
+                            <Link href={`/${brand.slug || ''}`} title={brand.name} className="our-brands-link">
                                 {brand.logo ? (
                                     <img
                                         src={brand.logo}

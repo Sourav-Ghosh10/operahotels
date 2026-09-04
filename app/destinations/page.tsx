@@ -3,6 +3,76 @@
  * Renders server-side (SSR) so data is always fresh from the database.
  */
 import React from 'react';
+import DestinationMap from '@/components/DestinationMap';
+
+const allDestinationHotels = [
+    {
+        id: 29,
+        name: 'Bahi Ajman Palace Hotel',
+        slug: 'bahi-ajman-palace-hotel',
+        latitude: 25.41682,
+        longitude: 55.43877,
+        address: 'Sheikh Humaid Bin Rashid Al Nuaimi Street, Ajman',
+        city: 'Ajman',
+        country: 'United Arab Emirates',
+        phone: '+971 6 701 8888',
+    },
+    {
+        id: 31,
+        name: 'Coral Beach Resort Sharjah',
+        slug: 'coral-beach-resort-sharjah',
+        latitude: 25.4095,
+        longitude: 55.4328,
+        address: 'Corniche Street, Al Muntazah, Sharjah',
+        city: 'Sharjah',
+        country: 'United Arab Emirates',
+        phone: '+971 6 522 9999',
+    },
+    {
+        id: 32,
+        name: 'Coral Dubai Deira Hotel',
+        slug: 'coral-dubai-deira-hotel',
+        latitude: 25.2631,
+        longitude: 55.3217,
+        address: 'Al Muraqqabat Street, Deira, Dubai',
+        city: 'Dubai',
+        country: 'United Arab Emirates',
+        phone: '+971 4 224 8587',
+    },
+    {
+        id: 35,
+        name: 'ECOS Dubai Hotel Al Furjan',
+        slug: 'ecos-hotels-dubai-alfurjan',
+        latitude: 25.02038,
+        longitude: 55.15353,
+        address: 'Al Furjan, Jabal Ali First, Dubai',
+        city: 'Dubai',
+        country: 'United Arab Emirates',
+        phone: '+971 4 510 0000',
+    },
+    {
+        id: 33,
+        name: 'Coral Jubail Hotel',
+        slug: 'coral-jubail-hotel',
+        latitude: 27.02286,
+        longitude: 49.64201,
+        address: 'Exit 8, King Faisal West, Al Jubail',
+        city: 'Al Jubail',
+        country: 'Saudi Arabia',
+        phone: '+966 13 362 8800',
+    },
+    {
+        id: 34,
+        name: 'Corp Executive Hotel Amman',
+        slug: 'corp-executive-hotel-amman',
+        latitude: 31.97599,
+        longitude: 35.90534,
+        address: 'Queen Alia Street, Al Shmeisani, Amman',
+        city: 'Amman',
+        country: 'Jordan',
+        phone: '+962 6 568 6666',
+    },
+];
 import Link from 'next/link';
 import Header from '@/components/ServerHeader';
 import { fetchDestinations, DestinationData } from '@/lib/api/destinations';
@@ -33,6 +103,7 @@ export default async function DestinationsPage() {
 
   return (
     <main>
+      <link rel="stylesheet" href="/css/destinations.css" />
       {/* ── Hero / Banner ─────────────────────────────────────────────── */}
       <header className="hero-section">
 
@@ -167,7 +238,7 @@ export default async function DestinationsPage() {
                             <h3 className="destination-card-title">{destinationName}</h3>
                             <p className="destination-card-text">{destinationDescription}</p>
                             <Link
-                              href={`/destinations/${destination.slug}`}
+                              href={`/destinations/${destination.slug.replace(/^\/?(destinations\/)?/, '')}`}
                               className="destination-card-link"
                             >
                               Read More
@@ -214,41 +285,13 @@ export default async function DestinationsPage() {
         </div>
       </section>
 
-      {/* ── Our Location Section ───────────────────────────────────────── */}
-      <section className="location-section">
-        <div className="location-map-wrapper">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.315591956063!2d55.135694!3d25.077065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6be84e9f9c99%3A0x2e9b3e1e2e3f4a5b!2sJumeirah%20Lake%20Towers%2C%20Dubai!5e0!3m2!1sen!2sae!4v1690000000000!5m2!1sen!2sae"
-            className="location-map-iframe"
-            width="100%"
-            height="100%"
-            style={{ border: '0' }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Opera Hotel Dubai Location"
-          />
-        </div>
-        <div className="location-info-wrapper">
-          <h2 className="location-heading">OUR LOCATION</h2>
-          <div className="location-address-block">
-            <div className="location-city">
-              <svg className="location-pin-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              <strong>Dubai</strong>
-            </div>
-            <p className="location-address-text">
-              Suites 106/107, Madina Tower, Cluster O<br />
-              Jumeirah Lake Towers, PO Box 66232,<br />
-              Dubai – UAE
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* ── Our Location Section - Interactive Luxury Destinations Map ── */}
+      <DestinationMap
+        hotels={allDestinationHotels as any}
+        brandName="Destinations"
+        contactUrl="/contact"
+        sectionTitle="OUR DESTINATIONS & HOTELS"
+      />
     </main>
   );
 }

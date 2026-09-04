@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Header from "@/components/Header";
+import DestinationMap from "@/components/DestinationMap";
 import { DestinationData, fetchDestinationByLocale, Locale } from "@/lib/api/destinations";
 
 type DestinationDetailClientProps = {
@@ -68,6 +69,31 @@ export default function DestinationDetailClient({ initialDestination, slug, head
   const destinationName = destination.name || destination.name_en || "";
   const description = stripHtml(destination.description || destination.description_en);
   const isArabic = locale === "ar";
+
+  // Prepare map hotels for destination
+  const mapHotels = useMemo(() => {
+    if (destination.hotels && destination.hotels.length > 0) {
+      return destination.hotels;
+    }
+    // Fallback: if cities have coordinates
+    if (destination.cities && destination.cities.length > 0) {
+      const cityHotels = destination.cities
+        .filter((c: any) => c.latitude && c.longitude)
+        .map((c: any) => ({
+          id: c.id,
+          name: c.name || c.name_en || '',
+          slug: c.slug,
+          cover_image: c.city_image_url || undefined,
+          latitude: c.latitude,
+          longitude: c.longitude,
+          address: c.description ? stripHtml(c.description) : undefined,
+          city: c.name || c.name_en,
+          country: destination.country || undefined,
+        }));
+      if (cityHotels.length > 0) return cityHotels;
+    }
+    return [];
+  }, [destination]);
 
   return (
     <main dir={isArabic ? "rtl" : "ltr"} className={isLoadingLocale ? "destination-locale-loading" : undefined}>
@@ -169,7 +195,7 @@ export default function DestinationDetailClient({ initialDestination, slug, head
                 <div className="col-lg-6">
                   <div className="city-img-wrapper">
                     <img
-                      src={city.city_image_url || bannerImages[0]}
+                      src={city.city_image_url ? city.city_image_url.replace('/storage/', '/uploads/') : bannerImages[0]}
                       alt={cityName}
                       className="city-img"
                     />
@@ -192,25 +218,14 @@ export default function DestinationDetailClient({ initialDestination, slug, head
         );
       })}
 
-      {/* Google Map Embeds Section */}
-      {destination.map_embeds && destination.map_embeds.length > 0 && (
-        <section className="destination-map-section">
-          <div className="container">
-            <h2 className="destination-map-title">
-              {isArabic ? "فنادقنا المتاحة" : `Our Available Hotels In ${destination.country || destinationName}`}
-            </h2>
-            <div className="destination-map-divider"></div>
-            <div className="destination-map-embeds">
-              {destination.map_embeds.map((embedCode, index) => (
-                <div
-                  key={index}
-                  className="destination-map-embed-wrapper"
-                  dangerouslySetInnerHTML={{ __html: embedCode }}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+      {/* ══ Interactive Luxury Map for Destination ══════════════════════ */}
+      {mapHotels.length > 0 && (
+        <DestinationMap
+          hotels={mapHotels as any}
+          brandName={destination.country || destinationName}
+          contactUrl="/contact"
+          sectionTitle={isArabic ? "فنادقنا المتاحة" : `OUR HOTELS IN ${destination.country?.toUpperCase() || destinationName.toUpperCase()}`}
+        />
       )}
     </main>
   );

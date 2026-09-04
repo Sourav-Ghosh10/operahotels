@@ -1,1 +1,10 @@
 /* Global CSS cleared for HTML migration */
+
+body,
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: "Some Font", sans-serif;
+}

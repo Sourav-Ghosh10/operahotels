@@ -5,6 +5,11 @@ import Link from 'next/link';
 import HotelHeader from '@/components/HotelHeader';
 import HotelFooter from '@/components/HotelFooter';
 import OurBrandsBar from '@/components/OurBrandsBar';
+import CarouselNav from '@/components/CarouselNav';
+
+import dynamic from 'next/dynamic';
+
+const BrandHotelMap = dynamic(() => import('@/components/BrandHotelMap'), { ssr: false });
 
 interface ChildHotel {
     id: number;
@@ -51,8 +56,16 @@ interface BrandData {
     intro_title?: string;
     intro_text?: string;
     logo?: string;
+    cover_image?: string;
     banner_images?: string[];
     banner_title?: string;
+    latitude?: number | string | null;
+    longitude?: number | string | null;
+    address?: string;
+    city?: string;
+    country?: string;
+    phone?: string;
+    email?: string;
     google_location?: string;
     location_title?: string;
     contact_button_text?: string;
@@ -159,13 +172,14 @@ function BrandExperienceOffers({ offers, brandSlug }: { offers: Offer[]; brandSl
 
     return (
         <div className="brand-experience-wrapper exclusive-offers-wrapper">
-            {/* Owl Carousel — same markup as ExclusiveOffers */}
             <div className="owl-carousel offers-carousel">
                 {offers.map((offer, index) => {
                     const offerName = offer.name || '';
                     const rawDesc = offer.description || (offer.discount_percentage ? `${offer.discount_percentage}% OFF` : '');
                     const offerDesc = typeof rawDesc === 'string' ? rawDesc.replace(/<[^>]*>?/gm, '') : rawDesc;
-                    const bannerImg = offer.image || '';
+                    const bannerImg = offer.image || offer.banner_image || '';
+                    const offerSlug = offer.slug || (offer.name ? offer.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '');
+                    const detailUrl = offerSlug ? `/${offer.hotel_slug || 'offers'}/special-offers/${offerSlug}` : '/offers';
 
                     return (
                         <div key={offer.id || index} className="offer-card-item">
@@ -181,13 +195,13 @@ function BrandExperienceOffers({ offers, brandSlug }: { offers: Offer[]; brandSl
                                     <h3 className="offer-title">{offerName}</h3>
                                     <div className="offer-hover-details">
                                         <a
-                                            href={`/${brandSlug}/special-offers`}
+                                            href={detailUrl}
                                             className="offer-readmore"
                                         >
                                             READ MORE
                                         </a>
                                         <a
-                                            href={`/${brandSlug}/special-offers`}
+                                            href={detailUrl}
                                             className="btn btn-offer-book"
                                         >
                                             BOOK NOW
@@ -201,25 +215,10 @@ function BrandExperienceOffers({ offers, brandSlug }: { offers: Offer[]; brandSl
             </div>
 
             {/* ← → navigation — same as ExclusiveOffers */}
-            <div className="offers-carousel-nav d-flex justify-content-center align-items-center mt-5 gap-5">
-                <button className="offers-nav-btn prev-btn" type="button" aria-label="Previous">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="20" y1="12" x2="4" y2="12" />
-                        <polyline points="10 18 4 12 10 6" />
-                    </svg>
-                </button>
-                <button className="offers-nav-btn next-btn" type="button" aria-label="Next">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="4" y1="12" x2="20" y2="12" />
-                        <polyline points="14 6 20 12 14 18" />
-                    </svg>
-                </button>
-            </div>
+            <CarouselNav className="offers-carousel-nav d-flex justify-content-center align-items-center mt-4 gap-5" />
 
             {/* Gold line separator */}
-            <div className="gold-separator mx-auto mt-5"></div>
+            <div className="gold-separator mx-auto mt-4"></div>
         </div>
     );
 }
@@ -265,82 +264,57 @@ function HotelsSlider({ hotels }: { hotels: ChildHotel[] }) {
 
     return (
         <div className="bdp-hs-wrap">
-            {/* ← Left arrow */}
-            {total > 1 && (
-                <button className="bdp-hs-arrow bdp-hs-arrow--left" onClick={prev} aria-label="Previous hotel">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="20" y1="12" x2="4" y2="12" />
-                        <polyline points="10 18 4 12 10 6" />
-                    </svg>
-                </button>
-            )}
+            <div className="bdp-inner" style={{ position: 'relative' }}>
+                {/* Slide content */}
+                <div className={`bdp-hs-slide ${slideClass}`}>
+                    {/* Image */}
+                    <div className="bdp-hs-img-wrap">
+                        <img src={hotelImage} alt={hotel.name} className="bdp-hs-img" />
+                    </div>
 
-            {/* Slide content */}
-            <div className={`bdp-hs-slide ${slideClass}`}>
-                {/* Image */}
-                <div className="bdp-hs-img-wrap">
-                    <img src={hotelImage} alt={hotel.name} className="bdp-hs-img" />
-                </div>
-
-                {/* Info panel overlapping bottom-right of image */}
-                <div className="bdp-hs-info">
-                    <h3 className="bdp-hotel-name">{hotel.name.toUpperCase()}</h3>
-                    {fullAddress && (
-                        <p className="bdp-hotel-meta">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                            </svg>
-                            {fullAddress}
-                        </p>
-                    )}
-                    {hotel.phone && (
-                        <p className="bdp-hotel-meta">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.48 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                            </svg>
-                            <a href={`tel:${hotel.phone}`}>{hotel.phone}</a>
-                        </p>
-                    )}
-                    <div className="bdp-hotel-btns">
-                        <Link href={`/${hotel.slug}`} className="bdp-hotel-btn-outline">VISIT WEBSITE</Link>
-                        <a
-                            href={bookingUrl}
-                            target={bookingUrl !== '#' ? '_blank' : undefined}
-                            rel="noopener noreferrer"
-                            className="bdp-hotel-btn-gold"
-                        >
-                            BOOK NOW
-                        </a>
+                    {/* Info panel overlapping bottom-right of image */}
+                    <div className="bdp-hs-info">
+                        <h3 className="bdp-hotel-name">{hotel.name.toUpperCase()}</h3>
+                        {fullAddress && (
+                            <p className="bdp-hotel-meta">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                                </svg>
+                                {fullAddress}
+                            </p>
+                        )}
+                        {hotel.phone && (
+                            <p className="bdp-hotel-meta">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.48 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                </svg>
+                                <a href={`tel:${hotel.phone}`}>{hotel.phone}</a>
+                            </p>
+                        )}
+                        <div className="bdp-hotel-btns">
+                            <Link href={`/${hotel.slug}`} className="bdp-hotel-btn-outline">VISIT WEBSITE</Link>
+                            <a
+                                href={bookingUrl}
+                                target={bookingUrl !== '#' ? '_blank' : undefined}
+                                rel="noopener noreferrer"
+                                className="bdp-hotel-btn-gold"
+                            >
+                                BOOK NOW
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* → Right arrow */}
+            {/* Centered navigation arrows */}
             {total > 1 && (
-                <button className="bdp-hs-arrow bdp-hs-arrow--right" onClick={next} aria-label="Next hotel">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="4" y1="12" x2="20" y2="12" />
-                        <polyline points="14 6 20 12 14 18" />
-                    </svg>
-                </button>
-            )}
-
-            {/* Counter dots */}
-            {total > 1 && (
-                <div className="bdp-hs-dots">
-                    {hotels.map((_, i) => (
-                        <button
-                            key={i}
-                            className={`bdp-hs-dot${i === current ? ' bdp-hs-dot--active' : ''}`}
-                            onClick={() => { if (!isAnimating) { setAnimDir(i > current ? 'left' : 'right'); setIsAnimating(true); setTimeout(() => { setCurrent(i); setIsAnimating(false); setAnimDir(null); }, 400); } }}
-                            aria-label={`Hotel ${i + 1}`}
-                        />
-                    ))}
-                </div>
+                <CarouselNav
+                    className="offers-carousel-nav d-flex justify-content-center align-items-center mt-4 gap-5"
+                    onPrev={prev}
+                    onNext={next}
+                />
             )}
         </div>
     );
@@ -450,7 +424,6 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
     const locationTitle = brandData.location_title || 'WHERE WE ARE';
     const contactBtnText = 'CONTACT US';
     const contactBtnUrl = brandData.contact_button_url || '/contact';
-    const googleMapSrc = brandData.google_location;
 
     const childHotels = brandData.child_hotels ?? [];
     const rawOffers = brandData.offers ?? [];
@@ -458,10 +431,28 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
     // Use real offers from the brand directly. No placeholders, to reflect actual DB state.
     const offers = rawOffers;
 
-    const mapEmbedSrc = googleMapSrc
-        ? (googleMapSrc.includes('maps/embed') ? googleMapSrc
-            : `https://maps.google.com/maps?q=${encodeURIComponent(googleMapSrc)}&output=embed`)
-        : null;
+    // Build mapHotels: prefer real child hotels; if none exist (e.g. EWA),
+    // synthesise a single pin from the brand's own coordinates so ALL brand
+    // pages show the interactive Leaflet map with the same luxury style.
+    const mapHotels: ChildHotel[] = childHotels.length > 0
+        ? childHotels
+        : (brandData.latitude && brandData.longitude)
+            ? [{
+                id: brandData.id,
+                name: brandData.name,
+                slug: brandData.slug,
+                cover_image: brandData.cover_image ?? brandData.banner_images?.[0],
+                banner_images: brandData.banner_images,
+                latitude: brandData.latitude,
+                longitude: brandData.longitude,
+                address: brandData.address,
+                city: brandData.city,
+                country: brandData.country,
+                phone: brandData.phone,
+                email: brandData.email,
+                google_location: brandData.google_location,
+            }]
+            : [];
 
     return (
         <main className="bdp-page">
@@ -501,7 +492,7 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
                     <div className="container">
                         <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-baseline mb-3">
                             <h2 className="offers-section-title mb-2 mb-sm-0">{experienceTitle}</h2>
-                            <a href={`/${brandData.slug}/special-offers`} className="discover-offers-link">
+                            <a href="/offers" className="discover-offers-link">
                                 DISCOVER OUR SPECIAL OFFERS
                             </a>
                         </div>
@@ -532,88 +523,19 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
                     </div>
                 )}
 
-                <div className="bdp-inner">
-                    <div className="bdp-gold-rule" />
-                </div>
+                {/* Gold line separator */}
+                <div className="gold-separator mx-auto mt-4"></div>
             </section>
 
 
-            {/* ══ WHERE WE ARE ════════════════════════════ */}
-            {(mapEmbedSrc || childHotels.length > 0) && (
-                <section className="bdp-where-section">
-                    {/* Section header */}
-                    <div className="bdp-inner">
-                        <div className="bdp-section-header">
-                            <h2 className="bdp-section-heading" style={{ marginBottom: 0 }}>WHERE WE ARE</h2>
-                            {contactBtnUrl && (
-                                <a href={contactBtnUrl} className="bdp-underline-link">{contactBtnText.toUpperCase()}</a>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Full-width map + hotel card panel */}
-                    <div className="bdp-where-map-wrap">
-                        {/* Map embed — prefer Google Maps, fall back to OpenStreetMap using first hotel address */}
-                        <iframe
-                            className="bdp-where-iframe"
-                            src={
-                                mapEmbedSrc ||
-                                (childHotels[0]?.address
-                                    ? `https://maps.google.com/maps?q=${encodeURIComponent(
-                                          [childHotels[0].address, childHotels[0].city, childHotels[0].country]
-                                              .filter(Boolean).join(', ')
-                                      )}&output=embed&z=12`
-                                    : `https://maps.google.com/maps?q=${encodeURIComponent(brandData.name)}&output=embed`)
-                            }
-                            title={`${brandData.name} — where we are`}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                        />
-
-                        {/* Hotel cards panel overlapping the map on the right */}
-                        {childHotels.length > 0 && (
-                            <div className="bdp-where-cards">
-                                {childHotels.map(hotel => {
-                                    const fullAddr = [hotel.address, hotel.city, hotel.country].filter(Boolean).join(', ');
-                                    return (
-                                        <div key={hotel.id} className="bdp-where-card">
-                                            {hotel.cover_image && (
-                                                <img src={hotel.cover_image} alt={hotel.name} className="bdp-where-card-img" />
-                                            )}
-                                            <div className="bdp-where-card-body">
-                                                <h4 className="bdp-where-card-name">{hotel.name.toUpperCase()}</h4>
-                                                {fullAddr && (
-                                                    <p className="bdp-where-card-meta">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                                                        </svg>
-                                                        {fullAddr}
-                                                    </p>
-                                                )}
-                                                {hotel.phone && (
-                                                    <p className="bdp-where-card-meta">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.48 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.07 6.07l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                                                        </svg>
-                                                        <a href={`tel:${hotel.phone}`}>{hotel.phone}</a>
-                                                    </p>
-                                                )}
-                                                <div className="bdp-where-card-btns">
-                                                    <Link href={`/${hotel.slug}`} className="bdp-hotel-btn-outline">VISIT WEBSITE</Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="bdp-inner">
-                        <div className="bdp-gold-rule" style={{ marginTop: 40 }} />
-                    </div>
-                </section>
+            {/* ══ WHERE WE ARE — Interactive Leaflet Map (all brand pages) ════════════════════ */}
+            {mapHotels.length > 0 && (
+                <BrandHotelMap
+                    hotels={mapHotels}
+                    brandName={brandData.name}
+                    contactUrl={contactBtnUrl}
+                    sectionTitle={locationTitle || 'WHERE WE ARE'}
+                />
             )}
 
 

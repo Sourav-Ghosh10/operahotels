@@ -45,8 +45,23 @@ export default function OffersGrid() {
                                         {bannerImg && <img src={bannerImg} alt={offerName} />}
                                         {badge && <div className="offer-tag">{badge}</div>}
                                     </div>
-                                    <h4 className="offer-title">{offerName}</h4>
-                                    <a href={`/${offer.hotel_slug || 'offers'}/special-offers/${offer.slug || ''}`} className="offer-btn">BOOK NOW</a>
+                                    <div className="offer-content">
+                                        <h4 className="offer-title">{offerName}</h4>
+                                        <div className="offer-hover-details">
+                                            <a
+                                                href={`/${offer.hotel_slug || 'offers'}/special-offers/${offer.slug || ''}`}
+                                                className="offer-readmore"
+                                            >
+                                                READ MORE
+                                            </a>
+                                            <a
+                                                href={`/${offer.hotel_slug || 'offers'}/special-offers/${offer.slug || ''}`}
+                                                className="btn btn-offer-book"
+                                            >
+                                                BOOK NOW
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         );

@@ -1,4 +1,34 @@
 import React from 'react';
+import DestinationMap from '@/components/DestinationMap';
+
+const dubaiHotels = [
+    {
+        id: 32,
+        name: 'Coral Dubai Deira Hotel',
+        slug: 'coral-dubai-deira-hotel',
+        cover_image: '/img/explore_museum.png',
+        latitude: 25.2631,
+        longitude: 55.3217,
+        address: 'Al Muraqqabat Street, Deira, PO Box 82999',
+        city: 'Dubai',
+        country: 'United Arab Emirates',
+        phone: '+971 4 224 8587',
+        google_location: 'https://maps.google.com/?q=25.2631,55.3217',
+    },
+    {
+        id: 35,
+        name: 'ECOS Dubai Hotel Al Furjan',
+        slug: 'ecos-hotels-dubai-alfurjan',
+        cover_image: '/img/explore_museum.png',
+        latitude: 25.02038,
+        longitude: 55.15353,
+        address: 'Al Furjan, Jabal Ali First, PO Box 82999',
+        city: 'Dubai',
+        country: 'United Arab Emirates',
+        phone: '+971 4 510 0000',
+        google_location: 'https://maps.google.com/?q=25.02038,55.15353',
+    }
+];
 import Header from '@/components/ServerHeader';
 import Head from 'next/head';
 import '../destination-details.css';
@@ -174,35 +204,13 @@ export default function Page() {
                     </div>
                 </div>
             </section>
-            {/* Our Location Section */}
-            <section className="location-section">
-                <div className="location-map-wrapper">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.315591956063!2d55.135694!3d25.077065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6be84e9f9c99%3A0x2e9b3e1e2e3f4a5b!2sJumeirah%20Lake%20Towers%2C%20Dubai!5e0!3m2!1sen!2sae!4v1690000000000!5m2!1sen!2sae"
-                        className="location-map-iframe" width="100%" height="100%" style={{ border: "0" }} allowFullScreen={true}
-                        loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Opera Hotel Dubai Location">
-                    </iframe>
-                </div>
-                <div className="location-info-wrapper">
-                    <h2 className="location-heading">OUR LOCATION</h2>
-                    <div className="location-address-block">
-                        <div className="location-city">
-                            <svg className="location-pin-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                                strokeLinejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            <strong>Dubai</strong>
-                        </div>
-                        <p className="location-address-text">
-                            Suites 106/107, Madina Tower, Cluster O<br />
-                            Jumeirah Lake Towers , PO Box 66232,<br />
-                            Dubai â€“ UAE
-                        </p>
-                    </div>
-                </div>
-            </section>
+            {/* Our Location Section - Interactive Luxury Map */}
+            <DestinationMap
+                hotels={dubaiHotels as any}
+                brandName="Dubai"
+                contactUrl="/contact"
+                sectionTitle="OUR HOTELS IN DUBAI"
+            />
 
             {/* ===== FOOTER ===== */}
 

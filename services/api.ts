@@ -16,7 +16,7 @@ export const getPropertyBySlug = async (slug: string) => {
 
 export const getPageData = async (slug: string) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/pages/${slug}`);
+        const response = await fetch(`${API_BASE_URL}/pages/${slug}`, { cache: "no-store" });
         if (!response.ok) {
             throw new Error(`Error fetching page data: ${response.statusText}`);
         }
@@ -47,6 +47,34 @@ export const getAllOffersData = async () => {
         const response = await fetch(`${API_BASE_URL}/offers?all=true`);
         if (!response.ok) {
             throw new Error(`Error fetching all offers data: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.data || data;
+    } catch (error) {
+        console.error("API Fetch Error:", error);
+        return [];
+    }
+};
+
+export const getAllHotels = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/properties/hotels`);
+        if (!response.ok) {
+            throw new Error(`Error fetching all hotels: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.data || data;
+    } catch (error) {
+        console.error("API Fetch Error:", error);
+        return [];
+    }
+};
+
+export const getOfferTypes = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/offers/types`);
+        if (!response.ok) {
+            throw new Error(`Error fetching offer types: ${response.statusText}`);
         }
         const data = await response.json();
         return data.data || data;
@@ -97,3 +125,32 @@ export const getBrandsData = async () => {
         return [];
     }
 };
+
+export const getMeetingsEventsByProperty = async (hotelSlug: string) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/properties/${hotelSlug}/meetings-events`);
+        if (!response.ok) {
+            throw new Error(`Error fetching meetings events data: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.data || data;
+    } catch (error) {
+        console.error("API Fetch Error:", error);
+        return null;
+    }
+};
+
+export const getSingleMeetingEvent = async (hotelSlug: string, eventSlug: string) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/properties/${hotelSlug}/meetings-events/${eventSlug}`);
+        if (!response.ok) {
+            throw new Error(`Error fetching single meeting & event space: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.data || data;
+    } catch (error) {
+        console.error("API Fetch Error:", error);
+        return null;
+    }
+};
+

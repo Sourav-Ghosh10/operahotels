@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { getOffersData } from '@/services/api';
+import CarouselNav from './CarouselNav';
 
 interface ExclusiveOffersProps {
     hotelName?: string;
@@ -98,7 +99,7 @@ export default function ExclusiveOffers({ hotelName, hotelSlug }: ExclusiveOffer
             <div className="container">
                 <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-baseline mb-3">
                     <h2 className="offers-section-title mb-2 mb-sm-0">EXCLUSIVE OFFERS</h2>
-                    <a href="/offers" className="discover-offers-link">DISCOVER OUR SPECIAL OFFERS</a>
+                    <a href={hotelSlug ? `/offers?hotel=${hotelSlug}` : '/offers'} className="discover-offers-link">DISCOVER OUR SPECIAL OFFERS</a>
                 </div>
                 {/* Only show this tagline if we aren't filtering for a specific hotel */}
                 {(!hotelName && !hotelSlug) && <p>Good things come to those who book direct.</p>}
@@ -135,25 +136,10 @@ export default function ExclusiveOffers({ hotelName, hotelSlug }: ExclusiveOffer
                 </div>
 
                 {/* Custom Carousel Navigation Controls */}
-                <div className="offers-carousel-nav d-flex justify-content-center align-items-center mt-5 gap-5">
-                    <button className="offers-nav-btn prev-btn" type="button" aria-label="Previous">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="20" y1="12" x2="4" y2="12"></line>
-                            <polyline points="10 18 4 12 10 6"></polyline>
-                        </svg>
-                    </button>
-                    <button className="offers-nav-btn next-btn" type="button" aria-label="Next">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="4" y1="12" x2="20" y2="12"></line>
-                            <polyline points="14 6 20 12 14 18"></polyline>
-                        </svg>
-                    </button>
-                </div>
+                <CarouselNav className="offers-carousel-nav d-flex justify-content-center align-items-center mt-4 gap-5" />
 
                 {/* Gold Line Separator Bottom */}
-                <div className="gold-separator mx-auto mt-5"></div>
+                <div className="gold-separator mx-auto mt-4"></div>
             </div>
         </section>
     );
