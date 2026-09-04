@@ -4,7 +4,14 @@ import { useUI } from "@/app/UIContext";
 import Link from "next/link";
 
 export default function Navigation() {
-  const { isNavOpen, setIsNavOpen, setIsBookingOpen } = useUI();
+  const { isNavOpen, setIsNavOpen, setIsBookingOpen, setIsPageLoading } = useUI();
+
+  const handleMenuLinkClick = (href: string) => {
+    setIsNavOpen(false);
+    if (typeof window !== "undefined" && window.location.pathname !== href) {
+      setIsPageLoading(true);
+    }
+  };
 
   return (
     <div className={`overlay-navigation ${isNavOpen ? "active" : ""}`}>
@@ -34,14 +41,16 @@ export default function Navigation() {
           </svg>
         </button>
         <div className="overlay-sidebar-content">
-          <h3 className="overlay-sidebar-heading">Hospitality Management Holding</h3>
-          <div className="overlay-sidebar-img-wrapper">
-            <img
-              src="/img/explore_clocktower.png"
-              alt="Traditional Arabic Architecture"
-              className="overlay-sidebar-img"
-            />
-          </div>
+          <Link href="/" onClick={() => setIsNavOpen(false)} style={{ textDecoration: "none", color: "inherit" }}>
+            <h3 className="overlay-sidebar-heading">Hospitality Management Holding</h3>
+            <div className="overlay-sidebar-img-wrapper">
+              <img
+                src="/img/explore_clocktower.png"
+                alt="Traditional Arabic Architecture"
+                className="overlay-sidebar-img"
+              />
+            </div>
+          </Link>
           <div className="overlay-sidebar-socials">
             <h5 className="socials-heading">Follow Us</h5>
             <div className="socials-icons">
@@ -128,18 +137,18 @@ export default function Navigation() {
         <div className="overlay-menu-container">
           <nav className="overlay-menu-grid">
             <div className="overlay-menu-col">
-              <Link href="/" className="overlay-menu-link">HOME</Link>
-              <Link href="/brands" className="overlay-menu-link">BRANDS</Link>
-              <Link href="/destinations" className="overlay-menu-link">DESTINATIONS</Link>
-              <Link href="/offers" className="overlay-menu-link">SPECIAL OFFERS</Link>
-              <Link href="/" className="overlay-menu-link">MEETINGS & EVENTS</Link>
+              <Link href="/" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/")}>HOME</Link>
+              <Link href="/brands" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/brands")}>BRANDS</Link>
+              <Link href="/destinations" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/destinations")}>DESTINATIONS</Link>
+              <Link href="/offers" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/offers")}>SPECIAL OFFERS</Link>
+              <Link href="/meetings-events" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/meetings-events")}>MEETINGS &amp; EVENTS</Link>
             </div>
             <div className="overlay-menu-col">
-              <Link href="/contact" className="overlay-menu-link">CONTACT US</Link>
-              <Link href="/gallery" className="overlay-menu-link">GALLERY</Link>
-              <Link href="/" className="overlay-menu-link">NEWSLETTER</Link>
-              <Link href="/future-developments" className="overlay-menu-link" onClick={() => setIsNavOpen(false)}>FUTURE DEVELOPMENTS</Link>
-              <Link href="/" className="overlay-menu-link">CAREERS</Link>
+              <Link href="/contact" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/contact")}>CONTACT US</Link>
+              <Link href="/gallery" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/gallery")}>GALLERY</Link>
+              <Link href="/newsletter" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/newsletter")}>NEWSLETTER</Link>
+              <Link href="/future-developments" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/future-developments")}>FUTURE DEVELOPMENTS</Link>
+              <Link href="/careers" className="overlay-menu-link" onClick={() => handleMenuLinkClick("/careers")}>CAREERS</Link>
             </div>
           </nav>
         </div>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
@@ -177,9 +177,9 @@ function BrandExperienceOffers({ offers, brandSlug }: { offers: Offer[]; brandSl
                     const offerName = offer.name || '';
                     const rawDesc = offer.description || (offer.discount_percentage ? `${offer.discount_percentage}% OFF` : '');
                     const offerDesc = typeof rawDesc === 'string' ? rawDesc.replace(/<[^>]*>?/gm, '') : rawDesc;
-                    const bannerImg = offer.image || offer.banner_image || '';
-                    const offerSlug = offer.slug || (offer.name ? offer.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '');
-                    const detailUrl = offerSlug ? `/${offer.hotel_slug || 'offers'}/special-offers/${offerSlug}` : '/offers';
+                    const bannerImg = offer.image || (offer as any).banner_image || '';
+                    const offerSlug = (offer as any).slug || (offer.name ? offer.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '');
+                    const detailUrl = offerSlug ? `/${(offer as any).hotel_slug || 'offers'}/special-offers/${offerSlug}` : '/offers';
 
                     return (
                         <div key={offer.id || index} className="offer-card-item">
@@ -434,7 +434,7 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
     // Build mapHotels: prefer real child hotels; if none exist (e.g. EWA),
     // synthesise a single pin from the brand's own coordinates so ALL brand
     // pages show the interactive Leaflet map with the same luxury style.
-    const mapHotels: ChildHotel[] = childHotels.length > 0
+    const mapHotels: any[] = childHotels.length > 0
         ? childHotels
         : (brandData.latitude && brandData.longitude)
             ? [{

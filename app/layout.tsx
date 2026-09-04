@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Suspense } from "react";
 import { UIProvider } from "./UIContext";
 import Navigation from "@/components/Navigation";
 import BookingSidebar from "@/components/BookingSidebar";
 import ConditionalFooter from "@/components/ConditionalFooter";
 import ClientScripts from "@/components/ClientScripts";
+import PageLoader from "@/components/PageLoader";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -48,6 +50,9 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning>
         <UIProvider>
+          <Suspense fallback={null}>
+            <PageLoader />
+          </Suspense>
           <Navigation />
           <BookingSidebar />
           {children}
