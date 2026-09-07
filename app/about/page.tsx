@@ -1,42 +1,46 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import OurBrandsBar from '@/components/OurBrandsBar';
 import Link from 'next/link';
-import { getPageData } from '@/services/api';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-
-function resolveImageUrl(img: string | undefined | null): string {
-    if (!img) return '';
-    if (img.startsWith('http://') || img.startsWith('https://')) return img;
-    const clean = img.replace(/^\/?(storage\/|uploads\/)?/, '');
-    return `${API_BASE}/uploads/${clean}`;
-}
+import { getPageData, resolveImageUrl } from '@/services/api';
 
 export default function AboutPage() {
     const [pageData, setPageData] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [activeSlide, setActiveSlide] = useState(0);
 
     useEffect(() => {
+        let isMounted = true;
         const load = async () => {
-            const data = await getPageData('about-us');
-            if (data) {
-                setPageData(data);
+            try {
+                const data = await getPageData('about-us');
+                if (isMounted && data) {
+                    setPageData(data);
+                }
+            } catch (err) {
+                console.error("Failed to load about-us page data:", err);
+            } finally {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
             }
         };
         load();
+        return () => { isMounted = false; };
     }, []);
 
     const body = pageData?.body || {};
-    const bannerSlides = Array.isArray(body.banner_slides) && body.banner_slides.length > 0
+
+    // Dynamic banner slides strictly from backend
+    const rawSlides = Array.isArray(body.banner_slides) && body.banner_slides.length > 0
         ? body.banner_slides
-        : [
-            { image: 'about_banner_1.jpg', title: 'About Us', subtitle: '' },
-            { image: 'about_banner_2.jpg', title: 'About Us', subtitle: '' },
-            { image: 'about_banner_3.jpg', title: 'About Us', subtitle: '' },
-        ];
+        : (Array.isArray(body.banner_images) && body.banner_images.length > 0
+            ? body.banner_images.map((img: string) => ({ image: img, title: '', subtitle: '' }))
+            : []);
+
+    const bannerSlides = rawSlides.filter((s: any) => s && (s.image || s.image_url));
 
     useEffect(() => {
         if (bannerSlides.length <= 1) return;
@@ -54,36 +58,52 @@ export default function AboutPage() {
         setActiveSlide((prev) => (prev + 1) % bannerSlides.length);
     };
 
-    // Subtitle & Title
-    const introSubtitle = body.intro_subtitle || 'Hospitality Management Holding';
-    const introTitle = body.intro_title || body.content_title || 'Get to know';
-    const introText = body.intro_text || (body.content ? body.content.replace(/<[^>]+>/g, '') : '') ||
-        'Hospitality Management Holding (HMH) stands as a leading force in the MENA hospitality sector, since its inception in 2003.';
+    // Subtitle & Title strictly from backend
+    const introSubtitle = body.intro_subtitle || '';
+    const introTitle = body.intro_title || body.content_title || '';
+    const introText = body.intro_text || (body.content ? body.content.replace(/<[^>]+>/g, '') : '') || '';
 
-    // Expansion
-    const expansionImg = body.expansion_image || 'about_expansion.jpg';
-    const expansionHtml = body.expansion_text ||
-        '<p>Strategically expanding across the MENA region, HMH has successfully discovered new opportunities and created significant value for all stakeholders. Our properties occupy prime locations across the region, and with a robust pipeline of hotels under development, our reach continues to broaden.</p><p>In the face of global adversities, HMH has demonstrated remarkable resilience and adaptability. Our approach to overcoming these challenges not only strengthens our resolve but also paves the way for continued growth. With a proven record of excellence, a strategic growth trajectory, and an unwavering commitment to wellbeing, sustainability, and innovation, HMH stands ready to capitalize on emerging opportunities in the MENA hospitality industry.</p>';
+    // Expansion strictly from backend
+    const expansionImg = body.expansion_image || '';
+    const expansionHtml = body.expansion_text || '';
 
-    // Vision & Mission
-    const visionText = body.our_vision_text || 'To build trust with our clients, enrich the healthy journey of our guests in a vibrant environment.';
-    const visionImg = body.our_vision_image || 'about_vision.jpg';
+    // Vision & Mission strictly from backend
+    const visionText = body.our_vision_text || '';
+    const visionImg = body.our_vision_image || '';
 
-    const missionText = body.our_mission_text || 'At HMH we, exceed expectations, ensuring sustainable growth in the MENA region. Emphasising wellness and accessibility, we create a vibrant environment, enriching the guest and associates’ journey, and building trust with stakeholders through profitable operations.';
-    const missionImg = body.our_mission_image || 'about_mission.jpg';
+    const missionText = body.our_mission_text || '';
+    const missionImg = body.our_mission_image || '';
 
-    // Values, Culture, Promise
+    // Values, Culture, Promise strictly from backend
     const valuesList = body.our_values
         ? body.our_values.split('\n').map((v: string) => v.trim()).filter(Boolean)
-        : ['Excellence', 'Integrity', 'Innovation', 'Wellness and Accessibility', 'Accountability', 'Sustainability'];
+        : [];
 
-    const cultureText = body.our_culture ||
-        'Our culture is led by service excellence; characterized by a forward-looking, responsible, people-centric ethos with a strong focus on technology, diversity, wellness and environmental considerations.';
-
-    const promiseText = body.our_promise || 'Growth & Impeccable Service.';
+    const cultureText = body.our_culture || '';
+    const promiseText = body.our_promise || '';
 
     const currentSlide = bannerSlides[activeSlide] || bannerSlides[0];
-    const pageTitle = (typeof pageData?.title === 'object' ? pageData?.title?.en : pageData?.title) || currentSlide?.title || 'About Us';
+    const pageTitle = (typeof pageData?.title === 'object' ? pageData?.title?.en : pageData?.title) || currentSlide?.title || '';
+
+    if (isLoading && !pageData) {
+        return (
+            <div className="luxury-page-loader-overlay active" role="status" aria-live="polite">
+                <div className="luxury-loader-center">
+                    <div className="luxury-loader-orbit">
+                        <div className="luxury-loader-ring-outer"></div>
+                        <div className="luxury-loader-ring-inner"></div>
+                        <div className="luxury-loader-logo-wrap">
+                            <img src="/img/operalogo-white.png" alt="Opera Hotels Logo" className="luxury-loader-logo" />
+                        </div>
+                    </div>
+                    <div className="luxury-loader-brand">Opera Grand Hotels</div>
+                    <div className="luxury-loader-progress-track">
+                        <div className="luxury-loader-progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <main>
@@ -92,16 +112,20 @@ export default function AboutPage() {
             {/* ================= HERO BANNER ================= */}
             <header className="about-hero-section">
                 <div className="about-hero-slider">
-                    {bannerSlides.map((slide: any, idx: number) => {
-                        const bgUrl = resolveImageUrl(slide.image);
-                        return (
-                            <div
-                                key={idx}
-                                className={`about-hero-slide ${idx === activeSlide ? 'active' : ''}`}
-                                style={{ backgroundImage: `url('${bgUrl}')` }}
-                            />
-                        );
-                    })}
+                    {bannerSlides.length > 0 ? (
+                        bannerSlides.map((slide: any, idx: number) => {
+                            const bgUrl = resolveImageUrl(slide.image || slide.image_url);
+                            return (
+                                <div
+                                    key={idx}
+                                    className={`about-hero-slide ${idx === activeSlide ? 'active' : ''}`}
+                                    style={{ backgroundImage: `url('${bgUrl}')` }}
+                                />
+                            );
+                        })
+                    ) : (
+                        <div className="about-hero-slide active" style={{ backgroundColor: '#1b1b18' }} />
+                    )}
                 </div>
 
                 <div className="about-hero-overlay"></div>
@@ -120,12 +144,20 @@ export default function AboutPage() {
                 {/* Arrows */}
                 {bannerSlides.length > 1 && (
                     <>
-                        <button className="about-hero-arrow about-hero-prev" onClick={prevSlide} aria-label="Previous Slide">
+                        <button
+                            className="about-hero-arrow about-hero-prev"
+                            onClick={prevSlide}
+                            aria-label="Previous Slide"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6"></polyline>
                             </svg>
                         </button>
-                        <button className="about-hero-arrow about-hero-next" onClick={nextSlide} aria-label="Next Slide">
+                        <button
+                            className="about-hero-arrow about-hero-next"
+                            onClick={nextSlide}
+                            aria-label="Next Slide"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6"></polyline>
                             </svg>
@@ -180,124 +212,152 @@ export default function AboutPage() {
             </nav>
 
             {/* ================= INTRO ("GET TO KNOW") ================= */}
-            <section className="about-intro-section" id="intro">
-                <div className="container">
-                    {introSubtitle && <div className="about-intro-subtitle">{introSubtitle}</div>}
-                    <h2 className="about-intro-title">{introTitle}</h2>
-                    <p className="about-intro-text">{introText}</p>
-                </div>
-            </section>
+            {(introTitle || introSubtitle || introText) && (
+                <section className="about-intro-section" id="intro">
+                    <div className="container">
+                        {introSubtitle && <div className="about-intro-subtitle">{introSubtitle}</div>}
+                        {introTitle && <h2 className="about-intro-title">{introTitle}</h2>}
+                        {introText && <p className="about-intro-text">{introText}</p>}
+                    </div>
+                </section>
+            )}
 
             {/* ================= STRATEGIC EXPANSION (IMAGE & TEXT SPLIT) ================= */}
-            <section className="about-expansion-section">
-                <div className="container">
-                    <div className="row align-items-center">
-                        <div className="col-lg-6 mb-4 mb-lg-0">
-                            <div className="about-expansion-text-wrap">
-                                <div
-                                    className="about-expansion-text"
-                                    dangerouslySetInnerHTML={{ __html: expansionHtml }}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="about-expansion-img-wrap">
-                                <img
-                                    src={resolveImageUrl(expansionImg)}
-                                    alt="HMH Strategic Expansion"
-                                    className="about-expansion-img"
-                                    loading="lazy"
-                                />
-                            </div>
+            {(expansionHtml || expansionImg) && (
+                <section className="about-expansion-section">
+                    <div className="container">
+                        <div className="row align-items-center">
+                            {expansionHtml && (
+                                <div className={`col-lg-${expansionImg ? '6' : '12'} mb-4 mb-lg-0`}>
+                                    <div className="about-expansion-text-wrap">
+                                        <div
+                                            className="about-expansion-text"
+                                            dangerouslySetInnerHTML={{ __html: expansionHtml }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                            {expansionImg && (
+                                <div className={`col-lg-${expansionHtml ? '6' : '12'}`}>
+                                    <div className="about-expansion-img-wrap">
+                                        <img
+                                            src={resolveImageUrl(expansionImg)}
+                                            alt={introTitle || "Strategic Expansion"}
+                                            className="about-expansion-img"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* ================= OUR VISION ================= */}
-            <section className="about-vm-section">
-                <div className="container">
-                    <div className="row align-items-center">
-                        <div className="col-lg-6 order-2 order-lg-1">
-                            <div className="about-vm-img-wrap">
-                                <img
-                                    src={resolveImageUrl(visionImg)}
-                                    alt="Our Vision"
-                                    className="about-vm-img"
-                                    loading="lazy"
-                                />
-                            </div>
-                        </div>
-                        <div className="col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0 ps-lg-5">
-                            <h3 className="about-vm-heading">Our Vision</h3>
-                            <p className="about-vm-text">{visionText}</p>
+            {(visionText || visionImg) && (
+                <section className="about-vm-section">
+                    <div className="container">
+                        <div className="row align-items-center">
+                            {visionImg && (
+                                <div className={`col-lg-${visionText ? '6' : '12'} order-2 order-lg-1`}>
+                                    <div className="about-vm-img-wrap">
+                                        <img
+                                            src={resolveImageUrl(visionImg)}
+                                            alt="Our Vision"
+                                            className="about-vm-img"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                            {visionText && (
+                                <div className={`col-lg-${visionImg ? '6' : '12'} order-1 order-lg-2 mb-4 mb-lg-0 ps-lg-5`}>
+                                    <h3 className="about-vm-heading">Our Vision</h3>
+                                    <p className="about-vm-text">{visionText}</p>
+                                </div>
+                            )}
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* ================= OUR MISSION ================= */}
-            <section className="about-vm-section alt-bg">
-                <div className="container">
-                    <div className="row align-items-center">
-                        <div className="col-lg-6 mb-4 mb-lg-0 pe-lg-5">
-                            <h3 className="about-vm-heading">Our Mission</h3>
-                            <p className="about-vm-text">{missionText}</p>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="about-vm-img-wrap">
-                                <img
-                                    src={resolveImageUrl(missionImg)}
-                                    alt="Our Mission"
-                                    className="about-vm-img"
-                                    loading="lazy"
-                                />
-                            </div>
+            {(missionText || missionImg) && (
+                <section className="about-vm-section alt-bg">
+                    <div className="container">
+                        <div className="row align-items-center">
+                            {missionText && (
+                                <div className={`col-lg-${missionImg ? '6' : '12'} mb-4 mb-lg-0 pe-lg-5`}>
+                                    <h3 className="about-vm-heading">Our Mission</h3>
+                                    <p className="about-vm-text">{missionText}</p>
+                                </div>
+                            )}
+                            {missionImg && (
+                                <div className={`col-lg-${missionText ? '6' : '12'}`}>
+                                    <div className="about-vm-img-wrap">
+                                        <img
+                                            src={resolveImageUrl(missionImg)}
+                                            alt="Our Mission"
+                                            className="about-vm-img"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* ================= VALUES, CULTURE & PROMISE ================= */}
-            <section className="about-cards-section">
-                <div className="container">
-                    <div className="row g-4">
-                        {/* Card 1: Our Values */}
-                        <div className="col-md-4 about-card-col">
-                            <div className="about-card card-navy">
-                                <div className="about-card-inner">
-                                    <h3 className="about-card-title">Our Values</h3>
-                                    <ul className="about-card-values-list">
-                                        {valuesList.map((val: string, i: number) => (
-                                            <li key={i}>{val}</li>
-                                        ))}
-                                    </ul>
+            {(valuesList.length > 0 || cultureText || promiseText) && (
+                <section className="about-cards-section">
+                    <div className="container">
+                        <div className="row g-4">
+                            {/* Card 1: Our Values */}
+                            {valuesList.length > 0 && (
+                                <div className="col-md-4 about-card-col">
+                                    <div className="about-card card-navy">
+                                        <div className="about-card-inner">
+                                            <h3 className="about-card-title">Our Values</h3>
+                                            <ul className="about-card-values-list">
+                                                {valuesList.map((val: string, i: number) => (
+                                                    <li key={i}>{val}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            )}
 
-                        {/* Card 2: Our Culture */}
-                        <div className="col-md-4 about-card-col">
-                            <div className="about-card card-gold">
-                                <div className="about-card-inner">
-                                    <h3 className="about-card-title">Our Culture</h3>
-                                    <p className="about-card-desc">{cultureText}</p>
+                            {/* Card 2: Our Culture */}
+                            {cultureText && (
+                                <div className="col-md-4 about-card-col">
+                                    <div className="about-card card-gold">
+                                        <div className="about-card-inner">
+                                            <h3 className="about-card-title">Our Culture</h3>
+                                            <p className="about-card-desc">{cultureText}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            )}
 
-                        {/* Card 3: Our Promise */}
-                        <div className="col-md-4 about-card-col">
-                            <div className="about-card card-dark">
-                                <div className="about-card-inner">
-                                    <h3 className="about-card-title">Our Promise</h3>
-                                    <p className="about-card-desc">{promiseText}</p>
+                            {/* Card 3: Our Promise */}
+                            {promiseText && (
+                                <div className="col-md-4 about-card-col">
+                                    <div className="about-card card-dark">
+                                        <div className="about-card-inner">
+                                            <h3 className="about-card-title">Our Promise</h3>
+                                            <p className="about-card-desc">{promiseText}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* ================= OUR BRANDS BAR ================= */}
             <OurBrandsBar />

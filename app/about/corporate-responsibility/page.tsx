@@ -1,42 +1,45 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import OurBrandsBar from '@/components/OurBrandsBar';
 import Link from 'next/link';
-import { getPageData } from '@/services/api';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-
-function resolveImageUrl(img: string | undefined | null): string {
-    if (!img) return '';
-    if (img.startsWith('http://') || img.startsWith('https://')) return img;
-    const clean = img.replace(/^\/?(storage\/|uploads\/)?/, '');
-    return `${API_BASE}/uploads/${clean}`;
-}
+import { getPageData, resolveImageUrl } from '@/services/api';
 
 export default function CorporateResponsibilityPage() {
     const [pageData, setPageData] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [activeSlide, setActiveSlide] = useState(0);
 
     useEffect(() => {
+        let isMounted = true;
         const load = async () => {
-            const data = await getPageData('corporate-responsibility');
-            if (data) {
-                setPageData(data);
+            try {
+                const data = await getPageData('corporate-responsibility');
+                if (isMounted && data) {
+                    setPageData(data);
+                }
+            } catch (err) {
+                console.error("Failed to load corporate-responsibility data:", err);
+            } finally {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
             }
         };
         load();
+        return () => { isMounted = false; };
     }, []);
 
     const body = pageData?.body || {};
-    const bannerSlides = Array.isArray(body.banner_slides) && body.banner_slides.length > 0
+
+    const rawSlides = Array.isArray(body.banner_slides) && body.banner_slides.length > 0
         ? body.banner_slides
-        : [
-            { image: 'cr_banner_1.jpg', title: 'Corporate Responsibility', subtitle: '' },
-            { image: 'cr_banner_2.jpg', title: 'Corporate Responsibility', subtitle: '' },
-            { image: 'cr_banner_3.jpg', title: 'Corporate Responsibility', subtitle: '' },
-        ];
+        : (Array.isArray(body.banner_images) && body.banner_images.length > 0
+            ? body.banner_images.map((img: string) => ({ image: img, title: '', subtitle: '' }))
+            : []);
+
+    const bannerSlides = rawSlides.filter((s: any) => s && (s.image || s.image_url));
 
     useEffect(() => {
         if (bannerSlides.length <= 1) return;
@@ -54,33 +57,34 @@ export default function CorporateResponsibilityPage() {
         setActiveSlide((prev) => (prev + 1) % bannerSlides.length);
     };
 
-    const introSubtitle = body.intro_subtitle || 'HMH Hospitality Management Holding';
-    const introTitle = body.intro_title || 'Corporate Responsibility';
-    const introText = body.intro_text ||
-        'At HMH, we meet our business objectives in an economically, environmentally and socially responsible manner. We are committed to investing in the communities in which we operate through initiatives that are socially and environmentally responsible and sustainable.';
+    const introSubtitle = body.intro_subtitle || '';
+    const introTitle = body.intro_title || body.content_title || '';
+    const introText = body.intro_text || (body.content ? body.content.replace(/<[^>]+>/g, '') : '') || '';
 
-    const responsibilitiesList = Array.isArray(body.responsibilities_list) && body.responsibilities_list.length > 0
-        ? body.responsibilities_list
-        : [
-            {
-                title: 'Employee Responsibility',
-                image: 'cr_employee_responsibility.jpg',
-                description: '<p>We focus on generating shared value through job creation, employee development and beneficial opportunities for a global and diverse workforce. The majority of HMH hotels are independently owned and operated with many of our owners sharing a similar commitment to their employees.</p><p>We look to the community to discover and develop talent and to generate interest in young people to join this exciting global industry. We work with educational institutions and non-profit organizations to provide experience opportunities for the youth.</p>',
-            },
-            {
-                title: 'Social Responsibility',
-                image: 'cr_social_responsibility.jpg',
-                description: '<p>HMH associates generate positive action through meaningful donations. Giving campaigns at our hotels and corporate offices focus on helping children, youth and families, providing education and shelter.</p>',
-            },
-            {
-                title: 'Environmental Responsibility',
-                image: 'cr_environmental_responsibility.jpg',
-                description: '<p><strong>Waste Minimization</strong><br>HMH hotels work to reduce, reuse and recycle—sharing best practices and working with suppliers to reduce waste and increase recycling. Because of its global and local impact, reducing food waste is a special area of focus with an eye on purchasing, kitchen preparation, plate waste and spoilage.</p><p><strong>Responsible Sourcing</strong><br>Much of a hotel’s environmental impact is generated through products and services that are sourced—in the building design process, in the delicious food and drink we serve, and in our laundries. From sustainable seafood to cleaning products, we partner with like-minded suppliers committed to doing business responsibly.</p>',
-            },
-        ];
+    const responsibilitiesList = Array.isArray(body.responsibilities_list) ? body.responsibilities_list : [];
 
     const currentSlide = bannerSlides[activeSlide] || bannerSlides[0];
-    const pageTitle = (typeof pageData?.title === 'object' ? pageData?.title?.en : pageData?.title) || currentSlide?.title || 'Corporate Responsibility';
+    const pageTitle = (typeof pageData?.title === 'object' ? pageData?.title?.en : pageData?.title) || currentSlide?.title || '';
+
+    if (isLoading && !pageData) {
+        return (
+            <div className="luxury-page-loader-overlay active" role="status" aria-live="polite">
+                <div className="luxury-loader-center">
+                    <div className="luxury-loader-orbit">
+                        <div className="luxury-loader-ring-outer"></div>
+                        <div className="luxury-loader-ring-inner"></div>
+                        <div className="luxury-loader-logo-wrap">
+                            <img src="/img/operalogo-white.png" alt="Opera Hotels Logo" className="luxury-loader-logo" />
+                        </div>
+                    </div>
+                    <div className="luxury-loader-brand">Opera Grand Hotels</div>
+                    <div className="luxury-loader-progress-track">
+                        <div className="luxury-loader-progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <main>
@@ -89,16 +93,20 @@ export default function CorporateResponsibilityPage() {
             {/* ================= HERO BANNER ================= */}
             <header className="about-hero-section">
                 <div className="about-hero-slider">
-                    {bannerSlides.map((slide: any, idx: number) => {
-                        const bgUrl = resolveImageUrl(slide.image);
-                        return (
-                            <div
-                                key={idx}
-                                className={`about-hero-slide ${idx === activeSlide ? 'active' : ''}`}
-                                style={{ backgroundImage: `url('${bgUrl}')` }}
-                            />
-                        );
-                    })}
+                    {bannerSlides.length > 0 ? (
+                        bannerSlides.map((slide: any, idx: number) => {
+                            const bgUrl = resolveImageUrl(slide.image || slide.image_url);
+                            return (
+                                <div
+                                    key={idx}
+                                    className={`about-hero-slide ${idx === activeSlide ? 'active' : ''}`}
+                                    style={{ backgroundImage: `url('${bgUrl}')` }}
+                                />
+                            );
+                        })
+                    ) : (
+                        <div className="about-hero-slide active" style={{ backgroundColor: '#1b1b18' }} />
+                    )}
                 </div>
 
                 <div className="about-hero-overlay"></div>
@@ -117,12 +125,20 @@ export default function CorporateResponsibilityPage() {
                 {/* Arrows */}
                 {bannerSlides.length > 1 && (
                     <>
-                        <button className="about-hero-arrow about-hero-prev" onClick={prevSlide} aria-label="Previous Slide">
+                        <button
+                            className="about-hero-arrow about-hero-prev"
+                            onClick={prevSlide}
+                            aria-label="Previous Slide"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="15 18 9 12 15 6"></polyline>
                             </svg>
                         </button>
-                        <button className="about-hero-arrow about-hero-next" onClick={nextSlide} aria-label="Next Slide">
+                        <button
+                            className="about-hero-arrow about-hero-next"
+                            onClick={nextSlide}
+                            aria-label="Next Slide"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <polyline points="9 18 15 12 9 6"></polyline>
                             </svg>
@@ -176,75 +192,84 @@ export default function CorporateResponsibilityPage() {
                 </div>
             </nav>
 
-            {/* ================= INTRO BLOCK ================= */}
-            <section className="about-intro-section" id="intro">
-                <div className="container">
-                    {introSubtitle && <div className="about-intro-subtitle">{introSubtitle}</div>}
-                    <h2 className="about-intro-title">{introTitle}</h2>
-                    <p className="about-intro-text">{introText}</p>
-                </div>
-            </section>
+            {/* ================= INTRO ================= */}
+            {(introTitle || introSubtitle || introText) && (
+                <section className="about-intro-section" id="intro">
+                    <div className="container">
+                        {introSubtitle && <div className="about-intro-subtitle">{introSubtitle}</div>}
+                        {introTitle && <h2 className="about-intro-title">{introTitle}</h2>}
+                        {introText && <p className="about-intro-text">{introText}</p>}
+                    </div>
+                </section>
+            )}
 
             {/* ================= RESPONSIBILITIES LIST ================= */}
-            <section className="about-cr-list-section">
-                {responsibilitiesList.map((item: any, idx: number) => {
-                    const isImageFirst = idx % 2 === 0;
-                    const isAltBg = idx % 2 === 1;
-                    return (
-                        <div key={idx} className={`about-cr-item ${isAltBg ? 'alt-bg' : ''}`}>
-                            <div className="container">
-                                <div className="row align-items-center">
-                                    {isImageFirst ? (
-                                        <>
-                                            <div className="col-lg-6 mb-4 mb-lg-0">
-                                                <div className="about-cr-img-wrap">
-                                                    <img
-                                                        src={resolveImageUrl(item.image)}
-                                                        alt={item.title || 'Corporate Responsibility'}
-                                                        className="about-cr-img"
-                                                        loading="lazy"
-                                                    />
+            {responsibilitiesList.length > 0 && (
+                <section className="about-cr-section">
+                    {responsibilitiesList.map((item: any, idx: number) => {
+                        const isAltBg = idx % 2 !== 0;
+                        const isImageFirst = idx % 2 === 0;
+
+                        return (
+                            <div key={idx} className={`about-cr-item ${isAltBg ? 'alt-bg' : ''}`}>
+                                <div className="container">
+                                    <div className="row align-items-center">
+                                        {isImageFirst ? (
+                                            <>
+                                                {item.image && (
+                                                    <div className="col-lg-6 mb-4 mb-lg-0">
+                                                        <div className="about-cr-img-wrap">
+                                                            <img
+                                                                src={resolveImageUrl(item.image)}
+                                                                alt={item.title || 'Corporate Responsibility'}
+                                                                className="about-cr-img"
+                                                                loading="lazy"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                <div className={`col-lg-${item.image ? '6 ps-lg-5' : '12'}`}>
+                                                    <div className="about-cr-content">
+                                                        {item.title && <h3 className="about-cr-title">{item.title}</h3>}
+                                                        <div
+                                                            className="about-cr-desc"
+                                                            dangerouslySetInnerHTML={{ __html: item.description || '' }}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-lg-6 ps-lg-5">
-                                                <div className="about-cr-content">
-                                                    <h3 className="about-cr-title">{item.title}</h3>
-                                                    <div
-                                                        className="about-cr-desc"
-                                                        dangerouslySetInnerHTML={{ __html: item.description || '' }}
-                                                    />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className={`col-lg-${item.image ? '6 order-2 order-lg-1 pe-lg-5' : '12'}`}>
+                                                    <div className="about-cr-content">
+                                                        {item.title && <h3 className="about-cr-title">{item.title}</h3>}
+                                                        <div
+                                                            className="about-cr-desc"
+                                                            dangerouslySetInnerHTML={{ __html: item.description || '' }}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div className="col-lg-6 order-2 order-lg-1 pe-lg-5">
-                                                <div className="about-cr-content">
-                                                    <h3 className="about-cr-title">{item.title}</h3>
-                                                    <div
-                                                        className="about-cr-desc"
-                                                        dangerouslySetInnerHTML={{ __html: item.description || '' }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
-                                                <div className="about-cr-img-wrap">
-                                                    <img
-                                                        src={resolveImageUrl(item.image)}
-                                                        alt={item.title || 'Corporate Responsibility'}
-                                                        className="about-cr-img"
-                                                        loading="lazy"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </>
-                                    )}
+                                                {item.image && (
+                                                    <div className="col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
+                                                        <div className="about-cr-img-wrap">
+                                                            <img
+                                                                src={resolveImageUrl(item.image)}
+                                                                alt={item.title || 'Corporate Responsibility'}
+                                                                className="about-cr-img"
+                                                                loading="lazy"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    );
-                })}
-            </section>
+                        );
+                    })}
+                </section>
+            )}
 
             {/* ================= OUR BRANDS BAR ================= */}
             <OurBrandsBar />

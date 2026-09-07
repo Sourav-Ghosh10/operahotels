@@ -3,11 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import OurBrandsBar from "@/components/OurBrandsBar";
-import { getPageData } from "@/services/api";
+import { getPageData, resolveImageUrl } from "@/services/api";
 import "./terms-conditions.css";
 
 const CDN_FALLBACK_IMG = "https://image-tc.galaxy.tf/wijpeg-b908ajejqmip9iayngpr2zdmv/dsc4324.jpg?width=1920";
-const BACKEND_URL = "http://127.0.0.1:8000";
 
 function resolveTermsImg(filenameOrUrl: string | undefined | null): { local: string; backend: string; cdn: string } {
   const target = filenameOrUrl || "dsc4324.jpg";
@@ -16,7 +15,7 @@ function resolveTermsImg(filenameOrUrl: string | undefined | null): { local: str
   }
   const clean = target.replace(/^.*[\\\/]/, "");
   return {
-    backend: `${BACKEND_URL}/uploads/${clean}`,
+    backend: resolveImageUrl(`uploads/${clean}`),
     local: `/uploads/${clean}`,
     cdn: CDN_FALLBACK_IMG,
   };

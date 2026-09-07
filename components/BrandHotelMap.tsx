@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { resolveImageUrl } from '@/services/api';
 
 interface ChildHotel {
     id: number;
@@ -30,12 +31,7 @@ interface BrandHotelMapProps {
     sectionTitle?: string;
 }
 
-function resolveImage(img: string | undefined | null, fallback: string = ''): string {
-    if (!img) return fallback;
-    if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:')) return img;
-    const clean = img.replace(/^\/?(uploads\/|storage\/)?/, '');
-    return `/uploads/${clean}`;
-}
+function resolveImage(img: string | undefined | null, fallback: string = ""): string { return img ? resolveImageUrl(img) : fallback; }
 
 function getShortHotelName(name: string): string {
     if (/sharjah/i.test(name)) return 'Sharjah';

@@ -3,11 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import OurBrandsBar from "@/components/OurBrandsBar";
-import { getPageData } from "@/services/api";
+import { getPageData, resolveImageUrl } from "@/services/api";
 import "./privacy-policy.css";
 
 const CDN_FALLBACK_IMG = "https://image-tc.galaxy.tf/wijpeg-e13mupbfo8skm9uovb4nzkxf1/whatsapp-image-2024-11-28-at-1-55-59-pm.jpg?width=1920";
-const BACKEND_URL = "http://127.0.0.1:8000";
 
 function resolvePrivacyImg(filenameOrUrl: string | undefined | null): { local: string; backend: string; cdn: string } {
   const target = filenameOrUrl || "privacy_banner_1.jpg";
@@ -16,7 +15,7 @@ function resolvePrivacyImg(filenameOrUrl: string | undefined | null): { local: s
   }
   const clean = target.replace(/^.*[\\\/]/, "");
   return {
-    backend: `${BACKEND_URL}/uploads/${clean}`,
+    backend: resolveImageUrl(`uploads/${clean}`),
     local: `/uploads/${clean}`,
     cdn: CDN_FALLBACK_IMG,
   };

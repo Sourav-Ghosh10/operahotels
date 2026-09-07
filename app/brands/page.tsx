@@ -4,16 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import OurBrandsBar from '@/components/OurBrandsBar';
 import Link from 'next/link';
-import { getPageData } from '@/services/api';
+import { getPageData, resolveImageUrl } from '@/services/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-
-function resolveImage(img: string | undefined | null, fallback: string = ''): string {
-    if (!img) return fallback;
-    if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:')) return img;
-    const clean = img.replace(/^\/?(uploads\/|storage\/)?/, '');
-    return `/uploads/${clean}`;
-}
+function resolveImage(img: string | undefined | null, fallback: string = ""): string { return img ? resolveImageUrl(img) : fallback; }
 
 export default function BrandsPage() {
     const [pageData, setPageData] = useState<any>(null);
@@ -51,7 +44,7 @@ export default function BrandsPage() {
 
     const bannerSlides = Array.isArray(body.banner_slides) && body.banner_slides.length > 0
         ? body.banner_slides
-        : defaultBannerSlides;
+        : [];
 
     useEffect(() => {
         if (bannerSlides.length <= 1) return;
@@ -115,18 +108,18 @@ export default function BrandsPage() {
 
     const brandsList = Array.isArray(body.brands_list) && body.brands_list.length > 0
         ? body.brands_list
-        : defaultBrands;
+        : [];
 
     return (
         <>
             <link rel="stylesheet" href="/css/brands.css" />
-            
+
             <main>
                 {/* Hero Banner Slider Section */}
                 <header className="brands-hero-section">
                     <div className="brands-hero-slider">
                         {bannerSlides.map((slide: any, idx: number) => {
-                            const bgUrl = resolveImage(slide.image, '/uploads/brands_banner_1.jpg');
+                            const bgUrl = resolveImage(slide.image, resolveImageUrl('brands_banner_1.jpg'));
                             return (
                                 <div
                                     key={idx}
@@ -217,7 +210,7 @@ export default function BrandsPage() {
 
                         <div className="feature-block-grid">
                             {brandsList.map((brand: any, idx: number) => {
-                                const bgUrl = resolveImage(brand.image, '/uploads/brand_showcase_bahi.jpg');
+                                const bgUrl = resolveImage(brand.image, resolveImageUrl('brand_showcase_bahi.jpg'));
                                 const logoUrl = resolveImage(brand.logo);
                                 const brandLink = brand.link || '#';
                                 const cleanDesc = (brand.description || '').replace(/<[^>]*>?/gm, '');
@@ -230,7 +223,7 @@ export default function BrandsPage() {
                                                 style={{ backgroundImage: `url('${bgUrl}')` }}
                                             />
                                             <div className="hmh-brand-overlay" />
-                                            
+
                                             {/* Brand Logo */}
                                             <div className="hmh-brand-logo-wrap">
                                                 {logoUrl ? (

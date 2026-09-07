@@ -24,10 +24,10 @@ function stripHtml(value: string | null | undefined): string {
         .replace(/&gt;/gi, '>')
         .replace(/&quot;/gi, '"')
         .replace(/&#39;/gi, "'")
-        .replace(/&rsquo;/gi, "’")
-        .replace(/&lsquo;/gi, "‘")
-        .replace(/&rdquo;/gi, "”")
-        .replace(/&ldquo;/gi, "“")
+        .replace(/&rsquo;/gi, "�")
+        .replace(/&lsquo;/gi, "�")
+        .replace(/&rdquo;/gi, "�")
+        .replace(/&ldquo;/gi, "�")
         .replace(/\s+/g, ' ')
         .trim();
 }
@@ -161,7 +161,7 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
         return <div className="text-center py-5"><h2>Property Not Found</h2></div>;
     }
 
-    // ── Brand pages get their own dedicated layout ──────────────────────
+    // -- Brand pages get their own dedicated layout ----------------------
     if (hotelData.type === 'brand') {
         return (
             <>
@@ -171,7 +171,7 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
         );
     }
 
-    // ── Hotel pages continue with the existing layout below ────────────
+    // -- Hotel pages continue with the existing layout below ------------
     // Prepare interactive map data for hotel
     const hotelMapList = (hotelData?.latitude || hotelData?.longitude || hotelData?.address)
         ? [{
@@ -551,16 +551,27 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
             </div>
 
             <div className="owl-carousel dining-carousel">
-                {hotelData.dining_outlets && hotelData.dining_outlets.map((dining: any, idx: number) => (
-                    <div className="dining-card" key={idx}>
-                        <h3 className="dining-card-title">{dining.name?.toUpperCase()}</h3>
-                        <div className="dining-img-wrapper">
-                            <div className="dining-img-box" style={{backgroundImage: `url('${dining.image || '/img/dining_al_nafoora.png'}')`}}>
+                {hotelData.dining_outlets && hotelData.dining_outlets.map((dining: any, idx: number) => {
+                    const diningUrl = hotelData.slug && dining.slug
+                        ? `/${hotelData.slug}/dining/${dining.slug}`
+                        : (dining.link || (hotelData.slug ? `/${hotelData.slug}#dining` : '#'));
+                    return (
+                        <div className="dining-card" key={idx}>
+                            <h3 className="dining-card-title">
+                                <a href={diningUrl} style={{ color: "inherit", textDecoration: "none" }}>
+                                    {dining.name?.toUpperCase()}
+                                </a>
+                            </h3>
+                            <div className="dining-img-wrapper">
+                                <a href={diningUrl} style={{ display: "block", width: "100%", height: "100%" }}>
+                                    <div className="dining-img-box" style={{backgroundImage: `url('${dining.image || '/img/dining_al_nafoora.png'}')`}}>
+                                    </div>
+                                </a>
                             </div>
+                            <a href={diningUrl} className="dining-readmore">READ MORE</a>
                         </div>
-                        <a href={dining.link || (hotelData.slug ? `/${hotelData.slug}/dining` : '#')} className="dining-readmore">READ MORE</a>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             {/* Custom Carousel Navigation Controls */}
