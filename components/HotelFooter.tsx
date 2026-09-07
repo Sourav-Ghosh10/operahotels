@@ -1,4 +1,5 @@
 "use client";
+import { resolveImageUrl } from "@/services/api";
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -45,7 +46,7 @@ export default function HotelFooter({
     effectiveLogo = effectiveLogo.replace('bahi_6a8ee06574de8.svg', 'bahi_6a8fccc4166d5.svg');
   }
   if (!effectiveLogo && (hotelSlug?.includes('bahi') || currentSlug?.includes('bahi'))) {
-    effectiveLogo = 'http://127.0.0.1:8000/uploads/bahi_6a8fccc4166d5.svg';
+    effectiveLogo = resolveImageUrl('uploads/bahi_6a8fccc4166d5.svg');
   }
 
   const displayPhone = hotelPhone || (currentSlug?.includes('bahi') ? "+971 6 701 8888" : "+971 4 290 9999");

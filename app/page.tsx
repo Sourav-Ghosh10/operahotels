@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import ExclusiveOffers from "@/components/ExclusiveOffers";
 import Link from 'next/link';
 import CarouselNav from "@/components/CarouselNav";
-import { getPageData, getLocationsData, getComingSoonData } from '@/services/api';
+import { getPageData, getLocationsData, getComingSoonData, getDestinationsData, resolveImageUrl } from '@/services/api';
 
 export default function Page() {
     const [pageData, setPageData] = useState<any>(null);
@@ -37,10 +37,9 @@ export default function Page() {
 
         const loadDestinations = async () => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/api/destinations`);
-                if (res.ok) {
-                    const json = await res.json();
-                    const mapped = (json.data || [])
+                const data = await getDestinationsData();
+                if (Array.isArray(data)) {
+                    const mapped = data
                         .filter((dest: any) => dest.slug && (dest.name || dest.name_en))
                         .map((dest: any) => ({
                             id: dest.id,
@@ -185,9 +184,7 @@ export default function Page() {
                     <div className="carousel-inner h-100">
                         {pageData?.body?.banner_slides && pageData.body.banner_slides.length > 0 &&
                             pageData.body.banner_slides.map((slide: any, index: number) => {
-                                const imageUrl = slide.image.startsWith('http')
-                                    ? slide.image
-                                    : `${process.env.NEXT_PUBLIC_API_BASE_URL ? process.env.NEXT_PUBLIC_API_BASE_URL.replace('/api', '') : 'http://127.0.0.1:8000'}/uploads/${slide.image}`;
+                                const imageUrl = resolveImageUrl(slide.image);
 
                                 return (
                                     <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''} h-100`} data-bs-interval="5000">

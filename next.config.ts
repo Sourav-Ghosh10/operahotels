@@ -1,20 +1,33 @@
-import type { NextConfig } from "next";
+﻿import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        // Laravel dev server — serves Spatie Media Library images
         protocol: 'http',
         hostname: '127.0.0.1',
         port: '8000',
-        pathname: '/storage/**',
+        pathname: '/**',
       },
       {
         protocol: 'http',
-        hostname: '127.0.0.1',
+        hostname: 'localhost',
         port: '8000',
-        pathname: '/uploads/**',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'operahotels.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.operahotels.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
       },
     ],
   },

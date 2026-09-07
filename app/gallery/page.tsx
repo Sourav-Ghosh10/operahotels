@@ -3,16 +3,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Header from '@/components/Header';
 import OurBrandsBar from '@/components/OurBrandsBar';
-import { getPageData } from '@/services/api';
+import { getPageData, resolveImageUrl } from '@/services/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
 
-function resolveImageUrl(img: string | undefined | null): string {
-    if (!img) return '';
-    if (img.startsWith('http://') || img.startsWith('https://')) return img;
-    const clean = img.replace(/^\/?(storage\/|uploads\/)?/, '');
-    return `${API_BASE}/uploads/${clean}`;
-}
 
 // Pre-decode next batch of images in browser memory for instant smooth reveal
 function preloadBatchImages(items: { image: string }[]): Promise<void[]> {
@@ -20,7 +13,7 @@ function preloadBatchImages(items: { image: string }[]): Promise<void[]> {
         items.map(
             (item) =>
                 new Promise<void>((resolve) => {
-                    const src = resolveImageUrl(item.image);
+                    const src = resolveImageUrl((item as any).image_url || item.image);
                     if (!src) {
                         resolve();
                         return;
@@ -250,7 +243,7 @@ export default function GalleryPage() {
             <header className="about-hero-section">
                 <div className="about-hero-slider">
                     {bannerSlides.map((slide: any, idx: number) => {
-                        const bgUrl = resolveImageUrl(slide.image);
+                        const bgUrl = resolveImageUrl(slide.image_url || slide.image);
                         return (
                             <div
                                 key={idx}
@@ -369,7 +362,7 @@ export default function GalleryPage() {
                         className={`gallery-grid-layout ${isTabSwitching ? 'is-tab-switching' : ''}`}
                     >
                         {visibleItems.map((item, idx) => {
-                            const imgSrc = resolveImageUrl(item.image);
+                            const imgSrc = resolveImageUrl((item as any).image_url || item.image);
                             const isLoaded = !!loadedImages[idx];
                             const isNewItem = idx >= previousCount;
                             // Staggered timing calculation for gentle cascading entrance
@@ -389,6 +382,7 @@ export default function GalleryPage() {
                                             className={`gallery-card-img ${isLoaded ? 'loaded' : ''}`}
                                             loading="lazy"
                                             onLoad={() => handleImageLoaded(idx)}
+                                            onError={() => handleImageLoaded(idx)}
                                         />
                                         <div className="gallery-card-overlay">
                                             <div className="gallery-card-icon">

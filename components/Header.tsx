@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useUI } from "@/app/UIContext";
 
-import { getBrandsData } from "@/services/api";
+import { getBrandsData, getApiEndpoint, getDestinationsData } from "@/services/api";
 
 type DestinationMenuItem = {
   id: number;
@@ -21,7 +21,7 @@ type BrandMenuItem = {
 
 type Locale = "en" | "ar";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+// API dynamically resolved via services/api
 const fallbackDestinations: DestinationMenuItem[] = [
   { id: 1, slug: "dubai", name: "Dubai" },
   { id: 2, slug: "amman", name: "Amman" },
@@ -42,7 +42,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
     });
 
     if (initialDestinations === fallbackDestinations) {
-      fetch(`${API_BASE}/api/destinations`)
+      fetch(`${getApiEndpoint()}/destinations`)
         .then(res => res.json())
         .then(json => {
           if (json && json.data) {

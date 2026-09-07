@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Header from "@/components/Header";
+import { resolveImageUrl } from "@/services/api";
 import DestinationMap from "@/components/DestinationMap";
 import { DestinationData, fetchDestinationByLocale, Locale } from "@/lib/api/destinations";
 
@@ -195,7 +196,7 @@ export default function DestinationDetailClient({ initialDestination, slug, head
                 <div className="col-lg-6">
                   <div className="city-img-wrapper">
                     <img
-                      src={city.city_image_url ? city.city_image_url.replace('/storage/', '/uploads/') : bannerImages[0]}
+                      src={resolveImageUrl(city.city_image_url || bannerImages[0])}
                       alt={cityName}
                       className="city-img"
                     />
