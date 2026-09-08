@@ -9,7 +9,9 @@
  * In production, change that value to your real server domain.
  */
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+import { getApiBaseUrl } from '@/services/api';
+
+export const API_BASE = getApiBaseUrl();
 export type Locale = 'en' | 'ar';
 
 // ─── Types ────────────────────────────────────────────────────────────────
@@ -89,37 +91,37 @@ export interface DestinationData {
  * Usage: const destinations = await fetchDestinations();
  */
 export async function fetchDestinations(): Promise<DestinationData[]> {
+  const apiBase = getApiBaseUrl();
   try {
-    const res = await fetch(`${API_BASE}/api/destinations`, {
-      // Cache: revalidate every 60 seconds (Next.js ISR-style freshness)
-      next: { revalidate: 60 },
+    const res = await fetch(`${apiBase}/api/destinations`, {
+      cache: 'no-store',
     });
 
     if (!res.ok) {
       console.warn(`[fetchDestinations] Failed to fetch: ${res.status} ${res.statusText}`);
-      return [];
+      throw new Error(`API returned ${res.status}: ${res.statusText}`);
     }
 
     const json = await res.json();
-    return json.data as DestinationData[];
+    return (json.data || []) as DestinationData[];
   } catch (error) {
     console.error(`[fetchDestinations] Error connecting to API:`, error instanceof Error ? error.message : error);
-    return [];
+    throw error;
   }
 }
 
 /**
  * Fetch a single destination by its slug from the CMS.
- * Usage: const destination = await fetchDestination('dubai');
+ * Usage: const destination = await fetchDestination('united-arab-emirates');
  */
 export async function fetchDestination(slug: string, locale: Locale = 'en'): Promise<DestinationData | null> {
-  console.log("slug====>", slug)
+  const apiBase = getApiBaseUrl();
   try {
-    const res = await fetch(`${API_BASE}/api/destinations/${slug}`, {
+    const res = await fetch(`${apiBase}/api/destinations/${slug}`, {
       headers: {
         'X-Locale': locale,
       },
-      next: { revalidate: 60 },
+      cache: 'no-store',
     });
 
     if (!res.ok) {
@@ -136,9 +138,9 @@ export async function fetchDestination(slug: string, locale: Locale = 'en'): Pro
 }
 
 export async function fetchDestinationByLocale(slug: string, locale: Locale): Promise<DestinationData | null> {
-  console.log("slug====>", slug)
+  const apiBase = getApiBaseUrl();
   try {
-    const res = await fetch(`${API_BASE}/api/destinations/${slug}`, {
+    const res = await fetch(`${apiBase}/api/destinations/${slug}`, {
       cache: 'no-store',
       headers: {
         'X-Locale': locale,

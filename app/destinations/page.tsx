@@ -76,6 +76,9 @@ const allDestinationHotels = [
 import Link from 'next/link';
 import Header from '@/components/ServerHeader';
 import { fetchDestinations, DestinationData } from '@/lib/api/destinations';
+import { resolveImageUrl } from '@/services/api';
+
+export const dynamic = 'force-dynamic';
 
 function stripHtml(value: string | null | undefined) {
   return value?.replace(/<[^>]*>/g, '').trim() || '';
@@ -229,7 +232,8 @@ export default async function DestinationsPage() {
                               <img
                                 src={
                                   destination.banner_images[0]
-                                    ?? `/img/des-${destination.id}.png`
+                                    ? resolveImageUrl(destination.banner_images[0])
+                                    : `/img/des-${destination.id}.png`
                                 }
                                 alt={`${destinationName} Destination`}
                                 className="destination-card-img"
@@ -261,12 +265,12 @@ export default async function DestinationsPage() {
                   <div className="destination-card-img-wrapper">
                     <img src="/img/des-1.png" alt="UAE Destination" className="destination-card-img" />
                   </div>
-                  <h3 className="destination-card-title">UAE</h3>
+                  <h3 className="destination-card-title">United Arab Emirates</h3>
                   <p className="destination-card-text">
                     A destination where world-class hospitality blends seamlessly with unparalleled luxury, set
                     against stunning landscapes and vibrant culture.
                   </p>
-                  <a href="/destinations/dubai" className="destination-card-link">Read More</a>
+                  <Link href="/destinations/united-arab-emirates" className="destination-card-link">Read More</Link>
                 </div>
                 <div className="destination-card">
                   <div className="destination-card-img-wrapper">
@@ -276,7 +280,29 @@ export default async function DestinationsPage() {
                   <p className="destination-card-text">
                     Saudi Arabia offers a fascinating blend of rich heritage and futuristic innovation.
                   </p>
-                  <a href="/destinations/saudi-arabia" className="destination-card-link">Read More</a>
+                  <Link href="/destinations/saudi-arabia" className="destination-card-link">Read More</Link>
+                </div>
+              </div>
+              <div className="destinations-row">
+                <div className="destination-card">
+                  <div className="destination-card-img-wrapper">
+                    <img src="/img/des-3.png" alt="Jordan Destination" className="destination-card-img" />
+                  </div>
+                  <h3 className="destination-card-title">Jordan</h3>
+                  <p className="destination-card-text">
+                    Experience the magic of Jordan, where ancient wonders meet modern luxury. Explore rich history and vibrant landscapes.
+                  </p>
+                  <Link href="/destinations/jordan" className="destination-card-link">Read More</Link>
+                </div>
+                <div className="destination-card">
+                  <div className="destination-card-img-wrapper">
+                    <img src="/img/des-4.png" alt="Sudan Destination" className="destination-card-img" />
+                  </div>
+                  <h3 className="destination-card-title">Sudan</h3>
+                  <p className="destination-card-text">
+                    Discover the hidden gems of Sudan, from ancient pyramids to stunning landscapes with our warm hospitality.
+                  </p>
+                  <Link href="/destinations/sudan" className="destination-card-link">Read More</Link>
                 </div>
               </div>
             </div>

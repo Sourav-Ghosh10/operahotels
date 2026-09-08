@@ -1,5 +1,6 @@
-﻿import type { NextConfig } from "next";
+import type { NextConfig } from "next";
 
+// Next.js configuration for Opera Hotels
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [

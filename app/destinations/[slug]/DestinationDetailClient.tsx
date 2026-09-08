@@ -59,7 +59,7 @@ export default function DestinationDetailClient({ initialDestination, slug, head
   const bannerImages = useMemo(
     () =>
       destination.banner_images.length
-        ? destination.banner_images
+        ? destination.banner_images.map((img) => resolveImageUrl(img))
         : [
             "https://images.unsplash.com/photo-1597659840241-37e2b9c2f55f?q=80&w=2070&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
