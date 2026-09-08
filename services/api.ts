@@ -1,4 +1,4 @@
-﻿const PRODUCTION_BACKEND_URL = 'https://crm.operahotels.com';
+const PRODUCTION_BACKEND_URL = 'https://crm.operahotels.com';
 
 /**
  * Dynamically resolves the API base URL (protocol + host, without trailing slash or /api)
@@ -8,35 +8,11 @@ export function getApiBaseUrl(): string {
     const envUrl = process.env.NEXT_PUBLIC_API_URL || 
                    (process.env.NEXT_PUBLIC_API_BASE_URL ? process.env.NEXT_PUBLIC_API_BASE_URL.replace(/\/api\/?$/, '') : '');
 
-    // Running in browser
-    if (typeof window !== 'undefined') {
-        const hostname = window.location.hostname;
-        const isLocal = hostname === 'localhost' || hostname === '127.0.0.1';
-
-        // If local browser, use local backend
-        if (isLocal) {
-            return (envUrl && (envUrl.includes('localhost') || envUrl.includes('127.0.0.1')))
-                ? envUrl
-                : 'http://127.0.0.1:8000';
-        }
-
-        // If in production/deploy browser:
-        if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
-            return envUrl;
-        }
-
-        // In production browser, backend is always CRM domain
-        return PRODUCTION_BACKEND_URL;
+    if (envUrl) {
+        return envUrl.replace(/\/+$/, '');
     }
 
-    // Running on server (SSR / SSG)
-    if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
-        return envUrl;
-    }
-
-    return process.env.NODE_ENV === 'production' 
-        ? PRODUCTION_BACKEND_URL 
-        : (envUrl || 'http://127.0.0.1:8000');
+    return PRODUCTION_BACKEND_URL;
 }
 
 /**
@@ -44,7 +20,7 @@ export function getApiBaseUrl(): string {
  */
 export function getApiEndpoint(): string {
     const envEndpoint = process.env.NEXT_PUBLIC_API_BASE_URL;
-    if (envEndpoint && !envEndpoint.includes('localhost') && !envEndpoint.includes('127.0.0.1')) {
+    if (envEndpoint) {
         return envEndpoint.replace(/\/+$/, '');
     }
 
@@ -94,7 +70,7 @@ export function resolveImageUrl(img: string | undefined | null): string {
 
 export const getPropertyBySlug = async (slug: string) => {
     try {
-        const response = await fetch(`${getApiEndpoint()}/properties/${slug}`);
+        const response = await fetch(`${getApiEndpoint()}/properties/${slug}`, { cache: "no-store" });
         if (!response.ok) {
             throw new Error(`Error fetching property data: ${response.statusText}`);
         }
@@ -122,7 +98,7 @@ export const getPageData = async (slug: string) => {
 
 export const getOffersData = async () => {
     try {
-        const response = await fetch(`${getApiEndpoint()}/offers`);
+        const response = await fetch(`${getApiEndpoint()}/offers`, { cache: "no-store" });
         if (!response.ok) {
             throw new Error(`Error fetching offers data: ${response.statusText}`);
         }
@@ -136,7 +112,7 @@ export const getOffersData = async () => {
 
 export const getAllOffersData = async () => {
     try {
-        const response = await fetch(`${getApiEndpoint()}/offers?all=true`);
+        const response = await fetch(`${getApiEndpoint()}/offers?all=true`, { cache: "no-store" });
         if (!response.ok) {
             throw new Error(`Error fetching all offers data: ${response.statusText}`);
         }
