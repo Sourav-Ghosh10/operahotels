@@ -1,0 +1,561 @@
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+/* ==========================================================================
+   FACILITIES PAGE STYLES - Replicating HMH Coral Beach Resort Sharjah Facilities
+   ========================================================================== */
+
+/* --- Main Layout --- */
+.facilities-page {
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #ffffff;
+  color: #231f20;
+  font-family: var(--font-rubik, "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+}
+
+/* --- Hero Slider --- */
+.facilities-hero-slider {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 40px);
+  min-height: 520px;
+  max-height: 950px;
+  overflow: hidden;
+  background-color: #111111;
+}
+
+@media (max-width: 767.98px) {
+  .facilities-hero-slider {
+    height: 70vh;
+    min-height: 440px;
+  }
+}
+
+.facilities-hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.facilities-hero-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* Gradients over hero */
+.facilities-hero-slider::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 280px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.facilities-hero-slider::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 45%, rgba(0, 0, 0, 0) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Hero Caption */
+.facilities-hero-caption {
+  position: absolute;
+  bottom: 120px;
+  left: 48px;
+  z-index: 4;
+  text-align: left;
+}
+
+@media (max-width: 767.98px) {
+  .facilities-hero-caption {
+    bottom: 90px;
+    left: 24px;
+    right: 24px;
+  }
+}
+
+.facilities-hero-title {
+  font-family: var(--font-alexandria, "Alexandria", "Playfair Display", Georgia, serif);
+  font-size: 3.8rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 991.98px) {
+  .facilities-hero-title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .facilities-hero-title {
+    font-size: 2.2rem;
+  }
+}
+
+/* Hero Slider Controls */
+.facilities-hero-controls {
+  position: absolute;
+  bottom: 48px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 48px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+@media (max-width: 767.98px) {
+  .facilities-hero-controls {
+    bottom: 30px;
+    padding: 0 24px;
+  }
+}
+
+.facilities-hero-arrows {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.facilities-hero-arrow {
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.85;
+}
+
+.facilities-hero-arrow:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.facilities-hero-playpause {
+  pointer-events: auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.facilities-hero-playpause:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+  transform: translateX(-50%) scale(1.08);
+}
+
+/* --- Intro Block --- */
+.facilities-intro-block {
+  padding: 85px 24px 60px;
+  background-color: #ffffff;
+  text-align: left;
+}
+
+@media (max-width: 767.98px) {
+  .facilities-intro-block {
+    padding: 50px 20px 40px;
+  }
+}
+
+.facilities-intro-wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.facilities-intro-subtitle {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #666666;
+  margin-bottom: 14px;
+}
+
+.facilities-intro-title {
+  font-family: var(--font-alexandria, "Alexandria", "Playfair Display", Georgia, serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+  letter-spacing: -0.3px;
+}
+
+@media (max-width: 991.98px) {
+  .facilities-intro-title {
+    font-size: 2.1rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .facilities-intro-title {
+    font-size: 1.75rem;
+  }
+}
+
+.facilities-intro-content {
+  font-size: 15px;
+  line-height: 1.85;
+  color: #4a4a4a;
+  max-width: 960px;
+}
+
+.facilities-intro-content p {
+  margin-bottom: 16px;
+}
+
+.facilities-intro-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- Facilities Rotator (Carousel) --- */
+.facilities-rotator-section {
+  position: relative;
+  width: 100%;
+  margin: 40px 0 100px;
+  overflow: hidden;
+}
+
+@media (max-width: 767.98px) {
+  .facilities-rotator-section {
+    margin: 20px 0 60px;
+  }
+}
+
+.facilities-carousel-track-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.facilities-carousel-track {
+  display: flex;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Individual Slide Card */
+.facility-card-slide {
+  position: relative;
+  flex: 0 0 72vw;
+  max-width: 1120px;
+  min-width: 320px;
+  height: 600px;
+  margin: 0 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  border-radius: 0px;
+  background-color: #222222;
+  user-select: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+@media (max-width: 1199.98px) {
+  .facility-card-slide {
+    flex: 0 0 78vw;
+    height: 520px;
+    margin: 0 12px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .facility-card-slide {
+    flex: 0 0 88vw;
+    height: 480px;
+    margin: 0 8px;
+  }
+}
+
+.facility-card-slide.is-inactive {
+  opacity: 0.65;
+  cursor: pointer;
+}
+
+.facility-card-slide.is-inactive:hover {
+  opacity: 0.85;
+}
+
+/* Background Image in Slide */
+.facility-card-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.facility-card-slide:hover .facility-card-bg {
+  transform: scale(1.03);
+}
+
+/* Card Gradient Overlay */
+.facility-card-slide::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.15) 35%,
+    rgba(0, 0, 0, 0.75) 75%,
+    rgba(0, 0, 0, 0.92) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Card Content Overlay */
+.facility-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 44px 50px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991.98px) {
+  .facility-card-content {
+    padding: 32px 36px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .facility-card-content {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 22px;
+  }
+}
+
+.facility-card-details {
+  max-width: 650px;
+}
+
+.facility-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.facility-card-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.facility-card-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.facility-card-icon svg {
+  width: 36px;
+  height: 36px;
+  fill: #ffffff;
+  stroke: #ffffff;
+}
+
+.facility-card-title {
+  font-family: var(--font-alexandria, "Alexandria", "Playfair Display", Georgia, serif);
+  font-size: 1.85rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+}
+
+@media (max-width: 767.98px) {
+  .facility-card-title {
+    font-size: 1.45rem;
+  }
+}
+
+.facility-card-description {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 767.98px) {
+  .facility-card-description {
+    font-size: 13.5px;
+    -webkit-line-clamp: 3;
+    margin-bottom: 18px;
+  }
+}
+
+/* Call Us Link */
+.facility-card-cta {
+  flex-shrink: 0;
+  margin-left: 24px;
+}
+
+@media (max-width: 767.98px) {
+  .facility-card-cta {
+    margin-left: 0;
+  }
+}
+
+.facility-call-btn {
+  display: inline-block;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 6px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.facility-call-btn::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.facility-call-btn:hover {
+  color: #d4af37;
+}
+
+.facility-call-btn:hover::after {
+  background-color: #d4af37;
+  transform: scaleX(1.05);
+}
+
+/* Rotator Circular Navigation Buttons */
+.facilities-rotator-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 calc((100vw - 72vw) / 2 - 22px);
+  pointer-events: none;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1199.98px) {
+  .facilities-rotator-nav {
+    padding: 0 calc((100vw - 78vw) / 2 - 20px);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .facilities-rotator-nav {
+    padding: 0 12px;
+  }
+}
+
+.facilities-rotator-btn {
+  pointer-events: auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  color: #231f20;
+}
+
+.facilities-rotator-btn:hover {
+  background-color: #231f20;
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.facilities-rotator-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: stroke 0.3s ease;
+}
+
+.facilities-rotator-btn:hover svg path {
+  stroke: #ffffff;
+}

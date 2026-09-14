@@ -35,6 +35,30 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
   const [locale, setLocale] = useState<Locale>("en");
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("app_locale") as Locale;
+        if (saved && (saved === "en" || saved === "ar")) {
+          setLocale(saved);
+        }
+      } catch (err) { }
+    }
+
+    const handleExternalLocale = (e: any) => {
+      const next = e.detail;
+      if (next && (next === "en" || next === "ar")) {
+        setLocale(next);
+      }
+    };
+    window.addEventListener("locale-change", handleExternalLocale);
+    window.addEventListener("destination-locale-change", handleExternalLocale);
+    return () => {
+      window.removeEventListener("locale-change", handleExternalLocale);
+      window.removeEventListener("destination-locale-change", handleExternalLocale);
+    };
+  }, []);
+
+  useEffect(() => {
     getBrandsData().then(data => {
       if (Array.isArray(data)) {
         setBrands(data);
@@ -68,7 +92,13 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
 
   function selectLocale(nextLocale: Locale) {
     setLocale(nextLocale);
-    window.dispatchEvent(new CustomEvent("destination-locale-change", { detail: nextLocale }));
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("app_locale", nextLocale);
+      } catch (err) { }
+      window.dispatchEvent(new CustomEvent("locale-change", { detail: nextLocale }));
+      window.dispatchEvent(new CustomEvent("destination-locale-change", { detail: nextLocale }));
+    }
   }
 
 
@@ -116,7 +146,7 @@ export default function Header({ initialDestinations = fallbackDestinations }: {
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center">
             <li className="nav-item">
               <Link className="nav-link" href="/about">
-                About
+                ABOUT
               </Link>
             </li>
             <li className="nav-item dropdown custom-dropdown">

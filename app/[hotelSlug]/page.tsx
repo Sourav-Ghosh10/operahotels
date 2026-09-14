@@ -4,7 +4,7 @@ import React, { useEffect, useState, use } from 'react';
 import HotelHeader from '@/components/HotelHeader';
 import HotelFooter from '@/components/HotelFooter';
 import Head from 'next/head';
-import { getPropertyBySlug, getBrandsData } from '@/services/api';
+import { getPropertyBySlug, getBrandsData, resolveImageUrl } from '@/services/api';
 import Link from 'next/link';
 import ExclusiveOffers from '@/components/ExclusiveOffers';
 import BrandPage from '@/components/BrandPage';
@@ -554,7 +554,7 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
                 {hotelData.dining_outlets && hotelData.dining_outlets.map((dining: any, idx: number) => {
                     const diningUrl = hotelData.slug && dining.slug
                         ? `/${hotelData.slug}/dining/${dining.slug}`
-                        : (dining.link || (hotelData.slug ? `/${hotelData.slug}#dining` : '#'));
+                        : (dining.link || (hotelData.slug ? `/${hotelData.slug}/dining` : '#'));
                     return (
                         <div className="dining-card" key={idx}>
                             <h3 className="dining-card-title">
@@ -629,16 +629,20 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
                             leisure amenities, combined with exceptional service and warm hospitality.</p>
                         <p className="amenities-p">Keep up with work in our modern business centre, explore the wonders of
                             dubai or enjoy relaxing time by the pool.</p>
-                        <a href="#" className="discover-facilities-link">DISCOVER OUR FACILITIES</a>
+                        <Link href={`/${hotelSlug}/facilities`} className="discover-facilities-link">DISCOVER OUR FACILITIES</Link>
                     </div>
                 </div>
 
                 {/* Right Column: Slider */}
                 <div className="col-lg-6 position-relative px-0">
                     <div className="owl-carousel amenities-carousel">
-                        {hotelData.amenities && hotelData.amenities.length > 0 ? (
+                        {hotelData.amenities && hotelData.amenities.length > 0 && hotelData.amenities[0]?.amenities_list?.length > 0 ? (
+                            hotelData.amenities[0].amenities_list.map((item: any, idx: number) => (
+                                <div key={idx} className="amenities-slide-item" style={{backgroundImage: `url('${resolveImageUrl(item.image || item.icon) || '/img/amenity_pool.png'}')`}}></div>
+                            ))
+                        ) : hotelData.amenities && hotelData.amenities.length > 0 ? (
                             hotelData.amenities.map((amenity: any, idx: number) => (
-                                <div key={idx} className="amenities-slide-item" style={{backgroundImage: `url('${amenity.image || '/img/amenity_pool.png'}')`}}></div>
+                                <div key={idx} className="amenities-slide-item" style={{backgroundImage: `url('${resolveImageUrl(amenity.image) || '/img/amenity_pool.png'}')`}}></div>
                             ))
                         ) : (
                             <>
@@ -674,7 +678,7 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
         <div className="container">
             <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-baseline mb-5">
                 <h2 className="explore-section-title mb-2 mb-sm-0">EXPLORE</h2>
-                <a href="#" className="learn-more-link">LEARN MORE</a>
+                <Link href={`/${hotelSlug}/local-attractions/${hotelData.attractions?.[0]?.slug || 'noor-island'}`} className="learn-more-link">LEARN MORE</Link>
             </div>
         </div>
         <div className="container-fluid px-0">
@@ -689,7 +693,7 @@ export default function Page({ params }: { params: Promise<{ hotelSlug: string }
                         </div>
                         <div className="explore-card-body">
                             <p className="explore-card-desc">{stripHtml(attr.description)}</p>
-                            <a href="#" className="explore-readmore">READ MORE</a>
+                            <Link href={`/${hotelSlug}/local-attractions/${attr.slug || attr.id}`} className="explore-readmore">READ MORE</Link>
                         </div>
                     </div>
                 ))}

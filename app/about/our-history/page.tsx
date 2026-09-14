@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import OurBrandsBar from '@/components/OurBrandsBar';
 import Link from 'next/link';
@@ -11,6 +11,31 @@ export default function OurHistoryPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [activeSlide, setActiveSlide] = useState(0);
     const [selectedYearIdx, setSelectedYearIdx] = useState(0);
+    const yearsTrackRef = useRef<HTMLDivElement>(null);
+
+    const scrollYears = (direction: 'left' | 'right') => {
+        if (yearsTrackRef.current) {
+            const scrollAmount = 260;
+            yearsTrackRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth',
+            });
+        }
+    };
+
+    // Auto-scroll the active year button into view
+    useEffect(() => {
+        if (yearsTrackRef.current) {
+            const activeBtn = yearsTrackRef.current.querySelector('.about-history-year-btn.active') as HTMLElement;
+            if (activeBtn) {
+                activeBtn.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center',
+                });
+            }
+        }
+    }, [selectedYearIdx]);
 
     useEffect(() => {
         let isMounted = true;
@@ -222,9 +247,22 @@ export default function OurHistoryPage() {
             {timeline.length > 0 && (
                 <section className="about-history-section">
                     <div className="container">
-                        {/* Year Pills Slider / Horizontal Nav */}
-                        <div className="about-history-years-wrap">
-                            <div className="about-history-years">
+                        {/* Year Pills Slider / Horizontal Nav with Left & Right Toggle Buttons */}
+                        <div className="about-history-years-bar">
+                            {/* Left Toggle Button */}
+                            <button
+                                type="button"
+                                className="about-history-year-toggle-btn about-history-toggle-prev"
+                                onClick={() => scrollYears('left')}
+                                aria-label="Scroll Years Left"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+
+                            {/* Scrollable Years Track */}
+                            <div className="about-history-years-track" ref={yearsTrackRef}>
                                 {timeline.map((item: any, idx: number) => (
                                     <button
                                         key={idx}
@@ -236,6 +274,18 @@ export default function OurHistoryPage() {
                                     </button>
                                 ))}
                             </div>
+
+                            {/* Right Toggle Button */}
+                            <button
+                                type="button"
+                                className="about-history-year-toggle-btn about-history-toggle-next"
+                                onClick={() => scrollYears('right')}
+                                aria-label="Scroll Years Right"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
                         </div>
 
                         {/* Active Year Display Card */}

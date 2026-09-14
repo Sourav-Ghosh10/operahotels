@@ -1,0 +1,600 @@
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+/* ==========================================================================
+   LOCAL ATTRACTIONS DETAIL PAGE STYLES - Replicating HMH Coral Beach Resort Sharjah
+   ========================================================================== */
+
+.attraction-detail-page {
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #ffffff;
+  color: #231f20;
+  font-family: var(--font-rubik, "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+}
+
+/* --- Section 1: Intro Two-Column --- */
+.attraction-intro-section {
+  padding: 80px 24px 50px;
+  background-color: #ffffff;
+}
+
+@media (max-width: 767.98px) {
+  .attraction-intro-section {
+    padding: 45px 20px 30px;
+  }
+}
+
+.attraction-intro-container {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.attraction-intro-title {
+  font-family: var(--font-alexandria, "Alexandria", "Playfair Display", Georgia, serif);
+  font-size: 2.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #1a1a1a;
+  margin-bottom: 28px;
+  letter-spacing: -0.3px;
+}
+
+@media (max-width: 991.98px) {
+  .attraction-intro-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .attraction-intro-title {
+    font-size: 1.8rem;
+  }
+}
+
+.attraction-intro-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 50px;
+}
+
+@media (max-width: 991.98px) {
+  .attraction-intro-grid {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+.attraction-intro-body {
+  flex: 1 1 auto;
+  max-width: 680px;
+}
+
+.attraction-description-content {
+  font-family: var(--font-rubik, "Rubik", sans-serif);
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333333;
+  font-weight: 400;
+}
+
+.attraction-description-content p {
+  margin-bottom: 18px;
+  line-height: 1.8;
+}
+
+.attraction-description-content p:last-child {
+  margin-bottom: 0;
+}
+
+.attraction-distance-badge {
+  margin-top: 20px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #666666;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Right Column: Address Box */
+.attraction-address-card {
+  flex: 0 0 320px;
+  background-color: #fbfaf8;
+  border: 1px solid #eae7e2;
+  padding: 24px 28px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991.98px) {
+  .attraction-address-card {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+}
+
+.attraction-address-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #777777;
+  margin-bottom: 14px;
+}
+
+.attraction-address-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.attraction-address-pin {
+  flex-shrink: 0;
+  width: 18px;
+  height: 22px;
+  color: #231f20;
+  margin-top: 2px;
+}
+
+.attraction-address-pin svg {
+  width: 100%;
+  height: 100%;
+}
+
+.attraction-address-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #231f20;
+  margin: 0;
+}
+
+.attraction-maps-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #231f20;
+  text-decoration: none;
+  border-bottom: 1px solid #231f20;
+  padding-bottom: 2px;
+  transition: all 0.3s ease;
+}
+
+.attraction-maps-link:hover {
+  color: #c5a880;
+  border-bottom-color: #c5a880;
+}
+
+/* --- Section 2: Images Slider --- */
+.attraction-slider-section {
+  position: relative;
+  max-width: 1200px;
+  margin: 30px auto 70px;
+  padding: 0 24px;
+}
+
+@media (max-width: 767.98px) {
+  .attraction-slider-section {
+    margin: 20px auto 45px;
+    padding: 0 16px;
+  }
+}
+
+.attraction-slider-box {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  background-color: #111111;
+}
+
+@media (max-width: 991.98px) {
+  .attraction-slider-box {
+    height: 440px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .attraction-slider-box {
+    height: 320px;
+  }
+}
+
+.attraction-slide-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.attraction-slide-image.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Slider Controls */
+.attraction-slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.attraction-slider-arrow {
+  pointer-events: auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  color: #231f20;
+}
+
+.attraction-slider-arrow:hover {
+  background-color: #231f20;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.attraction-slider-arrow svg path {
+  transition: stroke 0.3s ease;
+}
+
+.attraction-slider-arrow:hover svg path {
+  stroke: #ffffff;
+}
+
+.attraction-slider-bottom-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 5;
+}
+
+.attraction-slider-playpause {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.attraction-slider-playpause:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: #ffffff;
+  transform: scale(1.1);
+}
+
+.attraction-slider-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.attraction-slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.45);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.attraction-slider-dot.active {
+  background-color: #ffffff;
+  transform: scale(1.3);
+}
+
+/* --- Section 3: Interactive Location Map (HMH Exact Design) --- */
+.unit-poi-map-plus-detail-pop-up {
+  position: relative;
+  width: 100%;
+}
+
+.unit-poi-map-plus-detail-pop-up.default-margin {
+  margin-block-start: 60px;
+  margin-block-end: 60px;
+}
+
+@media (min-width: 1200px) {
+  .unit-poi-map-plus-detail-pop-up.default-margin {
+    margin-block-start: 63px;
+    margin-block-end: 63px;
+  }
+}
+
+.desktop-content-width {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .desktop-content-width {
+    width: 84.375vw;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .desktop-content-width {
+    max-width: 1242px;
+    width: 86.25vw;
+  }
+}
+
+@media (min-width: 1600px) {
+  .desktop-content-width {
+    max-width: 1440px;
+    width: 75vw;
+  }
+}
+
+.poi-map-all-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .poi-map-all-wrapper {
+    flex-direction: row-reverse;
+    position: relative;
+  }
+}
+
+.poi-map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 45.877vh;
+  min-height: 380px;
+  background-color: #f2ede6;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .poi-map-wrapper {
+    height: 56.77vh;
+    min-height: 480px;
+  }
+}
+
+@media (min-width: 992px) {
+  .poi-map-wrapper {
+    height: 75.77vh;
+    min-height: 550px;
+    max-height: 750px;
+  }
+}
+
+.poi-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Floating Card over Map (.poi-map-detail-wrapper) */
+.custom-background-color {
+  --background-color: #231F20;
+}
+
+.poi-map-detail-wrapper {
+  background-color: #231F20;
+  z-index: 1000;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .poi-map-detail-wrapper {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    right: 20px;
+    width: 29.444vw;
+    min-width: 320px;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@media (min-width: 992px) {
+  .poi-map-detail-wrapper {
+    right: 44px;
+    width: 29.444vw;
+    min-width: 340px;
+    max-width: 420px;
+  }
+}
+
+.poi-item {
+  display: block;
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .poi-item {
+    min-height: 449px;
+  }
+}
+
+.poi-item .card-img {
+  position: relative;
+  width: 100%;
+  height: 38.2308vh;
+  min-height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (min-width: 768px) {
+  .poi-item .card-img {
+    height: 17.2308vh;
+    min-height: 180px;
+  }
+}
+
+@media (min-width: 992px) {
+  .poi-item .card-img {
+    height: 28.33vh;
+    min-height: 220px;
+  }
+}
+
+.poi-item .card-img .close-mapcard {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+
+.poi-item .card-img .close-mapcard:hover {
+  transform: scale(1.1);
+}
+
+.poi-item .card-wrap {
+  padding: 30px 24px;
+  background-color: #231F20;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .poi-item .card-wrap {
+    padding: 30px 24px 35px 24px;
+  }
+}
+
+@media (min-width: 992px) {
+  .poi-item .card-wrap {
+    padding: 39px 51px 50px 31px;
+  }
+}
+
+.poi-item .card-wrap .poi-name {
+  display: block;
+  font-family: var(--font-alexandria, "Alexandria", sans-serif);
+  font-size: 1.5rem;
+  line-height: 1.25;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  margin: 0;
+}
+
+@media (max-width: 767.98px) {
+  .poi-item .card-wrap .poi-name {
+    font-size: 1.25rem;
+  }
+}
+
+.poi-item .card-wrap .poi-location-wrap {
+  margin-top: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.poi-item .card-wrap .poi-location-wrap svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.poi-item .card-wrap .poi-location-wrap .poi-address {
+  font-family: var(--font-alexandria, "Alexandria", sans-serif);
+  font-size: 0.9375rem;
+  line-height: 23px;
+  letter-spacing: 0.13px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+@media (max-width: 767.98px) {
+  .poi-item .card-wrap .poi-location-wrap .poi-address {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+}
+
+/* Custom Marker styling */
+.hmh-active-map-pin {
+  cursor: pointer;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hmh-active-map-pin:hover {
+  transform: scale(1.1);
+}
+
+/* --- Section 4: Bottom Navigation Bar (Prev / View All / Next) --- */
+.detail-nav-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 0 60px;
+}
+
+@media (max-width: 767.98px) {
+  .detail-nav-wrap {
+    padding: 30px 20px 45px;
+  }
+}
+
+.detail-nav-wrap .link.cta-secondary {
+  font-family: var(--font-alexandria, "Alexandria", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #231f20;
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 1.5px solid #231f20;
+  transition: opacity 0.2s ease;
+  display: inline-block;
+}
+
+.detail-nav-wrap .link.cta-secondary:hover {
+  opacity: 0.65;
+}

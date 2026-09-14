@@ -660,7 +660,7 @@ export default function DiningDetailsPage({ hotelSlug = 'bahi-ajman-palace-hotel
                         {/* View All Restaurants */}
                         <div>
                             <Link 
-                                href={`/${hotelSlug}#dining`}
+                                href={`/${hotelSlug}/dining`}
                                 className="text-decoration-none"
                                 style={{ 
                                     fontSize: "12px", 

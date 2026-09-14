@@ -17,16 +17,7 @@ export default function ExclusiveMemberRatesPage() {
           <Header />
         </div>
 
-        {/* 2. BREADCRUMBS */}
-        <div className="offer-breadcrumbs">
-          <Link href="/">HOME</Link>
-          <span>/</span>
-          <Link href="/bahi-hotels-resorts">BAHI HOTELS &amp; RESORTS</Link>
-          <span>/</span>
-          <Link href="/bahi-hotels-resorts/offers">OFFERS</Link>
-          <span>/</span>
-          <span>EXCLUSIVE MEMBER RATES</span>
-        </div>
+        
 
         {/* 3. MAIN CONTENT SECTION */}
         <section className="offer-content-section">

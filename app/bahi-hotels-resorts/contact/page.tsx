@@ -66,24 +66,7 @@ export default function BahiContactPage() {
                 </div>
             </header>
 
-            {/* Breadcrumb Bar */}
-            <div style={{ backgroundColor: '#f9f9f9', borderBottom: '1px solid #e9e9e9', padding: '14px 0' }}>
-                <div className="container">
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb mb-0" style={{ fontSize: '0.82rem', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                            <li className="breadcrumb-item">
-                                <Link href="/" className="text-dark text-decoration-none">HOME</Link>
-                            </li>
-                            <li className="breadcrumb-item">
-                                <Link href="/bahi-hotels-resorts" className="text-dark text-decoration-none">BAHI HOTELS &amp; RESORTS</Link>
-                            </li>
-                            <li className="breadcrumb-item active" aria-current="page" style={{ color: '#c59b4c', fontWeight: 600 }}>
-                                CONTACT
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
+            
 
             {/* Contact Form & Info Section */}
             <section className="contact-intro py-5">

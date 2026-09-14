@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -27,6 +27,16 @@ export default function HotelHeader({ logoUrl, hotelSlug, isSolid }: HotelHeader
 
   const meetingsEventsHref = currentSlug ? `/${currentSlug}/meetings-events` : '/bahi-hotels-resorts/meetings-events';
 
+  // Determine active nav item based on current pathname
+  const pathnameSegments = pathname ? pathname.split('/').filter(Boolean) : [];
+  const lastSegment = pathnameSegments[pathnameSegments.length - 1] || '';
+  const isRoomsActive = pathname?.includes('/rooms-suites') ?? false;
+  const isDiningActive = pathname?.includes('/dining') ?? false;
+  const isFacilitiesActive = pathname?.includes('/facilities') ?? false;
+  const isOffersActive = lastSegment === 'special-offers' || lastSegment === 'offers';
+  const isMeetingsActive = lastSegment === 'meetings-events';
+  const isGalleryActive = lastSegment === 'gallery';
+
   return (
     <nav
       className={`navbar navbar-expand-lg ${isSolidNav ? 'solid-hotel-nav position-sticky top-0' : 'transparent-nav position-absolute'} w-100`}
@@ -39,11 +49,12 @@ export default function HotelHeader({ logoUrl, hotelSlug, isSolid }: HotelHeader
       }}
     >
       <div className="container-fluid px-4 px-lg-5">
-        <div className="d-flex align-items-center">
-          {/* Custom Toggle Icon */}
+        {/* LEFT: hamburger + logo — both vertically centred in a 70 px tall strip */}
+        <div className="hotel-nav-left">
+          {/* Hamburger wrapper — fixed 70×70 box so it matches logo height */}
           <a
             href="#"
-            className="custom-nav-toggler me-3 me-lg-4 text-decoration-none"
+            className="custom-nav-toggler hotel-nav-toggler-wrap text-decoration-none"
             onClick={(e) => {
               e.preventDefault();
               setIsNavOpen(true);
@@ -56,18 +67,11 @@ export default function HotelHeader({ logoUrl, hotelSlug, isSolid }: HotelHeader
           </a>
 
           {/* Logo */}
-          <Link className="navbar-brand m-0 d-flex align-items-center" href={currentSlug ? `/${currentSlug}` : "/"}>
+          <Link className="hotel-nav-logo-link" href={currentSlug ? `/${currentSlug}` : "/"}>
             <img
               src={logoUrl || "/img/operalogo-white 1.png"}
               alt="Hotel Logo"
-              style={{
-                height: isSolidNav ? "70px" : (logoUrl ? "115px" : "100px"),
-                maxHeight: isSolidNav ? "78px" : "125px",
-                maxWidth: "280px",
-                objectFit: "contain",
-                display: "block",
-                transition: "all 0.3s ease"
-              }}
+              className="hotel-nav-logo-img"
             />
           </Link>
         </div>
@@ -88,25 +92,19 @@ export default function HotelHeader({ logoUrl, hotelSlug, isSolid }: HotelHeader
         <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center">
             <li className="nav-item">
-              <Link className="nav-link" href={currentSlug ? `/${currentSlug}#overview` : "/"}>OVERVIEW</Link>
+              <Link className={`nav-link${isRoomsActive ? ' active' : ''}`} href={currentSlug ? `/${currentSlug}/rooms-suites` : "/rooms-suites"}>ROOMS &amp; SUITES</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href={currentSlug ? `/${currentSlug}#accommodation` : "/rooms-suites"}>ROOMS</Link>
+              <Link className={`nav-link${isDiningActive ? ' active' : ''}`} href={currentSlug ? `/${currentSlug}/dining` : "/dining"}>DINING</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href={currentSlug ? `/${currentSlug}#dining` : "#dining"}>DINING</Link>
+              <Link className={`nav-link${isOffersActive ? ' active' : ''}`} href={currentSlug ? `/${currentSlug}/special-offers` : "/offers"}>OFFERS</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href={currentSlug ? `/${currentSlug}/special-offers` : "/offers"}>OFFERS</Link>
+              <Link className={`nav-link${isMeetingsActive ? ' active' : ''}`} href={meetingsEventsHref}>MEETINGS &amp; EVENTS</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href={meetingsEventsHref}>MEETINGS &amp; EVENTS</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href={currentSlug ? `/${currentSlug}#gallery` : "/gallery"}>GALLERY</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href={currentSlug ? `/${currentSlug}/contact` : "/contact"}>CONTACT</Link>
+              <Link className={`nav-link${isGalleryActive ? ' active' : ''}`} href={currentSlug ? `/gallery?hotel=${currentSlug}` : "/gallery"}>GALLERY</Link>
             </li>
 
             {/* Mobile Book Now Button */}

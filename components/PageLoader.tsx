@@ -86,6 +86,11 @@ export default function PageLoader() {
     };
 
     const handlePopState = () => {
+      const newUrl = window.location.pathname + window.location.search;
+      if (newUrl === currentUrlRef.current) {
+        // Only hash changed or same page, do not trigger loading screen
+        return;
+      }
       setIsPageLoading(true);
     };
 
