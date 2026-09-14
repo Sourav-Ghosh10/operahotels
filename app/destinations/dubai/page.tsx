@@ -30,6 +30,7 @@ const dubaiHotels = [
     }
 ];
 import Header from '@/components/ServerHeader';
+import DestinationSubnav from '@/components/DestinationSubnav';
 import Head from 'next/head';
 import '../destination-details.css';
 
@@ -106,11 +107,13 @@ export default function Page() {
                         and discover the deep-rooted heritage that shapes this dynamic nation's unique identity.
                     </p>
 
-                    <div className="uae-subnav">
-                        <a href="#sharjah" className="uae-subnav-link">SHARJAH</a>
-                        <a href="#ajman" className="uae-subnav-link">AJMAN</a>
-                        <a href="#dubai" className="uae-subnav-link">DUBAI</a>
-                    </div>
+                    <DestinationSubnav
+                        items={[
+                            { id: "sharjah", slug: "sharjah", label: "SHARJAH" },
+                            { id: "ajman", slug: "ajman", label: "AJMAN" },
+                            { id: "dubai", slug: "dubai", label: "DUBAI" },
+                        ]}
+                    />
                 </div>
             </section>
 

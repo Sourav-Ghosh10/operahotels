@@ -1,4 +1,4 @@
-/* Google Fonts Import */
+﻿/* Google Fonts Import */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* Color Variables */
@@ -3117,7 +3117,7 @@ body {
 }
 
 /* ---------------------------------------------------
-   OUR BRANDS BAR  — global component (.our-brands-*)
+   OUR BRANDS BAR  â€” global component (.our-brands-*)
    Gold bar used on all brand + hotel pages.
 --------------------------------------------------- */
 .our-brands-bar {
@@ -3234,13 +3234,14 @@ body {
         letter-spacing: 2px;
     }
 }
+
 /* ================================
    SOLID HOTEL NAVIGATION
    ================================ */
 .solid-hotel-nav {
     background-color: var(--dark-blue, #0b1a26) !important;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     transition: all 0.3s ease;
@@ -3257,4 +3258,940 @@ body {
 
 .solid-hotel-nav .custom-nav-toggler .line {
     background-color: #fff !important;
+}
+
+/* ================================
+   ARABIC HEADER & FOOTER RTL
+   ================================ */
+
+.arabic-header .nav-link {
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.arabic-header .submenu-menu,
+.lang-ar .submenu-menu {
+    left: auto;
+    right: 100%;
+    transform: translateX(-12px);
+}
+
+.arabic-header .dropdown-submenu:hover .submenu-menu,
+.lang-ar .dropdown-submenu:hover .submenu-menu {
+    transform: translateX(0);
+}
+
+.arabic-header .custom-dropdown-menu .dropdown-item:hover .submenu-chevron,
+.arabic-header .custom-dropdown-menu .dropdown-item.active .submenu-chevron,
+.lang-ar .custom-dropdown-menu .dropdown-item:hover .submenu-chevron,
+.lang-ar .custom-dropdown-menu .dropdown-item.active .submenu-chevron {
+    transform: translateX(-3px);
+}
+
+.arabic-header .submenu-item::before,
+.lang-ar .submenu-item::before {
+    left: auto;
+    right: 0;
+}
+
+.arabic-header .submenu-item:hover,
+.lang-ar .submenu-item:hover {
+    padding-left: 24px !important;
+    padding-right: 30px !important;
+}
+
+.arabic-header .custom-dropdown-menu .dropdown-item {
+    text-align: right;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.arabic-header .brands-hotels-dropdown-en,
+.arabic-header .brands-hotels-dropdown-en .submenu-menu {
+    direction: ltr;
+    text-align: left;
+}
+
+.arabic-header .brands-hotels-dropdown-en .dropdown-item,
+.arabic-header .brands-hotels-dropdown-en .submenu-item {
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.arabic-header .brands-hotels-dropdown-en .submenu-menu {
+    left: 100%;
+    right: auto;
+    transform: translateX(12px);
+}
+
+.arabic-header .brands-hotels-dropdown-en .dropdown-submenu:hover .submenu-menu {
+    transform: translateX(0);
+}
+
+.arabic-header .brands-hotels-dropdown-en .submenu-chevron {
+    transform: none;
+}
+
+.arabic-header .brands-hotels-dropdown-en .dropdown-item:hover .submenu-chevron,
+.arabic-header .brands-hotels-dropdown-en .dropdown-item.active .submenu-chevron {
+    transform: translateX(3px);
+}
+
+.arabic-header .brands-hotels-dropdown-en .submenu-item::before {
+    left: 0;
+    right: auto;
+}
+
+.arabic-header .brands-hotels-dropdown-en .submenu-item:hover {
+    padding-left: 30px !important;
+    padding-right: 24px !important;
+}
+
+.arabic-header .submenu-item {
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.arabic-footer .footer-logo-col {
+    align-items: flex-end;
+}
+
+.arabic-footer .footer-signup-btn {
+    align-self: flex-start;
+}
+
+.arabic-footer .footer-links li a,
+.arabic-footer .footer-col-heading,
+.arabic-footer .footer-best-rate,
+.arabic-footer .footer-social-label,
+.arabic-footer .footer-booking-text {
+    text-align: right;
+}
+
+.arabic-footer .footer-copyright p {
+    direction: rtl;
+}
+
+@media (max-width: 991.98px) {
+    .arabic-header .submenu-chevron {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+
+    .arabic-header .custom-dropdown-menu .dropdown-item {
+        text-align: center;
+        justify-content: center !important;
+    }
+}
+
+/* ============================================================
+   ROOMS & SUITES PAGE v2  (RoomsSuitesPage.tsx)
+   Matches: HMH reference design
+   ============================================================ */
+
+.rsv2-page {
+    background: #fff;
+    min-height: 100vh;
+}
+
+/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-header-wrap {
+    position: relative;
+    z-index: 100;
+}
+
+/* â”€â”€ Banner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-banner {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+.rsv2-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.28) 100%);
+}
+
+@media (max-width: 767px) {
+    .rsv2-banner {
+        height: 260px;
+    }
+}
+
+/* â”€â”€ Container â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+@media (max-width: 767px) {
+    .rsv2-container {
+        padding: 0 20px;
+    }
+}
+
+/* â”€â”€ Page Title â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-title-section {
+    padding: 48px 0 32px;
+    background: #fff;
+}
+
+.rsv2-page-title-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.rsv2-breadcrumb {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    color: #999;
+    font-weight: 400;
+}
+
+.rsv2-breadcrumb a {
+    color: #999;
+    text-decoration: none;
+}
+
+.rsv2-breadcrumb a:hover {
+    color: #c29958;
+}
+
+.rsv2-breadcrumb-sep {
+    margin: 0 5px;
+}
+
+.rsv2-page-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #1a2b3c;
+    margin: 0;
+    line-height: 1;
+}
+
+.rsv2-title-line {
+    width: 60px;
+    height: 2px;
+    background: #c29958;
+    margin-top: 6px;
+}
+
+/* â”€â”€ Rooms Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-rooms-section {
+    padding: 0 0 80px;
+    background: #fff;
+}
+
+.rsv2-rooms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* â”€â”€ Room Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-room-card {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    min-height: 420px;
+    margin-bottom: 48px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eeebe5;
+    overflow: hidden;
+    background: #fff;
+    transition: box-shadow 0.3s ease;
+}
+
+.rsv2-room-card:hover {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.13);
+}
+
+/* Reversed card: text left, image right */
+.rsv2-room-card--reversed {
+    grid-template-columns: 45% 55%;
+}
+
+.rsv2-room-card--reversed .rsv2-room-img-side {
+    order: 2;
+}
+
+.rsv2-room-card--reversed .rsv2-room-content-side {
+    order: 1;
+}
+
+/* â”€â”€ Image Side â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-room-img-side {
+    position: relative;
+    overflow: hidden;
+}
+
+.rsv2-slider {
+    height: 100%;
+    min-height: 420px;
+}
+
+.rsv2-slide-wrap {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    transition: background-image 0.3s ease;
+}
+
+/* Image slider arrows */
+.rsv2-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.85);
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    padding: 0;
+    transition: background 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.rsv2-arrow:hover {
+    background: #c29958;
+    color: #fff;
+}
+
+.rsv2-arrow:hover svg {
+    stroke: #fff;
+}
+
+.rsv2-arrow svg {
+    width: 18px;
+    height: 18px;
+    stroke: #1a2b3c;
+}
+
+.rsv2-arrow--prev {
+    left: 14px;
+}
+
+.rsv2-arrow--next {
+    right: 14px;
+}
+
+/* Dots */
+.rsv2-dots {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 10;
+}
+
+.rsv2-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s ease;
+}
+
+.rsv2-dot--active {
+    background: #fff;
+}
+
+/* â”€â”€ Content Side â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-room-content-side {
+    display: flex;
+    align-items: center;
+    padding: 0 48px;
+    background: #fff;
+}
+
+@media (max-width: 1023px) {
+    .rsv2-room-content-side {
+        padding: 0 28px;
+    }
+}
+
+.rsv2-room-inner {
+    width: 100%;
+    padding: 40px 0;
+}
+
+.rsv2-room-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1rem, 1.8vw, 1.35rem);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1a2b3c;
+    margin: 0 0 20px;
+    line-height: 1.3;
+}
+
+/* Specs */
+.rsv2-room-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.rsv2-spec {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #444;
+}
+
+.rsv2-spec-icon {
+    width: 16px;
+    height: 16px;
+    stroke: #c29958;
+    flex-shrink: 0;
+}
+
+/* Description */
+.rsv2-room-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #6b7f90;
+    margin: 0 0 28px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* CTAs */
+.rsv2-room-ctas {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.rsv2-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #1a2b3c;
+    text-decoration: none;
+    border-bottom: 1.5px solid #1a2b3c;
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.rsv2-cta-link:hover {
+    color: #c29958;
+    border-color: #c29958;
+}
+
+.rsv2-cta-arrow {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+}
+
+.rsv2-cta-link:hover .rsv2-cta-arrow {
+    transform: translateX(3px);
+}
+
+.rsv2-cta-book {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: #c29958;
+    border: 1.5px solid #c29958;
+    padding: 11px 26px;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.rsv2-cta-book:hover {
+    background: transparent;
+    color: #c29958;
+}
+
+/* â”€â”€ Loading / Empty â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-loading {
+    padding: 80px;
+    text-align: center;
+}
+
+.rsv2-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(194, 153, 88, 0.2);
+    border-top-color: #c29958;
+    border-radius: 50%;
+    animation: rsv2-spin 0.8s linear infinite;
+    margin: 0 auto;
+}
+
+.rsv2-empty {
+    padding: 80px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    color: #999;
+}
+
+/* â”€â”€ Keyframes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@keyframes rsv2-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@media (max-width: 991px) {
+
+    .rsv2-room-card,
+    .rsv2-room-card--reversed {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .rsv2-room-card--reversed .rsv2-room-img-side {
+        order: 1;
+    }
+
+    .rsv2-room-card--reversed .rsv2-room-content-side {
+        order: 2;
+    }
+
+    .rsv2-slider {
+        min-height: 280px;
+    }
+
+    .rsv2-room-content-side {
+        padding: 30px 24px;
+    }
+
+    .rsv2-room-inner {
+        padding: 0;
+    }
+}
+
+@media (max-width: 575px) {
+    .rsv2-page-title {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+    }
+
+    .rsv2-slider {
+        min-height: 240px;
+    }
+
+    .rsv2-room-content-side {
+        padding: 24px 16px;
+    }
+
+    .rsv2-room-ctas {
+        gap: 14px;
+    }
+}
+
+
+/* â”€â”€ Brand Rooms & Suites (Group-wise) Styles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.rsv2-brand-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    color: #6b7f90;
+    font-weight: 300;
+    margin: 6px 0 0;
+    letter-spacing: 0.5px;
+}
+
+/* Hotel Filter Section & Tabs */
+.rsv2-filter-section {
+    padding: 0 0 32px;
+    background: #fff;
+}
+
+.rsv2-filter-bar {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eae6de;
+    padding-bottom: 20px;
+}
+
+.rsv2-filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.rsv2-filter-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 20px;
+    background: #fbfaf8;
+    border: 1px solid #ddd7cd;
+    border-radius: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #1a2b3c;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    outline: none;
+}
+
+.rsv2-filter-tab:hover {
+    border-color: #c29958;
+    color: #c29958;
+    background: #fff;
+}
+
+.rsv2-filter-tab--active {
+    background: #c29958 !important;
+    border-color: #c29958 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px rgba(194, 153, 88, 0.35);
+}
+
+.rsv2-tab-count {
+    font-size: 0.78rem;
+    font-weight: 500;
+    opacity: 0.85;
+}
+
+.rsv2-filter-tab--active .rsv2-tab-count {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Hotel Group Container */
+.rsv2-hotel-groups-container {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+}
+
+.rsv2-hotel-group {
+    scroll-margin-top: 100px;
+}
+
+.rsv2-hotel-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid #eae6de;
+    padding-bottom: 20px;
+    margin-bottom: 36px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.rsv2-hotel-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.rsv2-hotel-tag-badge {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #c29958;
+    background: rgba(194, 153, 88, 0.12);
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+.rsv2-hotel-loc {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    color: #7b8b98;
+    font-weight: 400;
+}
+
+.rsv2-loc-icon {
+    width: 14px;
+    height: 14px;
+    stroke: #c29958;
+    flex-shrink: 0;
+}
+
+.rsv2-hotel-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1a2b3c;
+    margin: 0;
+    line-height: 1.25;
+}
+
+.rsv2-hotel-view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #c29958;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid rgba(194, 153, 88, 0.35);
+    border-radius: 4px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.rsv2-hotel-view-btn svg {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.25s ease;
+}
+
+.rsv2-hotel-view-btn:hover {
+    background: #c29958;
+    color: #fff;
+    border-color: #c29958;
+}
+
+.rsv2-hotel-view-btn:hover svg {
+    transform: translateX(3px);
+    stroke: #fff;
+}
+
+/* Hotel badge on room cards in brand view */
+.rsv2-room-hotel-badge {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #c29958;
+    background: rgba(194, 153, 88, 0.08);
+    border: 1px solid rgba(194, 153, 88, 0.22);
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 767px) {
+    .rsv2-hotel-group-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .rsv2-hotel-groups-container {
+        gap: 48px;
+    }
+
+    .rsv2-filter-tabs {
+        gap: 8px;
+    }
+
+    .rsv2-filter-tab {
+        padding: 7px 14px;
+        font-size: 0.75rem;
+    }
+}
+
+/* ================================================
+   HOTEL NAV BAR — custom flex layout (HotelHeader)
+   Ensures toggler + logo are always side-by-side
+   ================================================ */
+.hotel-nav-bar {
+    display: block;
+    width: 100%;
+}
+
+.hotel-nav-inner {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    min-height: 80px;
+}
+
+/* ================================================
+   HOTEL HEADER — clean three-column flex row
+   toggler | logo  ————  nav links  ————  book now
+   ================================================ */
+
+/* Outer shell inherits transparent-nav / solid-hotel-nav colours */
+.hotel-header-root {
+    display: block;
+    width: 100%;
+}
+
+/* The single horizontal row */
+.hotel-header-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    width: 100%;
+    min-height: 88px;
+    gap: 0;
+}
+
+/* LEFT: toggler + logo always side-by-side */
+.hotel-header-left {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    flex-shrink: 0;
+    gap: 18px;
+}
+
+/* Logo image */
+.hotel-header-logo-link {
+    display: flex !important;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.hotel-header-logo-img {
+    display: block;
+    max-width: 260px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* CENTER: nav links */
+.hotel-header-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    gap: 0;
+    flex-shrink: 1;
+}
+
+/* RIGHT: book now */
+.hotel-header-right {
+    flex-shrink: 0;
+}
+
+/* ================================================
+   HOTEL HEADER — left-side toggler + logo alignment
+   Simple flex row: hamburger beside logo, both centred
+   ================================================ */
+
+/* Container: horizontal flex, centred, no fixed height */
+.hotel-nav-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+/* Hamburger: keep it at its natural 32×22 visual size,
+   just ensure it is vertically centred in the row */
+a.hotel-nav-toggler-wrap.custom-nav-toggler {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    width: 32px !important;
+    height: 22px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0;
+}
+
+/* Lines stay exactly as the global .custom-nav-toggler defines them */
+a.hotel-nav-toggler-wrap.custom-nav-toggler .line-2,
+a.hotel-nav-toggler-wrap.custom-nav-toggler .line-4 {
+    width: 75%;
+}
+
+a.hotel-nav-toggler-wrap.custom-nav-toggler:hover .line-2,
+a.hotel-nav-toggler-wrap.custom-nav-toggler:hover .line-4 {
+    width: 100%;
+}
+
+a.hotel-nav-toggler-wrap.custom-nav-toggler:hover .line {
+    background-color: var(--primary-gold);
+}
+
+/* Logo link: simple flex centre, no fixed height so logo breathes */
+.hotel-nav-logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+/* Logo image: restore to the original visual size (matches old inline style)
+   max-height caps it without over-constraining; auto width preserves aspect ratio */
+.hotel-nav-logo-img {
+    display: block;
+    height: auto;
+    max-height: 115px;
+    max-width: 240px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* Mobile */
+@media (max-width: 991.98px) {
+    .hotel-nav-logo-img {
+        max-height: 80px;
+        max-width: 160px;
+    }
 }

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Header from '@/components/Header';
 import OurBrandsBar from '@/components/OurBrandsBar';
 import { getPageData, resolveImageUrl } from '@/services/api';
+import { useSearchParams } from 'next/navigation';
 
 
 
@@ -37,14 +38,30 @@ interface GalleryItem {
     image: string;
 }
 
+const SLUG_TO_GALLERY_CATEGORY: Record<string, string> = {
+    // Hotel slugs
+    'coral-beach-resort-sharjah': 'Coral Beach Resort Sharjah',
+    'coral-dubai-deira-hotel': 'Coral Dubai Deira Hotel',
+    'coral-jubail-hotel': 'Coral Jubail Hotel',
+    'bahi-ajman-palace-hotel': 'Bahi Ajman Palace Hotel',
+    'corp-executive-hotel-amman': 'Corp Amman Hotel',
+    'ecos-hotels-dubai-alfurjan': 'ECOS Dubai Hotel at Al Furjan',
+    // Brand slugs
+    'coral-hotels-resorts': 'Coral Hotels & Resorts',
+    'bahi-hotels-resorts': 'Bahi Ajman Palace Hotel',
+    'corp-hotels': 'Corp Amman Hotel',
+    'ecos-hotels': 'ECOS Dubai Hotel at Al Furjan',
+};
+
 const DEFAULT_CATEGORIES = [
     "All",
-    "Corp Amman Hotel",
+    "Coral Hotels & Resorts",
     "Coral Beach Resort Sharjah",
-    "Bahi Ajman Palace Hotel",
-    "ECOS Dubai Hotel at Al Furjan",
     "Coral Dubai Deira Hotel",
-    "Coral Jubail Hotel"
+    "Coral Jubail Hotel",
+    "Bahi Ajman Palace Hotel",
+    "Corp Amman Hotel",
+    "ECOS Dubai Hotel at Al Furjan"
 ];
 
 const DEFAULT_BANNER_SLIDES = [
@@ -59,7 +76,7 @@ const DEFAULT_BANNER_SLIDES = [
 
 const BATCH_SIZE = 24;
 
-export default function GalleryPage() {
+function GalleryContent() {
     const [pageData, setPageData] = useState<any>(null);
     const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
     const [items, setItems] = useState<GalleryItem[]>([]);
@@ -74,6 +91,27 @@ export default function GalleryPage() {
     const [loadedImages, setLoadedImages] = useState<{ [key: number]: boolean }>({});
     const gridRef = useRef<HTMLDivElement | null>(null);
 
+    const searchParams = useSearchParams();
+    const hotelParam = searchParams ? (searchParams.get('hotel') || searchParams.get('brand') || searchParams.get('category')) : null;
+
+    useEffect(() => {
+        if (!hotelParam) return;
+        const normalized = hotelParam.toLowerCase().trim();
+        const mapped = SLUG_TO_GALLERY_CATEGORY[normalized];
+        if (mapped) {
+            setActiveCategory(mapped);
+        } else {
+            const found = categories.find(c =>
+                c.toLowerCase().trim() === normalized ||
+                c.toLowerCase().includes(normalized) ||
+                normalized.includes(c.toLowerCase())
+            );
+            if (found) {
+                setActiveCategory(found);
+            }
+        }
+    }, [hotelParam, categories]);
+
     useEffect(() => {
         let isMounted = true;
         async function fetchGallery() {
@@ -87,7 +125,11 @@ export default function GalleryPage() {
                     if (isMounted) {
                         setPageData({ ...res, body: bodyData });
                         if (bodyData?.categories && Array.isArray(bodyData.categories) && bodyData.categories.length > 0) {
-                            setCategories(bodyData.categories);
+                            const cats = [...bodyData.categories];
+                            if (!cats.some(c => c.toLowerCase().includes('coral hotels'))) {
+                                cats.splice(1, 0, 'Coral Hotels & Resorts');
+                            }
+                            setCategories(cats);
                         }
                         if (bodyData?.gallery_items && Array.isArray(bodyData.gallery_items) && bodyData.gallery_items.length > 0) {
                             setItems(bodyData.gallery_items);
@@ -151,6 +193,10 @@ export default function GalleryPage() {
         return items.filter(item => {
             const hName = (item.hotel_name || '').toLowerCase().trim();
             const catName = activeCategory.toLowerCase().trim();
+            if (catName.includes('coral') && hName.includes('coral')) return true;
+            if (catName.includes('bahi') && hName.includes('bahi')) return true;
+            if (catName.includes('corp') && hName.includes('corp')) return true;
+            if (catName.includes('ecos') && hName.includes('ecos')) return true;
             return hName === catName || hName.includes(catName) || catName.includes(hName);
         });
     }, [items, activeCategory]);
@@ -466,5 +512,14 @@ export default function GalleryPage() {
             {/* Our Brands Bar */}
             <OurBrandsBar />
         </main>
+    );
+}
+
+
+export default function GalleryPage() {
+    return (
+        <React.Suspense fallback={<div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><p>Loading gallery...</p></div>}>
+            <GalleryContent />
+        </React.Suspense>
     );
 }

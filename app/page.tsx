@@ -1,37 +1,71 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
+import ArabicHeader from '@/components/ArabicHeader';
 import Head from 'next/head';
-import Footer from "@/components/Footer";
 import ExclusiveOffers from "@/components/ExclusiveOffers";
 import Link from 'next/link';
 import CarouselNav from "@/components/CarouselNav";
 import { getPageData, getLocationsData, getComingSoonData, getDestinationsData, resolveImageUrl } from '@/services/api';
 
 export default function Page() {
+    const [locale, setLocale] = useState<'en' | 'ar'>('en');
     const [pageData, setPageData] = useState<any>(null);
     const [locationsData, setLocationsData] = useState<any[]>([]);
     const [comingSoonData, setComingSoonData] = useState<any[]>([]);
     const [destinations, setDestinations] = useState<any[]>([]);
 
+    // Sync locale with localStorage and listen for header toggle events
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            try {
+                const saved = localStorage.getItem("app_locale") as 'en' | 'ar';
+                if (saved === "en" || saved === "ar") {
+                    setLocale(saved);
+                }
+            } catch (err) {}
+        }
+
+        const handleLocaleChange = (e: any) => {
+            const next = e.detail;
+            if (next === "en" || next === "ar") {
+                setLocale(next);
+            }
+        };
+
+        window.addEventListener("locale-change", handleLocaleChange);
+        window.addEventListener("destination-locale-change", handleLocaleChange);
+        return () => {
+            window.removeEventListener("locale-change", handleLocaleChange);
+            window.removeEventListener("destination-locale-change", handleLocaleChange);
+        };
+    }, []);
+
+    // Load page data and coming soon data whenever locale changes
     useEffect(() => {
         const loadPageData = async () => {
-            const data = await getPageData('home');
+            const data = await getPageData('home', locale);
             if (data) {
                 setPageData(data);
             }
         };
+        const loadComingSoonData = async () => {
+            const comingSoon = await getComingSoonData(locale);
+            if (comingSoon) {
+                setComingSoonData(comingSoon);
+            }
+        };
+
+        loadPageData();
+        loadComingSoonData();
+    }, [locale]);
+
+    // Load locations and destinations
+    useEffect(() => {
         const loadLocationsData = async () => {
             const locations = await getLocationsData();
             if (locations) {
                 setLocationsData(locations);
-            }
-        };
-
-        const loadComingSoonData = async () => {
-            const comingSoon = await getComingSoonData();
-            if (comingSoon) {
-                setComingSoonData(comingSoon);
             }
         };
 
@@ -44,7 +78,7 @@ export default function Page() {
                         .map((dest: any) => ({
                             id: dest.id,
                             slug: dest.slug,
-                            name: dest.name || dest.name_en || "",
+                            name: (locale === 'ar' ? (dest.name_ar || dest.name) : (dest.name || dest.name_en)) || "",
                         }));
                     if (mapped.length > 0) {
                         setDestinations(mapped);
@@ -55,46 +89,26 @@ export default function Page() {
             }
         };
 
-        loadPageData();
         loadLocationsData();
-        loadComingSoonData();
         loadDestinations();
-    }, []);
-
-
+    }, [locale]);
 
     useEffect(() => {
-        if (locationsData && locationsData.length > 0 && typeof window !== "undefined" && window.$) {
+        if (locationsData && locationsData.length > 0 && typeof window !== "undefined" && (window as any).$) {
             const timer = setTimeout(() => {
-                const $ = window.$;
-                if ($('.explore-carousel').length && !$('.explore-carousel').hasClass('owl-loaded')) {
-                    var owl = $('.explore-carousel').owlCarousel({
-                        loop: true,
-                        margin: 30,
-                        nav: false,
-                        dots: false,
-                        autoplay: true,
-                        autoplayTimeout: 4000,
-                        autoplayHoverPause: true,
-                        responsive: {
-                            0: { items: 1, margin: 15 },
-                            768: { items: 2, margin: 20 },
-                            992: { items: 3, margin: 30 },
-                            1200: { items: 4, margin: 30 }
-                        }
-                    });
-                    $('.explore-carousel-nav .next-btn').off('click').on('click', function () {
-                        owl.trigger('next.owl.carousel');
-                    });
-                    $('.explore-carousel-nav .prev-btn').off('click').on('click', function () {
-                        owl.trigger('prev.owl.carousel');
-                    });
-                } else if ($('.explore-carousel').hasClass('owl-loaded')) {
-                    $('.explore-carousel').trigger('destroy.owl.carousel');
-                    $('.explore-carousel').find('.owl-stage-outer').children().unwrap();
-                    $('.explore-carousel').removeClass("owl-center owl-loaded owl-text-select-on");
+                const $ = (window as any).$;
+                const $carousel = $('.explore-carousel');
+                const isRtl = locale === 'ar';
 
-                    var owl = $('.explore-carousel').owlCarousel({
+                if ($carousel.length) {
+                    if ($carousel.hasClass('owl-loaded')) {
+                        $carousel.trigger('destroy.owl.carousel');
+                        $carousel.find('.owl-stage-outer').children().unwrap();
+                        $carousel.removeClass("owl-center owl-loaded owl-text-select-on owl-rtl");
+                    }
+
+                    var owl = $carousel.owlCarousel({
+                        rtl: isRtl,
                         loop: true,
                         margin: 30,
                         nav: false,
@@ -116,38 +130,27 @@ export default function Page() {
                         owl.trigger('prev.owl.carousel');
                     });
                 }
-            }, 200);
+            }, 100);
             return () => clearTimeout(timer);
         }
-    }, [locationsData]);
+    }, [locationsData, locale]);
 
     useEffect(() => {
-        if (comingSoonData && comingSoonData.length > 0 && typeof window !== "undefined" && window.$) {
+        if (comingSoonData && comingSoonData.length > 0 && typeof window !== "undefined" && (window as any).$) {
             const timer = setTimeout(() => {
-                const $ = window.$;
-                if ($('.amenities-carousel').length && !$('.amenities-carousel').hasClass('owl-loaded')) {
-                    var owl = $('.amenities-carousel').owlCarousel({
-                        loop: true,
-                        margin: 0,
-                        nav: false,
-                        dots: false,
-                        autoplay: true,
-                        autoplayTimeout: 4000,
-                        autoplayHoverPause: true,
-                        items: 1
-                    });
-                    $('.amenities-nav-btn.next-btn').off('click').on('click', function () {
-                        owl.trigger('next.owl.carousel');
-                    });
-                    $('.amenities-nav-btn.prev-btn').off('click').on('click', function () {
-                        owl.trigger('prev.owl.carousel');
-                    });
-                } else if ($('.amenities-carousel').hasClass('owl-loaded')) {
-                    $('.amenities-carousel').trigger('destroy.owl.carousel');
-                    $('.amenities-carousel').find('.owl-stage-outer').children().unwrap();
-                    $('.amenities-carousel').removeClass("owl-center owl-loaded owl-text-select-on");
-                    
-                    var owl = $('.amenities-carousel').owlCarousel({
+                const $ = (window as any).$;
+                const $carousel = $('.amenities-carousel');
+                const isRtl = locale === 'ar';
+
+                if ($carousel.length) {
+                    if ($carousel.hasClass('owl-loaded')) {
+                        $carousel.trigger('destroy.owl.carousel');
+                        $carousel.find('.owl-stage-outer').children().unwrap();
+                        $carousel.removeClass("owl-center owl-loaded owl-text-select-on owl-rtl");
+                    }
+
+                    var owl = $carousel.owlCarousel({
+                        rtl: isRtl,
                         loop: true,
                         margin: 0,
                         nav: false,
@@ -164,18 +167,30 @@ export default function Page() {
                         owl.trigger('prev.owl.carousel');
                     });
                 }
-            }, 200);
+            }, 100);
             return () => clearTimeout(timer);
         }
-    }, [comingSoonData]);
+    }, [comingSoonData, locale]);
 
-    const bannerSubtitle = pageData?.body?.intro_subtitle || "YOU ARE UNIQUE FOR US";
-    const bannerTitle = pageData?.body?.intro_title || "WELCOME TO OPERA GRAND HOTEL";
+    const isRtl = locale === 'ar';
+    const bannerSubtitle = pageData?.body?.intro_subtitle || (isRtl ? "أنت مميز بالنسبة لنا" : "YOU ARE UNIQUE FOR US");
+    const bannerTitle = pageData?.body?.intro_title || (isRtl ? "مرحباً بكم في فندق أوبرا جراند" : "WELCOME TO OPERA GRAND HOTEL");
     const content = pageData?.body?.content;
-    const exploreButtonText = pageData?.body?.cta_text || "EXPLORE MORE";
+    const exploreButtonText = pageData?.body?.cta_text || (isRtl ? "استكشف المزيد" : "EXPLORE MORE");
+
+    // Coming soon section resolution
+    const comingSoonItem = (pageData?.body?.coming_soon_sections && pageData.body.coming_soon_sections.length > 0)
+        ? pageData.body.coming_soon_sections[0]
+        : (comingSoonData && comingSoonData.length > 0 ? comingSoonData[0] : null);
+
+    const comingSoonTitle = comingSoonItem?.title || (isRtl ? "قريباً" : "Coming Soon");
+    const comingSoonHotel = comingSoonItem?.hotel_name || (isRtl ? "فندق كورب مكة النسيم" : "Corp Makkah Al Naseem Hotel");
+    const comingSoonDesc = comingSoonItem?.description || (isRtl 
+        ? "يقع فندقنا ذو الـ 4 نجوم على بعد 12 كم فقط من المسجد الحرام على طريق الطائف في مكة المكرمة، ويجمع بين الفخامة والراحة. ترقبوا غرف نزلاء أنيقة وأجنحة فاخرة والمزيد!" 
+        : "Located just 12 kilometers from Masjid Al Haram on Al Taef road in Makkah, our 4-star hotel blends luxury with convenience. Stay tuned for chic guest rooms, lavish suites, and more!");
 
     return (
-        <main>
+        <main dir={isRtl ? "rtl" : "ltr"} className={isRtl ? "lang-ar" : "lang-en"}>
             {/* Hero Section with Header */}
             <header className="hero-section">
                 {/* Background Slider */}
@@ -191,7 +206,8 @@ export default function Page() {
                                         <div className="slider-image w-100 h-100"
                                             style={{ backgroundImage: `url('${imageUrl}')`, backgroundSize: "cover", backgroundPosition: "center" }}>
                                         </div>
-                                        <div className="hero-content position-absolute top-50 start-50 translate-middle text-center w-100" style={{ zIndex: 10 }}>
+                                        <div className="hero-content position-absolute top-50 start-50 translate-middle text-center w-100" 
+                                            style={{ zIndex: 10, direction: isRtl ? 'rtl' : 'ltr' }}>
                                             {slide.subtitle && <h2 className="welcome-text">{slide.subtitle}</h2>}
                                             {slide.title && <h1 className="main-title">{slide.title}</h1>}
                                         </div>
@@ -206,15 +222,11 @@ export default function Page() {
                 <div className="hero-overlay"></div>
 
                 {/* Navigation */}
-                <Header initialDestinations={destinations.length > 0 ? destinations : undefined} />
-
-                {/* Banner Content (Hidden as per new design matching screenshot) */}
-                {/* 
-                <div className="hero-content position-relative" style={{ zIndex: 10 }}>
-                    <h2 className="welcome-text">{bannerSubtitle}</h2>
-                    <h1 className="main-title">{bannerTitle}</h1>
-                </div> 
-                */}
+                {locale === 'ar' ? (
+                    <ArabicHeader initialDestinations={destinations.length > 0 ? destinations : undefined} />
+                ) : (
+                    <Header initialDestinations={destinations.length > 0 ? destinations : undefined} />
+                )}
 
                 {/* Carousel Controls */}
                 <button className="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#heroCarousel"
@@ -239,13 +251,20 @@ export default function Page() {
             </header>
 
             {/* Welcome Section */}
-            <section className="welcome-section pt-5 pb-5">
+            <section className="welcome-section pt-5 pb-5" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
                 <div className="container text-center mt-4">
-                    <h4 className="welcome-subtitle mb-3" style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '14px', color: '#555' }}>{bannerSubtitle}</h4>
-                    <h2 className="section-title mb-4" style={{ fontSize: '32px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>{bannerTitle}</h2>
+                    <h4 className="welcome-subtitle mb-3" style={{ textTransform: 'uppercase', letterSpacing: isRtl ? '0' : '2px', fontSize: '14px', color: '#555' }}>
+                        {bannerSubtitle}
+                    </h4>
+                    <h2 className="section-title mb-4" style={{ fontSize: '32px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: isRtl ? '0' : '1px' }}>
+                        {bannerTitle}
+                    </h2>
                     <div className="welcome-content mx-auto" style={{ maxWidth: "900px" }}>
                         {content && (
-                            <div className="welcome-p mb-4 text-muted" style={{ lineHeight: '1.8' }} dangerouslySetInnerHTML={{ __html: content }} />
+                            <div className="welcome-p mb-4 text-muted" 
+                                style={{ lineHeight: '1.8', direction: isRtl ? 'rtl' : 'ltr', textAlign: 'center' }} 
+                                dangerouslySetInnerHTML={{ __html: content }} 
+                            />
                         )}
                         <div className="mt-4">
                             <Link href="/brands" className="btn btn-gold-large">{exploreButtonText}</Link>
@@ -259,11 +278,11 @@ export default function Page() {
             <ExclusiveOffers />
 
             {/* Explore Section */}
-            <section className="explore-section  bg-white">
+            <section className="explore-section bg-white" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
                 <div className="container">
                     <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-baseline mb-5">
-                        <h2 className="explore-section-title mb-2 mb-sm-0">Our Locations</h2>
-                        <Link href="/destinations" className="learn-more-link">LEARN MORE</Link>
+                        <h2 className="explore-section-title mb-2 mb-sm-0">{isRtl ? "مواقعنا" : "Our Locations"}</h2>
+                        <Link href="/destinations" className="learn-more-link">{isRtl ? "المزيد" : "LEARN MORE"}</Link>
                     </div>
                 </div>
             </section>
@@ -286,7 +305,7 @@ export default function Page() {
                                             <h3 className="explore-card-title">{locationName.toUpperCase()}</h3>
                                         </div>
                                     </div>
-                                    <div className="explore-card-body">
+                                    <div className="explore-card-body" style={{ direction: isRtl ? 'rtl' : 'ltr', textAlign: isRtl ? 'right' : 'left' }}>
                                         <p className="explore-card-desc" style={{
                                             display: '-webkit-box',
                                             WebkitLineClamp: 3,
@@ -294,7 +313,7 @@ export default function Page() {
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis'
                                         }}>{locationDesc}</p>
-                                        <Link href={readMoreHref} className="explore-readmore">READ MORE</Link>
+                                        <Link href={readMoreHref} className="explore-readmore">{isRtl ? "اقرأ المزيد" : "READ MORE"}</Link>
                                     </div>
                                 </div>
                             );
@@ -309,17 +328,17 @@ export default function Page() {
                 <div className="gold-separator mx-auto mt-4 mb-5"></div>
             </div>
 
-            {/* Amenities Section */}
+            {/* Amenities / Coming Soon Section */}
             <section className="amenities-section">
                 <div className="container-fluid">
                     <div className="row g-0 align-items-stretch">
                         {/* Left Column: Content */}
                         <div
                             className="col-lg-6 d-flex align-items-center justify-content-center justify-content-lg-end bg-white py-5">
-                            <div className="amenities-text-block">
-                                <h2 className="amenities-title">{comingSoonData[0]?.title || 'Coming Soon'}</h2>
-                                <p className="amenities-p">{comingSoonData[0]?.hotel_name || 'Corp Makkah Al Naseem Hotel'}</p>
-                                <p className="amenities-p">{comingSoonData[0]?.description || 'Located just 12 kilometers from Masjid Al Haram on Al Taef road in Makkah, our 4-star hotel blends luxury with convenience. Stay tuned for chic guest rooms, lavish suites, and more!'}</p>
+                            <div className="amenities-text-block" style={{ direction: isRtl ? 'rtl' : 'ltr', textAlign: isRtl ? 'right' : 'left' }}>
+                                <h2 className="amenities-title">{comingSoonTitle}</h2>
+                                <p className="amenities-p">{comingSoonHotel}</p>
+                                <p className="amenities-p">{comingSoonDesc}</p>
                             </div>
                         </div>
 
@@ -338,8 +357,6 @@ export default function Page() {
                                     </>
                                 )}
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -347,7 +364,3 @@ export default function Page() {
         </main>
     );
 }
-
-
-
-

@@ -82,9 +82,15 @@ export const getPropertyBySlug = async (slug: string) => {
     }
 };
 
-export const getPageData = async (slug: string) => {
+export const getPageData = async (slug: string, locale?: string) => {
     try {
-        const response = await fetch(`${getApiEndpoint()}/pages/${slug}`, { cache: "no-store" });
+        const effectiveLocale = locale || (typeof window !== 'undefined' ? (localStorage.getItem('app_locale') || 'en') : 'en');
+        const response = await fetch(`${getApiEndpoint()}/pages/${slug}?locale=${effectiveLocale}`, { 
+            headers: {
+                'X-Locale': effectiveLocale
+            },
+            cache: "no-store" 
+        });
         if (!response.ok) {
             throw new Error(`Error fetching page data: ${response.statusText}`);
         }
@@ -166,9 +172,15 @@ export const getLocationsData = async () => {
     }
 };
 
-export const getComingSoonData = async () => {
+export const getComingSoonData = async (locale?: string) => {
     try {
-        const response = await fetch(`${getApiEndpoint()}/coming-soon`);
+        const effectiveLocale = locale || (typeof window !== 'undefined' ? (localStorage.getItem('app_locale') || 'en') : 'en');
+        const response = await fetch(`${getApiEndpoint()}/coming-soon?locale=${effectiveLocale}`, {
+            headers: {
+                'X-Locale': effectiveLocale
+            },
+            cache: "no-store"
+        });
         if (!response.ok) {
             throw new Error(`Error fetching coming soon data: ${response.statusText}`);
         }
@@ -261,5 +273,38 @@ export const getDestinationsData = async () => {
     } catch (error) {
         console.error("API Fetch Error:", error);
         return [];
+    }
+};
+
+export const getAllMeetingsEvents = async (filters?: { hotel_slug?: string; type?: string; property_id?: string | number }) => {
+    try {
+        const queryParams = new URLSearchParams();
+        if (filters?.hotel_slug) queryParams.append('hotel_slug', filters.hotel_slug);
+        if (filters?.type) queryParams.append('type', filters.type);
+        if (filters?.property_id) queryParams.append('property_id', String(filters.property_id));
+
+        const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
+        const response = await fetch(`${getApiEndpoint()}/meetings-events${queryString}`, { cache: "no-store" });
+        if (!response.ok) {
+            throw new Error(`Error fetching meetings events: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.data || data;
+    } catch (error) {
+        console.error("API Fetch Error in getAllMeetingsEvents:", error);
+        return [];
+    }
+};
+export const getAttractionDetails = async (hotelSlug: string, attractionSlug: string) => {
+    try {
+        const response = await fetch(`${getApiEndpoint()}/properties/${hotelSlug}/attractions/${attractionSlug}`, { cache: "no-store" });
+        if (!response.ok) {
+            throw new Error(`Error fetching attraction details: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data.data || data;
+    } catch (error) {
+        console.error("API Fetch Error in getAttractionDetails:", error);
+        return null;
     }
 };

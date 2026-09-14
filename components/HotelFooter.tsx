@@ -48,6 +48,24 @@ export default function HotelFooter({
   if (!effectiveLogo && (hotelSlug?.includes('bahi') || currentSlug?.includes('bahi'))) {
     effectiveLogo = resolveImageUrl('uploads/bahi_6a8fccc4166d5.svg');
   }
+  if (effectiveLogo && effectiveLogo.includes('01M10YNXETN0TB225VVZCR38FE.svg')) {
+    effectiveLogo = effectiveLogo.replace('01M10YNXETN0TB225VVZCR38FE.svg', 'coral_6a8fd92326a79.svg');
+  }
+  if (!effectiveLogo && (hotelSlug?.includes('coral') || currentSlug?.includes('coral'))) {
+    effectiveLogo = resolveImageUrl('uploads/coral_6a8fd92326a79.svg');
+  }
+  if (!effectiveLogo && (hotelSlug?.includes('corp') || currentSlug?.includes('corp'))) {
+    effectiveLogo = resolveImageUrl('uploads/corp_6a8fe0a339e6b.svg');
+  }
+  if (!effectiveLogo && (hotelSlug?.includes('ecos') || currentSlug?.includes('ecos'))) {
+    effectiveLogo = resolveImageUrl('uploads/01M1B7554A57KZPRGGJ1B5E8DP.png');
+  }
+  if (!effectiveLogo && (hotelSlug?.includes('ewa') || currentSlug?.includes('ewa'))) {
+    effectiveLogo = resolveImageUrl('uploads/01M1B89HXETJPJB6XYHVRAJB3Y.png');
+  }
+  if (effectiveLogo) {
+    effectiveLogo = resolveImageUrl(effectiveLogo);
+  }
 
   const displayPhone = hotelPhone || (currentSlug?.includes('bahi') ? "+971 6 701 8888" : "+971 4 290 9999");
 
@@ -68,7 +86,7 @@ export default function HotelFooter({
                     <img 
                       src={effectiveLogo} 
                       alt={`${displayHotelName} Logo`} 
-                      style={{ maxHeight: "65px", maxWidth: "200px", objectFit: "contain", cursor: "pointer" }} 
+                      style={{ height: "55px", width: "auto", maxHeight: "65px", maxWidth: "200px", objectFit: "contain", cursor: "pointer" }} 
                     />
                   </Link>
                 </>
@@ -101,22 +119,27 @@ export default function HotelFooter({
             </h6>
             <ul className="list-unstyled" style={{ fontSize: "12px", lineHeight: "2.5", fontWeight: "500", textTransform: "uppercase" }}>
               <li>
-                <Link href={currentSlug ? `/${currentSlug}#accommodation` : "/rooms-suites"} className="text-dark text-decoration-none hover-gold">
+                <Link href={currentSlug ? `/${currentSlug}/rooms-suites` : "/rooms-suites"} className="text-dark text-decoration-none hover-gold">
                   Rooms &amp; Suites
                 </Link>
               </li>
               <li>
-                <Link href={currentSlug ? `/${currentSlug}#dining` : "#"} className="text-dark text-decoration-none hover-gold">
+                <Link href={currentSlug ? `/${currentSlug}/dining` : "/dining"} className="text-dark text-decoration-none hover-gold">
                   Dining
                 </Link>
               </li>
               <li>
-                <Link href={currentSlug ? `/${currentSlug}#gallery` : "/gallery"} className="text-dark text-decoration-none hover-gold">
+                <Link href={currentSlug ? `/${currentSlug}/facilities` : "/facilities"} className="text-dark text-decoration-none hover-gold">
+                  Facilities
+                </Link>
+              </li>
+              <li>
+                <Link href={currentSlug ? `/gallery?hotel=${currentSlug}` : "/gallery"} className="text-dark text-decoration-none hover-gold">
                   Gallery
                 </Link>
               </li>
               <li>
-                <Link href={currentSlug ? `/${currentSlug}/contact` : "/contact"} className="text-dark text-decoration-none hover-gold">
+                <Link href="/contact" className="text-dark text-decoration-none hover-gold">
                   Location &amp; Contact
                 </Link>
               </li>

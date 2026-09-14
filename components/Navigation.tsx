@@ -1,10 +1,49 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useUI } from "@/app/UIContext";
 import Link from "next/link";
 
+type Locale = "en" | "ar";
+
 export default function Navigation() {
   const { isNavOpen, setIsNavOpen, setIsBookingOpen, setIsPageLoading } = useUI();
+  const [locale, setLocale] = useState<Locale>("en");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("app_locale") as Locale;
+        if (saved === "en" || saved === "ar") {
+          setLocale(saved);
+        }
+      } catch (err) {}
+    }
+
+    const handleLocaleChange = (e: Event) => {
+      const next = (e as CustomEvent<Locale>).detail;
+      if (next === "en" || next === "ar") {
+        setLocale(next);
+      }
+    };
+
+    window.addEventListener("locale-change", handleLocaleChange);
+    window.addEventListener("destination-locale-change", handleLocaleChange);
+    return () => {
+      window.removeEventListener("locale-change", handleLocaleChange);
+      window.removeEventListener("destination-locale-change", handleLocaleChange);
+    };
+  }, []);
+
+  function selectLocale(nextLocale: Locale) {
+    setLocale(nextLocale);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("app_locale", nextLocale);
+      } catch (err) {}
+      window.dispatchEvent(new CustomEvent("locale-change", { detail: nextLocale }));
+      window.dispatchEvent(new CustomEvent("destination-locale-change", { detail: nextLocale }));
+    }
+  }
 
   const handleMenuLinkClick = (href: string) => {
     setIsNavOpen(false);
@@ -15,7 +54,6 @@ export default function Navigation() {
 
   return (
     <div className={`overlay-navigation ${isNavOpen ? "active" : ""}`}>
-      {/* Left Sidebar / Pane */}
       <div className="overlay-left-pane">
         <button
           className="overlay-close-btn"
@@ -74,10 +112,8 @@ export default function Navigation() {
         </div>
       </div>
 
-      {/* Right Content Pane */}
       <div className="overlay-right-pane">
         <div className="overlay-right-top">
-          {/* Language Selector */}
           <div className="dropdown overlay-lang-dropdown">
             <a
               className="dropdown-toggle"
@@ -85,8 +121,9 @@ export default function Navigation() {
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              onClick={(e) => e.preventDefault()}
             >
-              ENGLISH
+              {locale === "en" ? "ENGLISH" : "العربية"}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="12"
@@ -104,23 +141,25 @@ export default function Navigation() {
             </a>
             <ul className="dropdown-menu dropdown-menu-end">
               <li>
-                <a className="dropdown-item text-capitalize" href="#">
+                <button
+                  className={`dropdown-item text-capitalize ${locale === "en" ? "active" : ""}`}
+                  type="button"
+                  onClick={() => selectLocale("en")}
+                >
                   ENGLISH
-                </a>
+                </button>
               </li>
               <li>
-                <a className="dropdown-item text-capitalize" href="#">
+                <button
+                  className={`dropdown-item text-capitalize ${locale === "ar" ? "active" : ""}`}
+                  type="button"
+                  onClick={() => selectLocale("ar")}
+                >
                   العربية
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item text-capitalize" href="#">
-                  FRANÇAIS
-                </a>
+                </button>
               </li>
             </ul>
           </div>
-          {/* Book Now Button */}
           <a
             href="#"
             className="btn btn-book-now"

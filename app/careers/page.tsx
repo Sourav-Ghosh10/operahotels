@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import ConditionalFooter from "@/components/ConditionalFooter";
 import Link from "next/link";
-import { getPageData } from "@/services/api";
+import { getPageData, resolveImageUrl } from "@/services/api";
 
 interface JobPosition {
   id: number;
@@ -72,6 +72,39 @@ export default function CareersPage() {
   const [selectedJob, setSelectedJob] = useState<JobPosition | null>(null);
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);
 
+  const body = pageData?.body || {};
+  const heroSlide = (Array.isArray(body.banner_slides) && body.banner_slides[0]) || null;
+  const heroBannerUrl = heroSlide?.image_url 
+    || (heroSlide?.image ? resolveImageUrl(heroSlide.image) : '')
+    || (Array.isArray(body.banner_images) && body.banner_images[0] ? resolveImageUrl(body.banner_images[0]) : '')
+    || '/img/luxury-hotel-reception-hall-lounge-restaurant-with-high-ceiling 1.png';
+  const heroTitle = heroSlide?.title || body.intro_title || body.content_title || 'CAREERS AT HMH';
+  const heroSubtitle = heroSlide?.subtitle || body.intro_subtitle || 'Hospitality Management Holding';
+  const heroLead = body.intro_text || 'Join a vibrant hospitality family dedicated to genuine warmth, regional prestige, and limitless professional horizons.';
+
+  const introSubtitle = body.intro_subtitle || 'Work With Us';
+  const introTitle = body.intro_title || body.content_title || 'Empowering Talent, Inspiring Excellence';
+  const introHtml = body.content || '';
+
+  useEffect(() => {
+    if (pageData?.seo?.meta_title || pageData?.title) {
+      const t = pageData?.seo?.meta_title || (typeof pageData?.title === 'object' ? pageData?.title?.en : pageData?.title);
+      if (t) document.title = t;
+    }
+  }, [pageData]);
+
+  const activeJobs: (JobPosition & { apply_link?: string })[] = (Array.isArray(body.careers_list) && body.careers_list.length > 0)
+    ? body.careers_list.map((c: any, idx: number) => ({
+        id: idx + 1,
+        title: c.title || 'Hospitality Role',
+        department: c.department || 'General',
+        location: c.location || 'HMH Hotels',
+        type: c.type || 'Full Time',
+        description: c.description ? c.description.replace(/<[^>]+>/g, '').trim() : '',
+        apply_link: c.apply_link || '',
+      }))
+    : SAMPLE_JOBS;
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -84,11 +117,11 @@ export default function CareersPage() {
     load();
   }, []);
 
-  const departments = ["All", "Rooms Division", "Commercial & Sales", "Food & Beverage", "Front Office", "Culinary", "Revenue Management"];
+  const departments = ["All", ...Array.from(new Set(activeJobs.map(j => j.department).filter(Boolean)))];
 
   const filteredJobs = selectedDept === "All"
-    ? SAMPLE_JOBS
-    : SAMPLE_JOBS.filter(job => job.department === selectedDept);
+    ? activeJobs
+    : activeJobs.filter(job => job.department === selectedDept);
 
   const handleApply = (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,10 +139,10 @@ export default function CareersPage() {
         <div
           className="position-absolute top-0 start-0 w-100 h-100"
           style={{
-            backgroundImage: "url('/img/luxury-hotel-reception-hall-lounge-restaurant-with-high-ceiling 1.png')",
+            backgroundImage: `url('${heroBannerUrl}')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.55,
+            opacity: 0.65,
             filter: "brightness(0.85)"
           }}
         />
@@ -124,14 +157,14 @@ export default function CareersPage() {
 
         <div className="container position-relative text-center text-white d-flex flex-column align-items-center justify-content-center" style={{ minHeight: "450px", zIndex: 10, paddingTop: "100px" }}>
           <span className="text-uppercase mb-2" style={{ letterSpacing: "4px", fontSize: "13px", color: "#c5a46d", fontWeight: "600" }}>
-            Hospitality Management Holding
+            {heroSubtitle}
           </span>
-          <h1 className="fw-light display-4 mb-3" style={{ letterSpacing: "5px", textTransform: "uppercase" }}>
-            CAREERS AT HMH
+          <h1 className="fw-light display-4 mb-3" style={{ letterSpacing: "4px", textTransform: "uppercase" }}>
+            {heroTitle}
           </h1>
           <div style={{ width: "60px", height: "2px", backgroundColor: "#c5a46d", margin: "0 auto 20px" }}></div>
           <p className="lead max-w-700 text-light px-3" style={{ maxWidth: "700px", fontSize: "16px", lineHeight: "1.8", color: "#e0e0e0" }}>
-            Join a vibrant hospitality family dedicated to genuine warmth, regional prestige, and limitless professional horizons.
+            {heroLead}
           </p>
         </div>
       </header>
@@ -142,17 +175,27 @@ export default function CareersPage() {
           <div className="row align-items-center gy-4">
             <div className="col-12 col-lg-6">
               <span className="text-uppercase" style={{ letterSpacing: "3px", fontSize: "12px", color: "#c5a46d", fontWeight: "bold" }}>
-                Work With Us
+                {introSubtitle}
               </span>
               <h2 className="mt-2 mb-4 fw-normal" style={{ fontSize: "2.2rem", letterSpacing: "1px", color: "#222" }}>
-                Empowering Talent,<br />Inspiring Excellence
+                {introTitle}
               </h2>
-              <p style={{ color: "#666", lineHeight: "1.9", fontSize: "15px" }}>
-                At Hospitality Management Holding (HMH), we believe our people are the heartbeat of our success. Across our distinctive hotel brands, we foster a collaborative, inclusive culture that encourages individual initiative, creativity, and long-term career progression.
-              </p>
-              <p style={{ color: "#666", lineHeight: "1.9", fontSize: "15px" }}>
-                Whether you aspire to delight guests at the front of house, excel in culinary mastery, or drive commercial success behind the scenes, HMH provides the mentorship, modern training programs, and global hospitality standards to help you achieve your career aspirations.
-              </p>
+              {introHtml ? (
+                <div
+                  className="mb-4"
+                  style={{ color: "#666", lineHeight: "1.9", fontSize: "15px" }}
+                  dangerouslySetInnerHTML={{ __html: introHtml }}
+                />
+              ) : (
+                <>
+                  <p style={{ color: "#666", lineHeight: "1.9", fontSize: "15px" }}>
+                    At Hospitality Management Holding (HMH), we believe our people are the heartbeat of our success. Across our distinctive hotel brands, we foster a collaborative, inclusive culture that encourages individual initiative, creativity, and long-term career progression.
+                  </p>
+                  <p style={{ color: "#666", lineHeight: "1.9", fontSize: "15px" }}>
+                    Whether you aspire to delight guests at the front of house, excel in culinary mastery, or drive commercial success behind the scenes, HMH provides the mentorship, modern training programs, and global hospitality standards to help you achieve your career aspirations.
+                  </p>
+                </>
+              )}
               <div className="d-flex gap-4 mt-4 pt-2">
                 <div>
                   <h4 className="fw-bold mb-1" style={{ color: "#c5a46d" }}>5+</h4>
@@ -296,14 +339,25 @@ export default function CareersPage() {
                       {job.description}
                     </p>
                   </div>
-                  <div>
+                  <div className="d-flex gap-2">
+                    {job.apply_link ? (
+                      <a
+                        href={job.apply_link}
+                        target={job.apply_link.startsWith('mailto:') ? '_self' : '_blank'}
+                        rel="noopener noreferrer"
+                        className="btn btn-dark flex-grow-1 rounded-0 text-uppercase py-2 text-center"
+                        style={{ fontSize: "12px", letterSpacing: "1px", fontWeight: "600", backgroundColor: "#c5a46d", borderColor: "#c5a46d" }}
+                      >
+                        Apply Directly
+                      </a>
+                    ) : null}
                     <button
                       type="button"
                       onClick={() => setSelectedJob(job)}
-                      className="btn btn-outline-dark w-100 rounded-0 text-uppercase py-2"
-                      style={{ fontSize: "12px", letterSpacing: "1.5px", fontWeight: "600" }}
+                      className={`btn btn-outline-dark ${job.apply_link ? '' : 'w-100'} rounded-0 text-uppercase py-2`}
+                      style={{ fontSize: "12px", letterSpacing: "1px", fontWeight: "600" }}
                     >
-                      Apply Now
+                      Apply Form
                     </button>
                   </div>
                 </div>

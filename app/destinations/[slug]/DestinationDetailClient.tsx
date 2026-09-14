@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Header from "@/components/Header";
 import { resolveImageUrl } from "@/services/api";
 import DestinationMap from "@/components/DestinationMap";
+import DestinationSubnav from "@/components/DestinationSubnav";
 import { DestinationData, fetchDestinationByLocale, Locale } from "@/lib/api/destinations";
 
 type DestinationDetailClientProps = {
@@ -169,13 +170,13 @@ export default function DestinationDetailClient({ initialDestination, slug, head
           {description && <p className="uae-p mb-0">{description}</p>}
 
           {destination.cities.length > 0 && (
-            <div className="uae-subnav">
-              {destination.cities.map((city) => (
-                <a href={`#${city.slug}`} className="uae-subnav-link" key={city.id}>
-                  {city.name || city.name_en}
-                </a>
-              ))}
-            </div>
+            <DestinationSubnav
+              items={destination.cities.map((city) => ({
+                id: city.id,
+                slug: city.slug,
+                label: city.name || city.name_en || "",
+              }))}
+            />
           )}
         </div>
       </section>

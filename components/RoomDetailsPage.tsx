@@ -542,7 +542,7 @@ export default function RoomDetailsPage({ hotelSlug, roomSlug }: RoomDetailsProp
                     ) : <span />}
 
                     <Link 
-                        href={`/${resolvedHotelSlug}#accommodation`}
+                        href={`/${resolvedHotelSlug}/rooms-suites`}
                         style={{ color: '#222', textDecoration: 'underline', textUnderlineOffset: '4px' }}
                     >
                         VIEW ALL ROOMS &amp; SUITES

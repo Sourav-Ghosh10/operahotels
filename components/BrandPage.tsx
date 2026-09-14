@@ -16,6 +16,7 @@ interface ChildHotel {
     name: string;
     slug: string;
     logo?: string;
+    footer_logo?: string;
     cover_image?: string;
     banner_images?: string[];
     address?: string;
@@ -47,6 +48,7 @@ interface BrandContent {
 }
 
 interface BrandData {
+    footer_logo?: string;
     id: number;
     name: string;
     slug: string;
@@ -540,7 +542,14 @@ export default function BrandPage({ brandData, brandsData }: BrandPageProps) {
 
 
             <OurBrandsBar />
-            <HotelFooter logoUrl={brandData.logo} />
+            <HotelFooter 
+                logoUrl={brandData.footer_logo || brandData.logo}
+                hotelName={brandData.name}
+                hotelSlug={brandData.slug}
+                hotelPhone={brandData.phone}
+                hotelAddress={brandData.address}
+                hotelEmail={brandData.email}
+            />
         </main>
     );
 }
